@@ -1,0 +1,49 @@
+---
+title: "ghrsst data prep"
+author: "Zack Dinh"
+date: "August 30, 2019"
+output: html_document
+---
+
+```{r include=FALSE}
+library(dplyr)
+library(data.table)
+library(raster)
+library(sp)
+library(sf)
+```
+
+```{r}
+#input data
+tif_input <- '/Users/Zack/0_GIS_Greece/bath_emodnet/bath_2018.tif'
+
+#output folder
+tif_output <- '/Users/Zack/0_thesis_bath/x/'
+#tif_output <- '/Users/Zack/0_thesis_bath/bath_2018_tif/'
+  
+#load shapefile of farm sites
+targets <- '/Users/Zack/0_GIS_Greece/blue_bridge/fishcages_Greece_farm_pts_500m_sq.shp'
+targets <- st_read(targets)
+
+#function to crop raster to area of interest
+crop_tool <- function(image_file, target){
+  raster <- raster(image_file)
+  raster_crop <- crop(raster, target)}
+
+crop_tool(tif_input, targets[1,])
+
+#extract tif_input for each site
+for (i in 1:nrow(as.data.frame(targets))){
+  crop <- crop_tool(tif_input, targets[i,])
+  output <- paste0(tif_output, i-1, '_bath.tiff') 
+  writeRaster(crop, file = output, "GTiff", overwrite=TRUE)}
+```
+
+```{r}
+l=length(list.files(tif_output, pattern = '.tif'))
+
+#for (i in 1:10){
+for (i in 1:l){
+  file <- paste0('/Users/Zack/0_thesis_bath/bath_2018_tif/', i-1, '_bath.tif')
+  plot(raster(file))}
+```

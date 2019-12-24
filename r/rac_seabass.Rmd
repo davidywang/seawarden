@@ -1,0 +1,25 @@
+---
+title: "Untitled"
+author: "Zack Dinh"
+date: "October 21, 2019"
+output: html_document
+---
+
+```{r, echo=FALSE}
+library(RAC)
+library(dplyr)
+
+#setwd("../R/RAC_seabass/") #working directory
+userpath <- "../RAC_seabass/"
+```
+
+```{r}
+#create RAC folders for each site
+Bass_pop_skeleton(userpath)
+```
+
+```{r}
+#load environmental variables
+forcings <- Bass_pop_dataloader(userpath) 
+output <- Bass_pop_main("../R", forcings)
+```

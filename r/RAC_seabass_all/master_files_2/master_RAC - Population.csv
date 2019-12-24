@@ -1,0 +1,9 @@
+Quantity,Description,Unit,Reference,0,1,2
+meanW,Dry weight average,g,,10,10,10
+deltaW,Dry weight standard deviation,g,,1,1,1
+Wlb,Dry weight lower bound,g,,0.0001,0.0001,0.0001
+meanImax,Clearence rate average,g/ gfish d,,0.05,0.05,0.05
+deltaImax,Clearance rate standard deviation,g/ gfish d,,0.005,0.005,0.005
+Nseed,Number of seeded individuals,-,,0.00E+00,0.00E+00,0.00E+00
+mortmyt,natural mortality rate,1/d,,0.000410959,0.000410959,0.000410959
+nruns,number of simulations,,,5,5,5

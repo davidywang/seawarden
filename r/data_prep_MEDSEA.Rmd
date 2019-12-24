@@ -1,0 +1,129 @@
+---
+title: "data prep MEDSEA"
+author: "Zack Dinh"
+date: "August 30, 2019"
+output: html_document
+---
+
+```{r include=FALSE}
+#library(tidyverse)
+#library(data.table)
+library(dplyr)
+library(raster)
+library(sp)
+library(sf)
+
+#install.packages("rWind")
+library(rWind)
+
+#library(ggplot2)
+#library(scales)
+```
+
+```{r}
+#function to crop raster to area of interest, converts raster to point
+crop_tool <- function(image_file, target){
+  raster_crop <- crop(raster(image_file), target) #opens raster file, clips raster to target (target is opened in a prior step)
+  pts <- rasterToPoints(raster_crop) #raster clip is convereted to a point
+  pts_df <- as.data.frame(pts) #points converted to a df
+  mean(pts_df[,3])} #mean calculated to result in junst one measurement
+```
+
+```{r}
+current_tool <- function(v_folder, u_folder, target, output){ 
+  
+  #list of tif files in folder
+  v_list <- list.files(v_folder, pattern = '.tif')
+  u_list <- list.files(u_folder, pattern = '.tif')
+  
+  daily_u = list()
+  daily_v = list()
+  date = list()
+
+  for (i in 1:10){
+  #for (i in 1:365){
+  
+      v_file <- paste0(v_folder, v_list[i])
+      u_file <- paste0(u_folder, u_list[i])
+
+      v <- crop_tool(v_file, target)
+      u <- crop_tool(u_file, target)
+
+      daily_u[[i]] <- u
+      daily_v[[i]] <- v
+       
+      day <- substr(u_list[i], 19, 20)
+      month <- substr(u_list[i], 16, 17)
+      year <- substr(u_list[i], 11, 14)
+      
+      date[[i]] <- paste0(day, "/", month, "/", year)}
+    
+  daily_v = do.call(rbind, daily_v)
+  daily_u = do.call(rbind, daily_u)
+  date = data.frame(do.call(rbind, date))
+  
+  #daily_v <- as.data.frame(daily_v)
+  #daily_u <- as.data.frame(daily_u)
+  
+  #colnames(date) <- c("date")
+  #colnames(daily_v) <- c("v")
+  #colnames(daily_u) <- c("u")
+  
+  #combine
+  daily <- cbind(date, uv2ds(u=daily_u, v=daily_v))
+  #daily <- cbind(date, daily_v, daily_u)
+  
+  #rename columns
+  daily <- daily %>% rename(date=1, dir=2, speed=3)
+  
+  #create output filename and export as csv
+  target_df <-as.data.frame(target)
+  filename <- paste0(output, paste0(target_df['farm_id']), '_medsea_current.csv')
+  #print(filename)
+
+  #create output file
+  #write.csv(daily, file=filename, row.names = FALSE)}
+  write.table(daily, file = filename, row.names=FALSE, col.names = TRUE, sep=",")}
+```
+
+```{r}
+#load ocean current data
+v_folder <- '/Users/Zack/0_thesis_ocean_current/medsea_vo_2018_tif/'
+u_folder <- '/Users/Zack/0_thesis_ocean_current/medsea_uo_2018_tif/'
+
+#output folder
+#output <- '/Users/Zack/0_thesis_ocean_current/medsea_current_2018_csv/'
+output <- '/Users/Zack/Desktop/test/'
+
+#load shapefile of farm sites
+#targets <- '/Users/Zack/0_GIS_Greece/blue_bridge/fishcages_Greece_farm_pts.shp'
+targets <- '/Users/Zack/0_GIS_Greece/blue_bridge/fishcages_Greece_farm_pts_1m_3.shp'
+targets <- st_read(targets)
+
+#single use
+#current_tool(v_folder, u_folder, targets[2,], output)
+
+#loop to create u, v, direction and speed csv for all farm sites
+for (i in 1:nrow(as.data.frame(targets))){
+#for (i in 1:5){
+  current_tool(v_folder, u_folder, targets[i,], output)}
+```
+
+```{r}
+#combine SST csv files
+
+#input folders
+folder_1 <- '/Users/Zack/0_thesis_ocean_current/medsea_current_2018_csv/'
+folder_2 <- '/Users/Zack/0_thesis_ocean_current/medsea_current_2019_csv/'
+
+#output folder
+folder_3 <- '/Users/Zack/0_thesis_ocean_current/medsea_current_csv/'
+
+#list files in folders
+list_1 <- list.files(folder_1, pattern = '.csv')
+list_2 <- list.files(folder_2, pattern = '.csv')
+
+#combine SST csv files
+for (i in 1:(length(list_1))){
+  combine(folder_1, folder_2, folder_3)}
+```

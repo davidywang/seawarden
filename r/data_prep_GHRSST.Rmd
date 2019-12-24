@@ -1,0 +1,193 @@
+---
+title: "ghrsst data prep"
+author: "Zack Dinh"
+date: "August 30, 2019"
+output: html_document
+---
+
+```{r include=FALSE}
+library(dplyr)
+#library(data.table)
+library(raster)
+library(sf)
+#library(sp)
+library(ggplot2)
+library(scales)
+```
+
+```{r}
+#function to crop raster to area of interest, converts raster to point
+crop_tool <- function(image_file, target){
+  raster_crop <- crop(raster(image_file), target) #opens raster file, clips raster to target (target is opened in a prior step)
+  pts <- rasterToPoints(raster_crop) #raster clip is convereted to a point
+  pts_df <- as.data.frame(pts) #points converted to a df
+  mean(pts_df[,3])} #mean calculated to result in junst one measurement
+```
+
+```{r}
+#extract sst from all rasters and add sst value to csv
+sst_tool <- function(tif_folder, target, csv_output){
+  sst_list <- list.files(tif_folder, pattern = '.tif')
+  
+  daily_sst = list() #365 tif files per year/folder
+  date = list()
+  
+  #for (i in 1:5){
+  for (i in 1:(length(sst_list))){
+     file <- paste0(tif_folder, sst_list[i])
+     sst <- crop_tool(file, target)
+     daily_sst[[i]] <- sst
+     
+     day <- substr(sst_list[i], 17, 18)
+     month <- substr(sst_list[i], 15, 16)
+     year <- substr(sst_list[i], 11, 14)
+     
+     date[[i]] <- paste0(day, "/", month, "/", year)}
+  
+  daily_sst = do.call(rbind, daily_sst)
+  date = data.frame(do.call(rbind, date))
+  
+  #rename columns
+  colnames(daily_sst) <- c("c")
+  colnames(date) <- c("date")
+
+  #convert kelvin to celcius
+  daily_sst <- daily_sst - 273.15
+  
+  #add date 
+  daily_sst <- cbind(date, daily_sst)
+  
+  #create output filename and export as csv
+  target_df <- as.data.frame(target)
+  output <- paste0(csv_output, paste0(target_df['farm_id']), '_sst.csv')
+  write.table(daily_sst, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+```
+
+```{r}
+#process SST for all farm sites
+
+#load sst data
+tif_folder <- '/Users/Zack/0_thesis_sst/ghrsst_2019_tif/'
+
+#output folder
+csv_output <- '/Users/Zack/0_thesis_sst/ghrsst_2019_csv/'
+
+#load shapefile of farm sites
+targets <- '/Users/Zack/0_GIS_Greece/blue_bridge/fishcages_Greece_farm_pts_500m_sq_2.shp'
+targets <- st_read(targets)
+
+#single use
+#sst_tool(tif_folder, targets[1,], csv_output)
+
+#loop to extract SST for all farm sites
+for (i in 1:nrow(as.data.frame(targets))){
+#for (i in 1:10){
+  sst_tool(tif_folder, targets[i,], csv_output)}
+```
+
+```{r}
+#function to combine SST files
+combine <- function(folder_1, folder_2, folder_3){
+
+  #read csv files
+  csv_1 <- read.delim(paste0(folder_1, list_1[i]), sep = ',', stringsAsFactors = F, header = FALSE)
+  csv_2 <- read.delim(paste0(folder_2, list_1[i]), sep = ',', stringsAsFactors = F, header = FALSE)
+
+  #create output filename
+  output <- paste0(folder_3, paste0(list_1[i]))
+  
+  #merge dataframes and export file
+  write.table(rbind(csv_1, csv_2), file = paste0(folder_3, paste0(list_1[i])), row.names=FALSE, col.names = FALSE, sep=",")}
+```
+
+```{r}
+#combine SST csv files
+
+#input folders
+folder_1 <- '/Users/Zack/0_thesis_sst/ghrsst_2018_csv/'
+folder_2 <- '/Users/Zack/0_thesis_sst/ghrsst_2019_csv/'
+
+#output folder
+folder_3 <- '/Users/Zack/0_thesis_sst/ghrsst_csv/'
+
+#list files in folders
+list_1 <- list.files(folder_1, pattern = '.csv')
+list_2 <- list.files(folder_2, pattern = '.csv')
+
+#combine SST csv files
+for (i in 1:(length(list_1))){
+  combine(folder_1, folder_2, folder_3)}
+```
+
+```{r}
+#plot sst
+# csv <- read.delim('/Users/Zack/0_thesis_sst/ghrsst_csv/172_sst.csv', sep = ',', stringsAsFactors = F, header = FALSE)
+# 
+# #change date format
+# csv$date <- as.Date(as.Date(csv$V1, format = "%d/%m/%Y"), "%Y-%m-%d")
+# 
+# ggplot(csv, aes(x=date, y = V2, group = 1))+
+#   geom_line(color = "#00AFBB", size = .5)+  
+#   scale_x_date(labels = date_format("%Y-%m-%d"))+
+#   labs(x = "Date", y = "Celcius", title = "Sea Surface Temperature")+
+#   theme_minimal()+
+#   theme(plot.title = element_text(lineheight=.8, face="bold", size = 12)) +
+#   theme(text = element_text(size=10))
+#   ggsave(file="test.png", plot=last_plot(), width=10, height=8)
+```
+
+```{r}
+#plot function
+plot_tool <- function(plot_csv_folder, plot_csv_list, plot_folder){ 
+  
+  #create file path to csv
+  filepath <- paste0(plot_csv_folder, plot_csv_list)  
+    
+  #open csv
+  csv <- read.delim(file=filepath, sep = ',', stringsAsFactors = F, header = FALSE)  
+  
+  name <- unlist(strsplit(plot_csv_list, "_"))[1]
+  output <- paste0(plot_folder, name,'.png')
+    
+  #change date format
+  csv$date <- as.Date(as.Date(csv$V1, format = "%d/%m/%Y"), "%Y-%m-%d")
+  
+  #plot title
+  title <- paste("Sea Surface Temperature: Farm Site", name)
+  
+  p <- ggplot(csv, aes(x=date, y = V2, group = 1))+
+    geom_line(color = "#00AFBB", size = .5)+  
+    scale_x_date(labels = date_format("%Y-%m-%d"))+
+    labs(x = "Date", y = "Celcius", title = title)+
+    theme_minimal()+
+    theme(plot.title = element_text(lineheight=.8, face="bold", size = 12)) +
+    theme(text = element_text(size=10))
+      #expand_limits(y = 0)
+    scale_y_continuous(breaks=seq(0,0,2))
+  ggsave(file=output, plot=p, width=10, height=8)
+  p}
+```
+
+```{r}
+#generate plot for all sites
+
+#input csv files
+plot_csv_folder <- folder_3
+
+#output folder 
+plot_folder <- '/Users/Zack/0_thesis_sst/ghrsst_plots/' 
+
+#create list of csv files
+plot_csv_list <- list.files(plot_csv_folder) 
+
+#generate one plot
+#plot_tool(plot_csv_folder, plot_csv_list[3], plot_folder)
+
+#loop to plot SST for all farm sites
+for (i in 1:(length(plot_csv_list))){
+  plot_tool(plot_csv_folder, plot_csv_list[i], plot_folder)}
+```
+
+
+
+

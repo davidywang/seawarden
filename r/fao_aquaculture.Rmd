@@ -1,0 +1,84 @@
+
+```{r}
+library(dplyr)
+library(plyr)
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+#download UNFAO data as zipfile and unzip 
+#url <- "http://www.fao.org/fishery/static/Data/Aquaculture_2018.1.2.zip"
+url <- "http://www.fao.org/fishery/static/Data/Aquaculture_2019.1.0.zip"
+
+temp <- tempfile()
+temp2 <- tempfile()
+
+download.file(url, temp)
+unzip(zipfile = temp, exdir = temp2)
+```
+
+```{r}
+#create dataframes from CSVs
+aquaculture <- read_csv(file.path(temp2, "TS_FI_AQUACULTURE.csv"))
+environment <- read_csv(file.path(temp2, "CL_FI_ENVIRONMENT.csv"))
+country <- read_csv(file.path(temp2, "CL_FI_COUNTRY_GROUPS.csv"))
+units <- read_csv(file.path(temp2, "CL_FI_UNIT.csv"))
+species <- read_csv(file.path(temp2, "CL_FI_SPECIES_GROUPS.csv"))
+
+#select specific columns for certain CSVs
+environment <- environment %>% 
+  dplyr::select(Identifier, Name_En)
+
+country <- country %>% 
+  dplyr::select(UN_Code, ISO3_Code, Name_En)
+
+units <- units %>% 
+  dplyr::select(Code, Name_En)
+
+species <- species %>% 
+  dplyr::select("3Alpha_Code", Major_Group, Name_En)
+```
+
+```{r}
+#join tables together to create dataframe that can be filtered by: year (2016), enviornment (Marine), and species group (PISCES)
+aquaculture_x <- aquaculture %>%
+  left_join(environment, by = c("ENVIRONMENT" = "Identifier")) %>%
+  left_join(species, by = c("SPECIES"= "3Alpha_Code")) %>%
+  left_join(country, by = c("COUNTRY" = "UN_Code")) %>%
+  
+  dplyr::rename("ENVIRONMENT_NAME" = "Name_En.x", 
+                "SPECIES_NAME" = "Name_En.y", 
+                "COUNTRY_NAME" = "Name_En", 
+                "TONNES" = "QUANTITY", 
+                "GROUP" = "Major_Group") %>%
+  
+  #filter(ENVIRONMENT_NAME == "Marine", GROUP == "PISCES", COUNTRY_NAME == "Greece") %>% #all years
+  filter(ENVIRONMENT_NAME == "Marine", GROUP == "PLANTAE AQUATICAE", YEAR == 2017) %>% #seaweed
+  
+  dplyr::select(-ENVIRONMENT, -COUNTRY, -SPECIES, -QUANTITY_UNIT, -QUANTITY_SYMBOL, -VALUE_SYMBOL) %>%
+  dplyr::select(COUNTRY_NAME, ENVIRONMENT_NAME, GROUP, SPECIES_NAME, TONNES, YEAR) %>%
+  mutate(TONNES = round(TONNES, 1))
+aquaculture_x
+```
+
+```{r}
+ggplot(aquaculture_x, aes(x=reorder(COUNTRY_NAME, TONNES), y=TONNES))+
+  geom_bar(stat="identity", fill="deepskyblue4")+
+  #geom_text(aes(label=round(TONNES, 1)))+
+  coord_flip() 
+```
+
+
+```{r}
+#create output file
+write.table(aquaculture_x, file = 'aquaculture.csv', row.names=FALSE, col.names = TRUE, sep=",")
+```
+
+
+
+
+
+
+
+

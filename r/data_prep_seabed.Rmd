@@ -1,0 +1,47 @@
+---
+title: "Untitled"
+author: "Zack Dinh"
+date: "December 21, 2019"
+output: html_document
+---
+
+```{r}
+library(sp)
+library(sf)
+library(ggplot2)
+```
+
+```{r}
+seabed <- st_read('/Users/Zack/0_GIS_Greece/emodnet_seafloor/EUSM_med_greece.shp')
+targets <- st_read('/Users/Zack/0_GIS_Greece/blue_bridge/fishcages_Greece_farm_pts_500m_sq.shp')
+
+#st_set_crs(seabed, 4326)
+#st_set_crs(targets, 4326)
+```
+
+```{r}
+targets <- targets[5,]
+
+seabed_clip <- st_crop(seabed, targets)
+seabed_clip
+
+#st_write(seabed_clip, "/Users/Zack/Desktop/3_seabed_clip.shp")
+```
+
+raster <- raster(image_file) #opens raster file
+  raster_crop <- crop(raster, target)
+
+```{r}
+#for (i in 1:nrow(as.data.frame(targets)))
+for (i in 1:5){
+  targets <- targets[i,]
+  
+  st_crs(targets) <- 4269
+  st_crs(seabed) <- 4269
+  
+  seabed_clip <- st_crop(seabed, targets)
+  
+  filename = paste0("/Users/Zack/Desktop/", i, "_seabed.shp")
+  
+  st_write(seabed_clip, filename)}
+```

@@ -1,0 +1,72 @@
+# How to open and work with NetCDF data in R
+
+```{r load_packages, warning=FALSE, message=FALSE}
+library(ncdf4) # package for netcdf manipulation
+library(raster) # package for raster manipulation
+library(sf)
+library(rgdal) # package for geospatial analysis
+```
+
+```{r}
+#file <- '/Users/Zack/0_thesis_ocean_current/med-cmcc-cur-an-fc-d_1570770016641.nc'
+file <- '/Users/Zack/0_thesis_ocean_current/med-cmcc-cur-an-fc-d_1577058742260.nc'
+#open nc file
+nc_data <- nc_open(file)
+
+# get the depth, lat, lon, and time coordinates
+t <- ncvar_get(nc_data, "time")
+d <- ncvar_get(nc_data, "depth")
+lon <- ncvar_get(nc_data, "lon")
+lat <- ncvar_get(nc_data, "lat")
+
+#nc_close(nc_data) 
+
+vo.array <- ncvar_get(nc_data, "vo") # store the data in a 3-dimensional array
+fillvalue <- ncatt_get(nc_data, "vo", "_FillValue") # get the fill value
+vo.array[vo.array == fillvalue$value] <- NA
+
+#date
+#date_range <- seq(as.Date("2018/01/01"), as.Date("2019/01/01"), "days")
+date_range <- seq(as.Date("2019/01/01"), as.Date("2019/12/31"), "days")
+```
+
+```{r}
+#vo
+for (i in 1:365){
+  vo.slice <- vo.array[,,i] # get the first time slice
+  
+  # save this time slice as a raster
+  r <- raster(t(vo.slice), xmn=min(lon), xmx=max(lon), ymn=min(lat), ymx=max(lat), crs=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs+ towgs84=0,0,0"))
+  r <- flip(r, direction='y')
+
+  filepath <- paste("/Users/Zack/0_thesis_ocean_current/medsea_vo_2019_tif/")
+  name <- (paste(filepath, "medsea_vo_", paste(date_range[i]), ".tif", sep=""))
+  
+  #save as geotiff
+  writeRaster(r, name, "GTiff", overwrite=TRUE)}
+```
+
+```{r}
+#uo
+uo.array <- ncvar_get(nc_data, "uo") # store the data in a 3-dimensional array
+fillvalue <- ncatt_get(nc_data, "uo", "_FillValue") # get the fill value
+uo.array[uo.array == fillvalue$value] <- NA
+
+for (i in 1:365){
+  uo.slice <- uo.array[,,i] # get the first time slice
+  
+  # save this time slice as a raster
+  r <- raster(t(uo.slice), xmn=min(lon), xmx=max(lon), ymn=min(lat), ymx=max(lat), crs=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs+ towgs84=0,0,0"))
+  r <- flip(r, direction='y')
+
+  filepath <- paste("/Users/Zack/0_thesis_ocean_current/medsea_uo_2019_tif/")
+  name <- (paste(filepath, "medsea_uo_", paste(date_range[i]), ".tif", sep=""))
+  
+  #save as geotiff
+  writeRaster(r, name, "GTiff", overwrite=TRUE)}
+```
+
+
+
+
+
