@@ -83,7 +83,7 @@ master_Food <- read.csv(paste0(folder, 'master_RAC-seabass - Food_Characterizati
 #sites <- length(sst_list)
 sites <- 0
 
-for (i in sites){
+for (i in 1:sites){
   #create a folder for each site
   path <- paste0(userpath, '/site_', i)  
   dir.create(path) 
@@ -101,14 +101,14 @@ for (i in sites){
 
 ```{r}
 #generate Feeding.csv for each site
-for (i in sites){
+for (i in 1:sites){
   column <- i + 2
   export <- master_Feeding %>% select(1, column)
   output <- paste0(userpath, 'site_', i, '/Bass_population/Inputs/Forcings/Feeding.csv')
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
 
 #generate Food_Characterization.csv for each site
-for (i in sites){
+for (i in 1:sites){
   column <- i + 2
   export <- master_Food %>% select(column, 1)
   export <- export[-1,] #drop header
@@ -116,7 +116,7 @@ for (i in sites){
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
 
 #generate Management.csv for each site
-for (i in sites){
+for (i in 1:sites){
   column1 <- 2
   column2 <- i + 3
   export <- master_Management %>% select(1, column1, column2)
@@ -124,14 +124,14 @@ for (i in sites){
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
 
 #generate Parameters.csv for each site
-for (i in sites){
+for (i in 1:sites){
   column <- i + 5
   export <- master_Parameters %>% select(1, 2, column, 3, 4)
   output <- paste0(userpath, 'site_', i, '/Bass_population/Inputs/Parameters/Parameters.csv')
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
 
 #generate Population.csv for each site
-for (i in sites){
+for (i in 1:sites){
   column <- i + 5
   export <- master_Population %>% select(1, 2, column, 3, 4)
   output <- paste0(userpath, 'site_', i, '/Bass_population/Inputs/Parameters/Population.csv')
@@ -140,7 +140,7 @@ for (i in sites){
 
 ```{r}
 #load and run model
-for (i in sites){
+for (i in 1:sites){
   userpath <- paste0(userpath, "/site_", i)
   
   #load environmental variables

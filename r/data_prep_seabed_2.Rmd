@@ -1,0 +1,59 @@
+---
+title: "Untitled"
+author: "Zack Dinh"
+date: "December 24, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(rgeos)
+library(sp)
+```
+
+```{r}
+#Create SpatialPlygons objects
+polygon1 <- readWKT("POLYGON((-190 -50, -200 -10, -110 20, -190 -50))") #polygon 1
+polygon2 <- readWKT("POLYGON((-180 -20, -140 55, 10 0, -140 -60, -180 -20))") #polygon 2
+
+par(mfrow = c(1,2)) #in separate windows
+plot(polygon1, main = "Polygon1") #window 1
+plot(polygon2, main = "Polygon2") #window 2
+```
+```{r}
+polygon_set <- readWKT(paste("POLYGON((-180 -20, -140 55, 10 0, -140 -60, -180 -20),",
+                     "(-190 -50, -200 -10, -110 20, -190 -50))"))
+
+par(mfrow = c(1,1)) #now, simultaneously
+plot(polygon_set, main = "Polygon1 & Polygon2")
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+clip <- gIntersection(polygon1, polygon2, byid = TRUE, drop_lower_td = TRUE) #clip polygon 2 with polygon 1
+plot(clip, col = "lightblue")
+```
+
+```{r}
+library(sf)
+targets <- '/Users/Zack/0_GIS_Greece/blue_bridge/fishcages_Greece_farm_pts_500m.shp'
+seabed <- '/Users/Zack/0_GIS_Greece/emodnet_seafloor/EUSM_med_greece.shp'
+
+targets <- st_read(targets)
+seabed <- st_read(seabed)
+
+
+target <- targets[1,]
+
+
+clip <- gIntersection(seabed, target, byid = TRUE, drop_lower_td = TRUE) #clip polygon 2 with polygon 1
+plot(clip, col = "lightblue")
+
+gIntersection(regions, lads, byid = TRUE, drop_lower_td = TRUE)
+plot(yh_lads)
+
+plot(seabed)
+```
+
+
+
+
