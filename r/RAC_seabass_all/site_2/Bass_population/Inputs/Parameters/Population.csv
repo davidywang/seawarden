@@ -1,4 +1,4 @@
-"Quantity","Description",0,"Unit","Reference"
+"Quantity","Description",2,"Unit","Reference"
 "meanW","Dry weight average",2,"g",""
 "deltaW","Dry weight standard deviation",1,"g",""
 "Wlb","Dry weight lower bound",1e-04,"g",""
