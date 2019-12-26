@@ -84,7 +84,7 @@ for (i in 0:sites){
 
 ```{r}
 #delete selector = "y"
-trace(Bass_pop_main,edit=T)
+#trace(Bass_pop_main,edit=T)
 
 for (i in 0:sites){
   site_folder <- paste0(rac_folder, "/site_", i)
