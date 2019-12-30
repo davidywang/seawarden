@@ -3,7 +3,12 @@ from urllib import request
 from PIL import Image
 from tilesystem import TileSystem
 
+#a0.ortho provides aerial images with labels
 BASEURL = "http://a0.ortho.tiles.virtualearth.net/tiles/a{0}.jpeg?g=131"
+
+#h0.ortho provides aerial images with labels
+#http://h0.ortho.tiles.virtualearth.net/tiles/h{0}.jpeg?g=131
+
 #IMAGEMAXSIZE = 8192 * 8192 * 8 # max width/height in pixels for the retrived image
 IMAGEMAXSIZE = 1000 * 1000 * 8 # max width/height in pixels for the retrived image
 TILESIZE = 256              # in Bing tile system, one tile image is in size 256 * 256 pixels
