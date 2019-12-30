@@ -11,7 +11,8 @@ library(dplyr)
 #command + shift + c
 
 #load sst files
-sst_folder <- '/Users/Zack/0_thesis_sst/ghrsst_2018_csv/'
+#sst_folder <- '/Users/Zack/0_thesis_sst/ghrsst_2018_csv/'
+sst_folder <- '/Users/Zack/0_thesis_sst/ghrsst_csv_test/'
 sst_list <- list.files(sst_folder, pattern = '.csv')
 
 #load master files
@@ -49,8 +50,9 @@ for (i in 0:sites){
 ```{r}
 #generate Feeding.csv for each site
 for (i in 0:sites){
-  column <- 2 + i
-  export <- master_Feeding %>% select(1, column)
+  #column <- 2 + i
+  #export <- master_Feeding %>% select(1, column)
+  export <- master_Feeding %>% select(1, 2)
   output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Forcings/Feeding.csv')
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
 
@@ -61,10 +63,11 @@ for (i in 0:sites){
   output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Forcings/Food_Characterization.csv')
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
 
-#generate Management.csv for each site
+#generate Management.csv for each site (same for all sites)
 for (i in 0:sites){
-  column <- i + 3
-  export <- master_Management %>% select(1, 2, column)
+  #column <- i + 3
+  #export <- master_Management %>% select(1, 2, column)
+  export <- master_Management %>% select(1, 2, 3)
   output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Population_management/Management.csv')
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
 
@@ -86,7 +89,7 @@ for (i in 0:sites){
 #delete selector = "y"
 trace(Bass_pop_main,edit=T)
 
-for (i in 0:sites){
+for (i in 1:sites){
   userpath <- paste0(rac_folder, "site_", i)
   
   #working directory
