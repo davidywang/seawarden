@@ -6,4 +6,4 @@
 "deltaImax","Clearance rate standard deviation",0.005,"g/ gfish d",""
 "Nseed","Number of seeded individuals",452389,"-",""
 "mortmyt","natural mortality rate",2.21e-06,"1/d",""
-"nruns","number of simulations",50,"",""
+"nruns","number of simulations",5000,"",""
