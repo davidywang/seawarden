@@ -7,9 +7,8 @@ output: html_document
 
 ```{r setup, include=FALSE}
 library(dplyr)
-```
 
-```{r}
+#compiler combines daily RAC predictions for each farmsite in to one csv file
 output_compiler <- function(rac_folder, i){
   
   #site folder
@@ -52,6 +51,6 @@ rac_folder <- '/Users/Zack/0_seawarden/r/RAC_seabass_all/'
 #output_compiler(rac_folder, 0)
 
 sites <- 2
-for (i in 1:sites){
+for (i in 0:sites){
   output_compiler(rac_folder, i)}
 ```

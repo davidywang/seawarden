@@ -29,10 +29,10 @@ master_Population <- read.csv(paste0(master_files, 'master_RAC-seabass - Populat
 #create folder for each site, #add SST data
 #sites <- length(sst_list)
 sites <- 2
-
+ 
 for (i in 0:sites){
   #create a folder for each site
-  site_folder <- paste0(rac_folder, '/site_', i, '/')  
+  site_folder <- paste0(rac_folder, 'site_', i, '/')  
   dir.create(site_folder) 
   
   #create RAC folders for each site
@@ -84,14 +84,18 @@ for (i in 0:sites){
 
 ```{r}
 #delete selector = "y"
-#trace(Bass_pop_main,edit=T)
+trace(Bass_pop_main,edit=T)
 
 for (i in 0:sites){
-  site_folder <- paste0(rac_folder, "/site_", i)
+  userpath <- paste0(rac_folder, "site_", i)
+  
+  #working directory
+  setwd(userpath) 
   
   #load environmental variables
-  forcings <- Bass_pop_dataloader(site_folder) 
+  forcings <- Bass_pop_dataloader(userpath) 
  
   #run growth model
-  output <- Bass_pop_main(site_folder, forcings)}
+  output <- Bass_pop_main(userpath, forcings)}
 ```
+
