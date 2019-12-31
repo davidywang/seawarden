@@ -22,6 +22,8 @@ output_compiler <- function(rac_folder, i){
   feed_c <- read.csv(paste0(rac_folder, site_folder, 'wasted_feed_Carbohydrates.csv'), header=TRUE, sep=",")
   feed_l <- read.csv(paste0(rac_folder, site_folder, 'wasted_feed_Lipids.csv'), header=TRUE, sep=",")
   feed_p <- read.csv(paste0(rac_folder, site_folder, 'wasted_feed_Proteins.csv'), header=TRUE, sep=",")
+
+  nh4 <- read.csv(paste0(rac_folder, site_folder, 'NH4_release.csv'), header=TRUE, sep=",")  
   
   #extract columns
   faeces_c <- faeces_c %>% select(X, V1, V2)
@@ -32,13 +34,15 @@ output_compiler <- function(rac_folder, i){
   feed_l <- feed_l %>% select(V1, V2)
   feed_p <- feed_p %>% select(V1, V2)
   
+  nh4 <- nh4 %>% select(V1, V2)
+  
   #compile columns to new dataframe
-  compiled <- cbind(faeces_c, faeces_l, faeces_p, feed_c, feed_l, feed_p)
+  compiled <- cbind(faeces_c, faeces_l, faeces_p, feed_c, feed_l, feed_p, nh4)
   
   #rename columns
   colnames(compiled) <- c("day", 
                                "faeces_c1", "faeces_c2", "faeces_l1", "faeces_l2", "faeces_p1", "faeces_p2", 
-                               "feed_c1", "feed_c2", "feed_l1", "feed_l2", "feed_p1", "feed_p2")
+                               "feed_c1", "feed_c2", "feed_l1", "feed_l2", "feed_p1", "feed_p2", "nh4_1", "nh4_2")
   
   #write csv
   name <- paste0(rac_folder, 'output_all_sites/site_', i, '_compiled.csv')
