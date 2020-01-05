@@ -42,7 +42,7 @@ species <- species %>%
 
 ```{r}
 #join tables together to create dataframe that can be filtered by: year (2016), enviornment (Marine), and species group (PISCES)
-aquaculture_x <- aquaculture %>%
+aquaculture_all <- aquaculture %>%
   left_join(environment, by = c("ENVIRONMENT" = "Identifier")) %>%
   left_join(species, by = c("SPECIES"= "3Alpha_Code")) %>%
   left_join(country, by = c("COUNTRY" = "UN_Code")) %>%
@@ -52,9 +52,15 @@ aquaculture_x <- aquaculture %>%
                 "COUNTRY_NAME" = "Name_En", 
                 "TONNES" = "QUANTITY", 
                 "GROUP" = "Major_Group") %>%
-  
-  #filter(ENVIRONMENT_NAME == "Marine", GROUP == "PISCES", COUNTRY_NAME == "Greece") %>% #all years
-  filter(ENVIRONMENT_NAME == "Marine", GROUP == "PLANTAE AQUATICAE", YEAR == 2017) %>% #seaweed
+  dplyr::select(-ENVIRONMENT, -COUNTRY, -SPECIES, -QUANTITY_UNIT, -QUANTITY_SYMBOL, -VALUE_SYMBOL) %>%
+  dplyr::select(COUNTRY_NAME, ENVIRONMENT_NAME, GROUP, SPECIES_NAME, TONNES, YEAR) %>%
+  mutate(TONNES = round(TONNES, 1))
+```
+
+```{r}
+  filter(ENVIRONMENT_NAME == "Marine", GROUP == "PISCES", COUNTRY_NAME == "Greece") %>% #all years
+  #filter(ENVIRONMENT_NAME == "Marine", SPECIES_NAME =="European seabass", COUNTRY_NAME == "Greece") %>% #all years
+  #filter(ENVIRONMENT_NAME == "Marine", GROUP == "PLANTAE AQUATICAE", YEAR == 2017) %>% #seaweed
   
   dplyr::select(-ENVIRONMENT, -COUNTRY, -SPECIES, -QUANTITY_UNIT, -QUANTITY_SYMBOL, -VALUE_SYMBOL) %>%
   dplyr::select(COUNTRY_NAME, ENVIRONMENT_NAME, GROUP, SPECIES_NAME, TONNES, YEAR) %>%
@@ -63,8 +69,48 @@ aquaculture_x
 ```
 
 ```{r}
-ggplot(aquaculture_x, aes(x=reorder(COUNTRY_NAME, TONNES), y=TONNES))+
-  geom_bar(stat="identity", fill="deepskyblue4")+
+aquaculture_bass <- aquaculture_all %>%
+  filter(ENVIRONMENT_NAME == "Marine", SPECIES_NAME == "European seabass", COUNTRY_NAME == "Greece") 
+  
+ggplot(aquaculture_bass, aes(x=YEAR)) + 
+  geom_line(aes(y = TONNES))#, color = "darkred") 
+```
+
+```{r}
+aquaculture_bream <- aquaculture_all %>%
+  filter(ENVIRONMENT_NAME == "Marine", SPECIES_NAME == "Gilthead seabream", COUNTRY_NAME == "Greece") 
+  
+ggplot(aquaculture_bream, aes(x=YEAR)) + 
+  geom_line(aes(y = TONNES))#, color = "darkred") 
+```
+
+```{r}
+aquaculture_2 <- aquaculture_all %>%
+  filter(ENVIRONMENT_NAME == "Marine", SPECIES_NAME == c("Gilthead seabream", "European seabass"), COUNTRY_NAME == "Greece") 
+  
+ggplot(aquaculture_2, aes(x = YEAR, y = TONNES)) + 
+  geom_line(aes(color = SPECIES_NAME)) +
+  labs(title="Greek Production of European Seabass and Gilthead seabream", x ="year", y="Tonnes") +
+  scale_fill_discrete(name = "Dose", labels = c("A", "B"))
+
+```
+
+
+```{r}
+aquaculture_greece <- aquaculture_all %>%
+  filter(ENVIRONMENT_NAME == "Marine", GROUP == "PISCES", COUNTRY_NAME == "Greece") 
+  
+#ggplot(aquaculture_x, aes(x=YEAR)) + 
+#  geom_line(aes(y = TONNES), color = "darkred") 
+
+ggplot(aquaculture_greece, aes(x = YEAR, y = TONNES)) + 
+  geom_line(aes(color = SPECIES_NAME, linetype = SPECIES_NAME)) #+ 
+  #scale_color_manual(values = c("darkred", "steelblue"))
+```
+
+```{r}
+ggplot(aquaculture_x, aes(x=TONNES, y=YEAR))+
+  geom_line(stat="identity", fill="deepskyblue4")+
   #geom_text(aes(label=round(TONNES, 1)))+
   coord_flip() 
 ```
@@ -72,7 +118,7 @@ ggplot(aquaculture_x, aes(x=reorder(COUNTRY_NAME, TONNES), y=TONNES))+
 
 ```{r}
 #create output file
-write.table(aquaculture_x, file = 'aquaculture.csv', row.names=FALSE, col.names = TRUE, sep=",")
+#write.table(aquaculture_x, file = 'aquaculture.csv', row.names=FALSE, col.names = TRUE, sep=",")
 ```
 
 
