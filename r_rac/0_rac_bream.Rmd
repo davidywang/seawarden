@@ -1,0 +1,25 @@
+---
+title: "Untitled"
+author: "Zack Dinh"
+date: "October 21, 2019"
+output: html_document
+---
+
+```{r, echo=FALSE}
+library(RAC)
+library(dplyr)
+
+userpath <- "/Users/Zack/0_seawarden/r_rac/rac_bream/"
+setwd(userpath) #working directory
+```
+
+```{r}
+#create RAC folders for each site
+Bream_pop_skeleton(userpath)
+```
+
+```{r}
+#load environmental variables
+forcings <- Bream_pop_dataloader(userpath) 
+output <- Bream_pop_main(userpath, forcings)
+```
