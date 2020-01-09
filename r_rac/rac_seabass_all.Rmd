@@ -12,7 +12,7 @@ library(dplyr)
 
 #load sst files
 #sst_folder <- '/Users/Zack/0_thesis_sst/ghrsst_2018_csv/'
-sst_folder <- '/Users/Zack/0_thesis_sst/ghrsst_csv_test/'
+sst_folder <- '/Users/Zack/0_thesis_sst/ghrsst_csv_test2/'
 sst_list <- list.files(sst_folder, pattern = '.csv')
 
 #load master files
@@ -29,7 +29,7 @@ master_Population <- read.csv(paste0(master_files, 'master_RAC-seabass - Populat
 ```{r}
 #create folder for each site, #add SST data
 #sites <- length(sst_list)
-sites <- 3
+sites <- 1
  
 for (i in 0:sites){
   #create a folder for each site
