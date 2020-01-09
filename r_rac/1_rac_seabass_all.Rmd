@@ -5,36 +5,43 @@ date: "September 4, 2019"
 output: html_document
 ---
 
-```{r}
+```{r include=FALSE}
 library(RAC)
 library(dplyr)
 #command + shift + c
 
 #load sst files
-#sst_folder <- '/Users/Zack/0_thesis_sst/ghrsst_2018_csv/'
-sst_folder <- '/Users/Zack/0_thesis_sst/ghrsst_csv_test2/'
+sst_folder <- '/Users/Zack/0_thesis_sst/ghrsst_csv_test/'
 sst_list <- list.files(sst_folder, pattern = '.csv')
 
 #load master files
-rac_folder <- "/Users/Zack/0_seawarden/r_rac/rac_seabass_all/"
-master_files <- paste0(rac_folder, 'master_files/')
+rac_folder <- "/Users/Zack/0_seawarden/r_rac/rac_seabass/"
+master_files <- paste0(rac_folder, 'master_files/master_RAC-seabass - ')
 
-master_Feeding <- read.csv(paste0(master_files, 'master_RAC-seabass - Feeding.csv'), header=TRUE, sep=",")
-master_Food <- read.csv(paste0(master_files, 'master_RAC-seabass - Food_Characterization.csv'), header=FALSE, sep=",")
-master_Parameters <- read.csv(paste0(master_files, 'master_RAC-seabass - Parameters.csv'), header=FALSE, sep=",")
-master_Management <- read.csv(paste0(master_files, 'master_RAC-seabass - Management.csv'), header=FALSE, sep=",")
-master_Population <- read.csv(paste0(master_files, 'master_RAC-seabass - Population.csv'), header=FALSE, sep=",")
+#prep files to generate feeding tables
+feeding_prep <- read.csv(paste0(master_files, 'Feeding_Prep.csv'), header=TRUE, sep=",")
+population_prep <- read.csv(paste0(master_files, 'Population_Prep.csv'), header=FALSE, sep=",")
+
+#files for final model run
+population <- read.csv(paste0(master_files, 'Population.csv'), header=FALSE, sep=",")
+parameters <- read.csv(paste0(master_files, 'Parameters.csv'), header=FALSE, sep=",")
+
+#files for both steps
+management <- read.csv(paste0(master_files, 'Management.csv'), header=FALSE, sep=",")
+food <- read.csv(paste0(master_files, 'Food_Characterization.csv'), header=FALSE, sep=",")
 ```
 
-```{r}
+```{r include=FALSE}
 #create folder for each site, #add SST data
+
 #sites <- length(sst_list)
-sites <- 1
+#sites <- 5
+#sites <- list(23)
+sites <- list(23, 71, 92, 165, 172, 219) #study sites
  
-for (i in 0:sites){
+for (i in sites){
   #create a folder for each site
-  site_folder <- paste0(rac_folder, 'site_', i, '/')  
-  dir.create(site_folder) 
+  dir.create(paste0(rac_folder, 'site_', i, '/')) 
   
   #create RAC folders for each site
   Bass_pop_skeleton(site_folder) 
@@ -48,57 +55,107 @@ for (i in 0:sites){
 ```
 
 ```{r}
-#generate Feeding.csv for each site
-for (i in 0:sites){
-  column <- 2 + i
-  export <- master_Feeding %>% select(1, column)
-  #export <- master_Feeding %>% select(1, 2)
-  output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Forcings/Feeding.csv')
-  write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+#load prep files for each site
 
-#generate Food_Characterization.csv for each site (same for all sites)
-for (i in 0:sites){
-  export <- master_Food %>% select(2, 1)
-  export <- export[-1,] #drop header
-  output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Forcings/Food_Characterization.csv')
-  write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+#generate Population.csv for each site
+for (i in sites){
+  for (j in 0:(length(sites)-1)){
+    column <- j + 5
+    export <- population_prep %>% select(1, 2, column, 3, 4)}
+    output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Parameters/Population.csv')
+    write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
 
-#generate Management.csv for each site (same for all sites)
-for (i in 0:sites){
-  #column <- i + 3
-  #export <- master_Management %>% select(1, 2, column)
-  export <- master_Management %>% select(1, 2, 3)
-  output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Population_management/Management.csv')
-  write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
-
-#generate Parameters.csv for each site (same for all sites)
-for (i in 0:sites){
-  export <- master_Parameters %>% select(1, 2, 5, 3, 4)
+#generate Parameters.csv for each site 
+for (i in sites){
+  export <- parameters %>% select(1, 2, 5, 3, 4) #5 prep parameters
   output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Parameters/Parameters.csv')
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
 
-#generate Population.csv for each site
-for (i in 0:sites){
-  column <- i + 5
-  export <- master_Population %>% select(1, 2, column, 3, 4)
-  output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Parameters/Population.csv')
+#generate Feeding.csv for each site
+for (i in sites){
+  output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Forcings/Feeding.csv')
+  write.table(feeding_prep, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+
+#generate Management.csv for each site 
+for (i in sites){
+  export <- management %>% select(1, 2, 3)
+  output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Population_management/Management.csv')
+  write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+
+#generate Food_Characterization.csv for each site 
+for (i in sites){
+  export <- food %>% select(2, 1)
+  export <- export[-1,] #drop header
+  output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Forcings/Food_Characterization.csv')
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
 ```
 
-```{r}
-#delete selector = "y"
-trace(Bass_pop_main,edit=T)
+```{r include=FALSE}
+#first model run to generate feeding tables
 
-for (i in 0:sites){
+trace(Bass_pop_main,edit=T) #delete selector = "y"
+
+for (i in sites){
   userpath <- paste0(rac_folder, "site_", i)
   
-  #working directory
-  setwd(userpath) 
+  setwd(userpath) #working directory
   
-  #load environmental variables
-  forcings <- Bass_pop_dataloader(userpath) 
+  forcings <- Bass_pop_dataloader(userpath) #load environmental variables
  
-  #run growth model
-  output <- Bass_pop_main(userpath, forcings)}
+  output <- Bass_pop_main(userpath, forcings)} #run growth model
 ```
 
+```{r}
+#generate final feeding tables
+feeding <- function(rac_folder, i){
+  
+  site_folder <- paste0('site_', i, '/Bass_population/Outputs/Out_csv/') 
+  ingestion <- read.csv(paste0(rac_folder, site_folder, 'actual_ingestion.csv'), header=TRUE, sep=",")
+  
+  ingestion <- ingestion %>% select(V1)
+  compiled <- cbind(date, ingestion)
+  
+  name <- paste0(rac_folder, 'feeding_files/site_', i, '_feeding.csv')
+  write.table(compiled, file = name, row.names=FALSE, col.names = TRUE, sep=",")}
+
+date <- feeding_prep %>% select(date)
+date <- date$date[1:547]
+
+for (i in sites){
+  feeding(rac_folder, i)}
+```
+
+```{r}
+#load data for final model run
+
+#generate Population.csv for each site
+for (i in sites){
+  for (j in 0:(length(sites)-1)){
+    column <- j + 5
+    export <- population %>% select(1, 2, column, 3, 4)}
+    output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Parameters/Population.csv')
+    write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+
+#generate Parameters.csv for each site 
+for (i in sites){
+  export <- parameters %>% select(1, 2, 6, 3, 4) #final parameters
+  output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Parameters/Parameters.csv')
+  write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+
+#generate Feeding.csv for each site
+for (i in sites){
+  feed <- read.csv(paste0(rac_folder, 'feeding_files/site_', i, '_feeding.csv'))
+  output <- paste0(rac_folder, 'site_', i, '/Bass_population/Inputs/Forcings/Feeding.csv')
+  write.table(feed, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+```
+
+```{r include=FALSE}
+for (i in sites){
+  userpath <- paste0(rac_folder, "site_", i)
+  
+  setwd(userpath) #working directory
+  
+  forcings <- Bass_pop_dataloader(userpath) #load environmental variables
+ 
+  output <- Bass_pop_main(userpath, forcings)} #run growth model
+```
