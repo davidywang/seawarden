@@ -6,31 +6,37 @@ output: html_document
 ---
 
 ```{r include=FALSE}
-#library(tidyverse)
-#library(data.table)
 library(dplyr)
 library(raster)
 library(sp)
 library(sf)
-
-#install.packages("rWind")
 library(rWind)
-
-#library(ggplot2)
-#library(scales)
+#install.packages("rWind")
 ```
 
 ```{r}
 #function to crop raster to area of interest, converts raster to point
 crop_tool <- function(image_file, target){
-  raster_crop <- crop(raster(image_file), target) #opens raster file, clips raster to target (target is opened in a prior step)
-  pts <- rasterToPoints(raster_crop) #raster clip is convereted to a point
-  pts_df <- as.data.frame(pts) #points converted to a df
-  mean(pts_df[,3])} #mean calculated to result in junst one measurement
+  
+  #opens raster file, clips raster to target (target is opened in a prior step)
+  raster_crop <- crop(raster(image_file), target) 
+  
+  #raster clip is convereted to a point
+  pts <- rasterToPoints(raster_crop) 
+  
+  #points converted to a df
+  pts_df <- as.data.frame(pts) 
+  
+  #mean calculated to result in just one measurement
+  mean(pts_df[,3])} 
 ```
 
 ```{r}
 current_tool <- function(v_folder, u_folder, target, output){ 
+  
+  #added here for parallel processing
+  library(raster)
+  library(rWind)
   
   #list of tif files in folder
   v_list <- list.files(v_folder, pattern = '.tif')
@@ -40,8 +46,8 @@ current_tool <- function(v_folder, u_folder, target, output){
   daily_v = list()
   date = list()
 
-  for (i in 1:10){
-  #for (i in 1:365){
+  #for (i in 1:3){
+  for (i in 1:365){
   
       v_file <- paste0(v_folder, v_list[i])
       u_file <- paste0(u_folder, u_list[i])
@@ -77,9 +83,8 @@ current_tool <- function(v_folder, u_folder, target, output){
   daily <- daily %>% rename(date=1, dir=2, speed=3)
   
   #create output filename and export as csv
-  target_df <-as.data.frame(target)
-  filename <- paste0(output, paste0(target_df['farm_id']), '_medsea_current.csv')
-  #print(filename)
+  df <-as.data.frame(target)
+  filename <- paste0(output, paste0(df['farm_id']), '_medsea_current.csv')
 
   #create output file
   #write.csv(daily, file=filename, row.names = FALSE)}
@@ -97,20 +102,53 @@ output <- '/Users/Zack/Desktop/test/'
 
 #load shapefile of farm sites
 #targets <- '/Users/Zack/0_GIS_Greece/blue_bridge/fishcages_Greece_farm_pts.shp'
-targets <- '/Users/Zack/0_GIS_Greece/blue_bridge/fishcages_Greece_farm_pts_1m_3.shp'
+targets <- '/Users/Zack/0_greece/blue_bridge/fishcages_Greece_farm_pts_1m_3.shp'
 targets <- st_read(targets)
 
 #single use
-#current_tool(v_folder, u_folder, targets[2,], output)
+#current_tool(v_folder, u_folder, targets[15,], output)
 
 #loop to create u, v, direction and speed csv for all farm sites
-for (i in 1:nrow(as.data.frame(targets))){
-#for (i in 1:5){
-  current_tool(v_folder, u_folder, targets[i,], output)}
+#for (i in 1:nrow(as.data.frame(targets))){current_tool(v_folder, u_folder, targets[i,], output)}
+
+#parallel processing
+#http://pablobarbera.com/ECPR-SC105/code/02-parallel-computing.html
+#https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html
+
+library(foreach)
+library(doParallel)
+
+#select numbrer of cores
+myCluster <- makeCluster(3, type = "PSOCK")
+
+#activate clusters
+registerDoParallel(myCluster)
+
+#parallel process 
+sites <- 1:nrow(as.data.frame(targets))
+foreach(i = sites) %dopar% current_tool(v_folder, u_folder, targets[i,], output)
+
+#deactivate clusters
+stopCluster(myCluster)
 ```
 
 ```{r}
-#combine SST csv files
+#function to combine SST files
+combine <- function(folder_1, folder_2, folder_3){
+
+  #read csv files
+  csv_1 <- read.delim(paste0(folder_1, list_1[i]), sep = ',', stringsAsFactors = F, header = FALSE)
+  csv_2 <- read.delim(paste0(folder_2, list_1[i]), sep = ',', stringsAsFactors = F, header = FALSE)
+
+  #create output filename
+  output <- paste0(folder_3, paste0(list_1[i]))
+  
+  #merge dataframes and export file
+  write.table(rbind(csv_1, csv_2), file = paste0(folder_3, paste0(list_1[i])), row.names=FALSE, col.names = FALSE, sep=",")}
+```
+
+```{r}
+#combine 2018 and 2019 csv files
 
 #input folders
 folder_1 <- '/Users/Zack/0_thesis_ocean_current/medsea_current_2018_csv/'
@@ -124,6 +162,5 @@ list_1 <- list.files(folder_1, pattern = '.csv')
 list_2 <- list.files(folder_2, pattern = '.csv')
 
 #combine SST csv files
-for (i in 1:(length(list_1))){
-  combine(folder_1, folder_2, folder_3)}
+for (i in 1:(length(list_1))){combine(folder_1, folder_2, folder_3)}
 ```

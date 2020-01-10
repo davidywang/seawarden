@@ -7,10 +7,8 @@ output: html_document
 
 ```{r include=FALSE}
 library(dplyr)
-#library(data.table)
 library(raster)
 library(sf)
-#library(sp)
 library(ggplot2)
 library(scales)
 ```
@@ -31,6 +29,8 @@ sst_tool <- function(tif_folder, target, csv_output){
   
   daily_sst = list() #365 tif files per year/folder
   date = list()
+  
+  library(raster) #added for parallel processing
   
   #for (i in 1:5){
   for (i in 1:(length(sst_list))){
@@ -70,19 +70,34 @@ sst_tool <- function(tif_folder, target, csv_output){
 tif_folder <- '/Users/Zack/0_thesis_sst/ghrsst_2019_tif/'
 
 #output folder
-csv_output <- '/Users/Zack/0_thesis_sst/ghrsst_2019_csv/'
+csv_output <- '/Users/Zack/0_thesis_sst/ghrsst_2019_csv_multi/'
 
 #load shapefile of farm sites
-targets <- '/Users/Zack/0_GIS_Greece/blue_bridge/fishcages_Greece_farm_pts_500m_sq_2.shp'
+targets <- '/Users/Zack/0_greece/blue_bridge/fishcages_Greece_farm_pts_500m_sq_2.shp'
 targets <- st_read(targets)
 
 #single use
 #sst_tool(tif_folder, targets[1,], csv_output)
 
 #loop to extract SST for all farm sites
-for (i in 1:nrow(as.data.frame(targets))){
-#for (i in 1:10){
-  sst_tool(tif_folder, targets[i,], csv_output)}
+# for (i in 1:10){
+# for (i in 1:nrow(as.data.frame(targets))){sst_tool(tif_folder, targets[i,], csv_output)}
+
+#parallel processing - http://pablobarbera.com/ECPR-SC105/code/02-parallel-computing.html
+library(foreach)
+library(doParallel)
+
+#select numbrer of cores
+myCluster <- makeCluster(3, type = "PSOCK")
+
+#activate clusters
+registerDoParallel(myCluster)
+
+#parallel process
+foreach(i = 1:nrow(as.data.frame(targets))) %dopar% sst_tool(tif_folder, targets[i,], csv_output)
+
+#deactivate clusters
+stopCluster(myCluster)
 ```
 
 ```{r}

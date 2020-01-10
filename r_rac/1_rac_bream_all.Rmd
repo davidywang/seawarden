@@ -29,16 +29,13 @@ parameters <- read.csv(paste0(master_files, 'Parameters.csv'), header=FALSE, sep
 #files for both steps
 management <- read.csv(paste0(master_files, 'Management.csv'), header=FALSE, sep=",")
 food <- read.csv(paste0(master_files, 'Food_Characterization.csv'), header=FALSE, sep=",")
+
+sites <- list(23, 71, 92, 165, 172, 219) #study sites
 ```
 
 ```{r include=FALSE}
 #create folder for each site, #add SST data
 
-#sites <- length(sst_list)
-#sites <- 5
-#sites <- list(23)
-sites <- list(23, 71, 92, 165, 172, 219) #study sites
- 
 for (i in sites){
   #create a folder for each site
   dir.create(paste0(rac_folder, 'site_', i, '/')) 
@@ -92,17 +89,54 @@ for (i in sites){
 
 ```{r include=FALSE}
 #first model run to generate feeding tables
-
 trace(Bream_pop_main,edit=T) #delete selector = "y"
 
-for (i in sites){
+# for (i in sites){
+#   userpath <- paste0(rac_folder, "site_", i)
+# 
+#   setwd(userpath) #working directory
+# 
+#   forcings <- Bream_pop_dataloader(userpath) #load environmental variables
+# 
+#   output <- Bream_pop_main(userpath, forcings)} #run growth model
+```
+
+```{r include=FALSE}
+#parallel processing 
+#http://pablobarbera.com/ECPR-SC105/code/02-parallel-computing.html
+#https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html
+#http://dept.stat.lsa.umich.edu/~jerrick/courses/stat701/notes/parallel.html
+
+rac<- function(rac_folder, i){
+
+  library(RAC) 
+  
   userpath <- paste0(rac_folder, "site_", i)
-  
+
   setwd(userpath) #working directory
-  
+
   forcings <- Bream_pop_dataloader(userpath) #load environmental variables
- 
+
   output <- Bream_pop_main(userpath, forcings)} #run growth model
+
+library(foreach)
+library(doParallel)
+
+#select numbrer of cores
+myCluster <- makeCluster(3, type = "PSOCK")
+
+#activate clusters
+registerDoParallel(myCluster)
+
+#parallel process 
+foreach(i = sites) %dopar% rac(rac_folder, i)
+
+#deactivate clusters
+stopCluster(myCluster)
+
+#or
+library(parallel)
+mclapply(sites, FUN=function(i) rac(rac_folder, i))
 ```
 
 ```{r}
