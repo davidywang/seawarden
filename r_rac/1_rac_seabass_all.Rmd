@@ -29,19 +29,18 @@ parameters <- read.csv(paste0(master_files, 'Parameters.csv'), header=FALSE, sep
 #files for both steps
 management <- read.csv(paste0(master_files, 'Management.csv'), header=FALSE, sep=",")
 food <- read.csv(paste0(master_files, 'Food_Characterization.csv'), header=FALSE, sep=",")
+
+sites <- list(23, 71, 92, 165, 172, 219) #study sites
 ```
 
 ```{r include=FALSE}
 #create folder for each site, #add SST data
 
-#sites <- length(sst_list)
-#sites <- 5
-#sites <- list(23)
-sites <- list(23, 71, 92, 165, 172, 219) #study sites
- 
 for (i in sites){
+  
   #create a folder for each site
-  dir.create(paste0(rac_folder, 'site_', i, '/')) 
+  site_folder <- paste0(rac_folder, 'site_', i, '/')
+  dir.create(site_folder) 
   
   #create RAC folders for each site
   Bass_pop_skeleton(site_folder) 
