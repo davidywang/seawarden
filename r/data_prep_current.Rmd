@@ -133,7 +133,7 @@ stopCluster(myCluster)
 ```
 
 ```{r}
-#function to combine SST files
+#function to combine files
 combine <- function(folder_1, folder_2, folder_3){
 
   #read csv files
