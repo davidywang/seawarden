@@ -65,16 +65,15 @@ sst_tool <- function(tif_folder, target, csv_output){
 
 ```{r}
 #process SST for all farm sites
+#load shapefile of farm sites
+targets <- '/Users/Zack/0_greece/blue_bridge/fishcages_Greece_farm_pts_500m_sq_2.shp'
+targets <- st_read(targets)
 
 #load sst data
 tif_folder <- '/Users/Zack/0_thesis_sst/ghrsst_2019_tif/'
 
 #output folder
-csv_output <- '/Users/Zack/0_thesis_sst/ghrsst_2019_csv_multi/'
-
-#load shapefile of farm sites
-targets <- '/Users/Zack/0_greece/blue_bridge/fishcages_Greece_farm_pts_500m_sq_2.shp'
-targets <- st_read(targets)
+csv_output <- '/Users/Zack/0_thesis_sst/ghrsst_2019_csv'
 
 #single use
 #sst_tool(tif_folder, targets[1,], csv_output)
@@ -86,6 +85,28 @@ targets <- st_read(targets)
 #parallel processing - http://pablobarbera.com/ECPR-SC105/code/02-parallel-computing.html
 library(foreach)
 library(doParallel)
+
+#select numbrer of cores
+myCluster <- makeCluster(3, type = "PSOCK")
+
+#activate clusters
+registerDoParallel(myCluster)
+
+#parallel process
+foreach(i = 1:nrow(as.data.frame(targets))) %dopar% sst_tool(tif_folder, targets[i,], csv_output)
+
+#deactivate clusters
+stopCluster(myCluster)
+```
+
+```{r}
+#process SST for all farm sites
+
+#load sst data
+tif_folder <- '/Users/Zack/0_thesis_sst/ghrsst_2018_tif/'
+
+#output folder
+csv_output <- '/Users/Zack/0_thesis_sst/ghrsst_2018_csv'
 
 #select numbrer of cores
 myCluster <- makeCluster(3, type = "PSOCK")

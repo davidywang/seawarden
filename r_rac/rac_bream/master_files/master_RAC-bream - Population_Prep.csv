@@ -5,5 +5,5 @@ Wlb,Dry weight lower bound,g,,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001
 meanImax,Ingestion rate average,g/ gfish d,,0.05,0.05,0.05,0.05,0.05,0.05
 deltaImax,Ingestion rate standard deviation,g/ gfish d,,0.005,0.005,0.005,0.005,0.005,0.005
 Nseed,Number of seeded individuals,-,,263894,164934,565487,624392,565487,286278
-mortmyt,natural mortality rate,1/d,,3.7894E-06,0.000006063,1.7684E-06,1.6016E-06,1.7684E-06,3.4931E-06
-nruns,number of simulations,,,50,50,50,50,50,50
+mortmyt,natural mortality rate,1/d,,3.79E-06,0.000006063,1.77E-06,1.60E-06,1.77E-06,3.49E-06
+nruns,number of simulations,,,5,5,5,5,5,5

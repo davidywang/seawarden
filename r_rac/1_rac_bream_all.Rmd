@@ -10,6 +10,9 @@ library(RAC)
 library(dplyr)
 #command + shift + c
 
+#sites <- list(23, 71, 92, 165, 172, 219) #study sites
+sites <- list(165, 172, 219) #study sites
+
 #load sst files
 sst_folder <- '/Users/Zack/0_thesis_sst/ghrsst_csv_test/'
 sst_list <- list.files(sst_folder, pattern = '.csv')
@@ -29,13 +32,10 @@ parameters <- read.csv(paste0(master_files, 'Parameters.csv'), header=FALSE, sep
 #files for both steps
 management <- read.csv(paste0(master_files, 'Management.csv'), header=FALSE, sep=",")
 food <- read.csv(paste0(master_files, 'Food_Characterization.csv'), header=FALSE, sep=",")
-
-sites <- list(23, 71, 92, 165, 172, 219) #study sites
 ```
 
 ```{r include=FALSE}
 #create folder for each site, #add SST data
-
 for (i in sites){
   
   #create a folder for each site
@@ -89,8 +89,8 @@ for (i in sites){
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
 ```
 
-```{r include=FALSE}
-#first model run to generate feeding tables
+```{r}
+#first model run to generate feeding tables (using lapply instead of a forloop)
 trace(Bream_pop_main,edit=T) #delete selector = "y"
 
 for (i in sites){
@@ -103,95 +103,75 @@ for (i in sites){
   output <- Bream_pop_main(userpath, forcings)} #run growth model
 ```
 
-```{r include=FALSE}
-#parallel processing
-#http://pablobarbera.com/ECPR-SC105/code/02-parallel-computing.html
-#https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html
-#http://dept.stat.lsa.umich.edu/~jerrick/courses/stat701/notes/parallel.html
-
-# rac<- function(rac_folder, i){
+# ```{r}
+# # library("foreach")
+# # library("doParallel")
+# # 
+# # cl <- makeCluster(2) # create a cluster with 2 cores
+# # registerDoParallel(cl) # register the cluster
+# # 
+# # res = foreach(i = sites) %dopar% { 
+# #   library(RAC)
+# #               
+# #   userpath <- paste0(rac_folder, "site_", i)
+# # 
+# #   setwd(userpath) #working directory
+# # 
+# #   forcings <- Bream_pop_dataloader(userpath) #load environmental variables
+# # 
+# #   output <- Bream_pop_main(userpath, forcings)} #run growth model
+# # 
+# # stopCluster(cl) # shut down the cluster
+# ```
 # 
-#   library(RAC)
+# ```{r}
+# #generate final feeding tables
+# feeding <- function(rac_folder, i){
 # 
+#   site_folder <- paste0('site_', i, '/Bream_population/Outputs/Out_csv/')
+#   ingestion <- read.csv(paste0(rac_folder, site_folder, 'actual_ingestion.csv'), header=TRUE, sep=",")
+# 
+#   ingestion <- ingestion %>% select(V1)
+#   compiled <- cbind(date, ingestion)
+# 
+#   name <- paste0(rac_folder, 'feeding_files/site_', i, '_feeding.csv')
+#   write.table(compiled, file = name, row.names=FALSE, col.names = TRUE, sep=",")}
+# 
+# date <- feeding_prep %>% select(date)
+# date <- date$date[1:547]
+# 
+# for (i in sites){
+#   feeding(rac_folder, i)}
+# ```
+# 
+# ```{r}
+# #load data for final model run
+# 
+# #generate Population.csv for each site
+# for (i in sites){
+#   for (j in 0:(length(sites)-1)){
+#     column <- j + 5
+#     export <- population %>% select(1, 2, column, 3, 4)}
+#     output <- paste0(rac_folder, 'site_', i, '/Bream_population/Inputs/Parameters/Population.csv')
+#     write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+# 
+# #generate Parameters.csv for each site
+# for (i in sites){
+#   export <- parameters %>% select(1, 2, 6, 3, 4) #6 final parameters
+#   output <- paste0(rac_folder, 'site_', i, '/Bream_population/Inputs/Parameters/Parameters.csv')
+#   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+# 
+# #generate Feeding.csv for each site
+# for (i in sites){
+#   feed <- read.csv(paste0(rac_folder, 'feeding_files/site_', i, '_feeding.csv'))
+#   output <- paste0(rac_folder, 'site_', i, '/Bream_population/Inputs/Forcings/Feeding.csv')
+#   write.table(feed, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+# ```
+# 
+# ```{r include=FALSE}
+# for (i in sites){
 #   userpath <- paste0(rac_folder, "site_", i)
-# 
 #   setwd(userpath) #working directory
-# 
 #   forcings <- Bream_pop_dataloader(userpath) #load environmental variables
-# 
 #   output <- Bream_pop_main(userpath, forcings)} #run growth model
-
-# library(foreach)
-# library(doParallel)
-# 
-# #select numbrer of cores
-# myCluster <- makeCluster(3, type = "PSOCK")
-# 
-# #activate clusters
-# registerDoParallel(myCluster)
-# 
-# #parallel process
-# foreach(i = sites) %dopar% rac(rac_folder, i)
-# 
-# #deactivate clusters
-# stopCluster(myCluster)
-
-#or
-# library(parallel)
-# mclapply(sites, FUN=function(i) rac(rac_folder, i))
-```
-
-```{r}
-#generate final feeding tables
-feeding <- function(rac_folder, i){
-
-  site_folder <- paste0('site_', i, '/Bream_population/Outputs/Out_csv/')
-  ingestion <- read.csv(paste0(rac_folder, site_folder, 'actual_ingestion.csv'), header=TRUE, sep=",")
-
-  ingestion <- ingestion %>% select(V1)
-  compiled <- cbind(date, ingestion)
-
-  name <- paste0(rac_folder, 'feeding_files/site_', i, '_feeding.csv')
-  write.table(compiled, file = name, row.names=FALSE, col.names = TRUE, sep=",")}
-
-date <- feeding_prep %>% select(date)
-date <- date$date[1:547]
-
-for (i in sites){
-  feeding(rac_folder, i)}
-```
-
-```{r}
-#load data for final model run
-
-#generate Population.csv for each site
-for (i in sites){
-  for (j in 0:(length(sites)-1)){
-    column <- j + 5
-    export <- population %>% select(1, 2, column, 3, 4)}
-    output <- paste0(rac_folder, 'site_', i, '/Bream_population/Inputs/Parameters/Population.csv')
-    write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
-
-#generate Parameters.csv for each site
-for (i in sites){
-  export <- parameters %>% select(1, 2, 6, 3, 4) #6 final parameters
-  output <- paste0(rac_folder, 'site_', i, '/Bream_population/Inputs/Parameters/Parameters.csv')
-  write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
-
-#generate Feeding.csv for each site
-for (i in sites){
-  feed <- read.csv(paste0(rac_folder, 'feeding_files/site_', i, '_feeding.csv'))
-  output <- paste0(rac_folder, 'site_', i, '/Bream_population/Inputs/Forcings/Feeding.csv')
-  write.table(feed, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
-```
-
-```{r include=FALSE}
-for (i in sites){
-  userpath <- paste0(rac_folder, "site_", i)
-
-  setwd(userpath) #working directory
-
-  forcings <- Bream_pop_dataloader(userpath) #load environmental variables
-
-  output <- Bream_pop_main(userpath, forcings)} #run growth model
-```
+# ```
