@@ -1,4 +1,4 @@
-"Used in script","Description","Prep","Unit","Reference"
+"Used in script","Description","Final","Unit","Reference"
 "ingmax","Maximum ingestion rate","See file 'Population.csv'","","Stirling 1977 Ballestrazzi et al 1998 Peres et al 1999 Lupatsch et al 2001 Person-Le Ruyet et al 2004 Moreira et al 2008"
 "alpha","Feeding catabolism coefficient","0.3","-","Stirling 1977"
 "betaprot","Assimilation coefficient for protein","0.85","-","Spyridakis et al 1989 in Dosdat 2001 Moreira et al 2008"
@@ -21,6 +21,6 @@
 "k","Weight exponent for energy content","0.139","-","Lupatsch et al 2003"
 "eff","Food ingestion efficiency","0.7","-","Empirical value provided by the farmers"
 "ti","Integration start","3/1/2018","-",""
-"tf","Integration end","4/9/2019","-",""
+"tf","Integration end","31/8/2019","-",""
 "IC","Initial condition on weight","See file 'Population.csv'","",""
 "CS","Commercial size","350","g","http://www.fao.org/fishery/culturedspecies/Sparus_aurata/en"
