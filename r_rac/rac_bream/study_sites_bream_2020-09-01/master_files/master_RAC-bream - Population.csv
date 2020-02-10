@@ -1,9 +1,0 @@
-Quantity,Description,Unit,Reference,23,71,92,165,172,219
-meanW,Dry weight average,g,,40,40,40,40,40,40
-deltaW,Dry weight standard deviation,g,,4,4,4,4,4,4
-Wlb,Dry weight lower bound,g,,0.0001,0.0001,0.0001,0.0001,0.0001,0.0001
-meanImax,Ingestion rate average,g/ gfish d,,0.05,0.05,0.05,0.05,0.05,0.05
-deltaImax,Ingestion rate standard deviation,g/ gfish d,,0.005,0.005,0.005,0.005,0.005,0.005
-Nseed,Number of seeded individuals,-,,263894,164934,565487,624392,565487,286278
-mortmyt,natural mortality rate,1/d,,3.7894E-06,0.000006063,1.7684E-06,1.6016E-06,1.7684E-06,3.4931E-06
-nruns,number of simulations,,,5000,5000,5000,5000,5000,5000

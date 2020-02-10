@@ -15,14 +15,14 @@ library(sf)
 
 ```{r}
 #input data
-tif_input <- '/Users/Zack/0_GIS_Greece/bath_emodnet/bath_2018.tif'
+tif_input <- '/Users/Zack/0_thesis_bath/bath_emodnet/bath_2018.tif'
 
 #output folder
-tif_output <- '/Users/Zack/0_thesis_bath/x/'
-#tif_output <- '/Users/Zack/0_thesis_bath/bath_2018_tif/'
+#tif_output <- '/Users/Zack/0_thesis_bath/x/'
+tif_output <- '/Users/Zack/0_thesis_bath/bath_2018_tif_v2/'
   
 #load shapefile of farm sites
-targets <- '/Users/Zack/0_GIS_Greece/blue_bridge/fishcages_Greece_farm_pts_500m_sq.shp'
+targets <- '/Users/Zack/0_greece/blue_bridge/fishcages_Greece_farm_pts_500m_sq.shp'
 targets <- st_read(targets)
 
 #function to crop raster to area of interest
