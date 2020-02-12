@@ -10,8 +10,37 @@ library(dplyr)
 library(raster)
 library(sp)
 library(sf)
-library(rWind)
+
 #install.packages("rWind")
+library(rWind)
+
+library(foreach)
+library(doParallel)
+
+#load ocean current data
+v_folder_18 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_vo_2018_tif/' #or 2018
+u_folder_18 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_uo_2018_tif/' #or 2018
+v_folder_19 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_vo_2019_tif/' #or 2019
+u_folder_19 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_uo_2019_tif/' #or 2019
+
+#output folder
+output_18 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_2018_csv/' #for 2018
+output_19 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_2018_csv/' #for 2019
+
+#input folders - for combine
+folder_1 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_2018_csv/'
+folder_2 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_2019_csv/'
+
+#output folder - for combine
+folder_3 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_csv/'
+```
+
+```{r}
+#load shapefile of farm sites
+targets <- '/Users/Zack/0_greece/blue_bridge/farm_pts_500m_sq_current.shp'
+targets <- st_read(targets)
+
+sites <- 1:nrow(as.data.frame(targets))
 ```
 
 ```{r}
@@ -33,7 +62,7 @@ crop_tool <- function(image_file, target){
 
 ```{r}
 current_tool <- function(v_folder, u_folder, target, output){ 
-  
+
   #added here for parallel processing
   library(raster)
   library(rWind)
@@ -46,9 +75,9 @@ current_tool <- function(v_folder, u_folder, target, output){
   daily_v = list()
   date = list()
 
-  #for (i in 1:3){
-  for (i in 1:365){
-  
+  #for (i in 1:1){
+  for (i in 1:length(v_list)){
+
       v_file <- paste0(v_folder, v_list[i])
       u_file <- paste0(u_folder, u_list[i])
 
@@ -57,11 +86,11 @@ current_tool <- function(v_folder, u_folder, target, output){
 
       daily_u[[i]] <- u
       daily_v[[i]] <- v
-       
+
       day <- substr(u_list[i], 19, 20)
       month <- substr(u_list[i], 16, 17)
       year <- substr(u_list[i], 11, 14)
-      
+
       date[[i]] <- paste0(day, "/", month, "/", year)}
     
   daily_v = do.call(rbind, daily_v)
@@ -85,54 +114,39 @@ current_tool <- function(v_folder, u_folder, target, output){
   #create output filename and export as csv
   df <-as.data.frame(target)
   filename <- paste0(output, paste0(df['farm_id']), '_medsea_current.csv')
-
+  
   #create output file
   #write.csv(daily, file=filename, row.names = FALSE)}
   write.table(daily, file = filename, row.names=FALSE, col.names = TRUE, sep=",")}
 ```
 
 ```{r}
-#load ocean current data
-v_folder <- '/Users/Zack/0_thesis_ocean_current/medsea_vo_2018_tif/'
-u_folder <- '/Users/Zack/0_thesis_ocean_current/medsea_uo_2018_tif/'
-
-#output folder
-#output <- '/Users/Zack/0_thesis_ocean_current/medsea_current_2018_csv/'
-output <- '/Users/Zack/Desktop/test/'
-
-#load shapefile of farm sites
-#targets <- '/Users/Zack/0_GIS_Greece/blue_bridge/fishcages_Greece_farm_pts.shp'
-targets <- '/Users/Zack/0_greece/blue_bridge/fishcages_Greece_farm_pts_1m_3.shp'
-targets <- st_read(targets)
-
 #single use
-#current_tool(v_folder, u_folder, targets[15,], output)
+#current_tool(v_folder_18, u_folder_18, targets[1,], output_18)
 
 #loop to create u, v, direction and speed csv for all farm sites
-#for (i in 1:nrow(as.data.frame(targets))){current_tool(v_folder, u_folder, targets[i,], output)}
-
-#parallel processing
-#http://pablobarbera.com/ECPR-SC105/code/02-parallel-computing.html
-#https://nceas.github.io/oss-lessons/parallel-computing-in-r/parallel-computing-in-r.html
-
-library(foreach)
-library(doParallel)
-
-#select numbrer of cores
-myCluster <- makeCluster(3, type = "PSOCK")
-
-#activate clusters
-registerDoParallel(myCluster)
-
-#parallel process 
-sites <- 1:nrow(as.data.frame(targets))
-foreach(i = sites) %dopar% current_tool(v_folder, u_folder, targets[i,], output)
-
-#deactivate clusters
-stopCluster(myCluster)
+for (i in sites){current_tool(v_folder_18, u_folder_18, targets[i,], output_18)}
+for (i in sites){current_tool(v_folder_19, u_folder_19, targets[i,], output_19)}
 ```
 
 ```{r}
+#does not work atm
+
+#parallel processing
+# myCluster <- makeCluster(4, type = "PSOCK") #select numbrer of cores
+# 
+# registerDoParallel(myCluster) #activate clusters
+# foreach(i = sites) %dopar% current_tool(v_folder_18, u_folder_18, targets[i,], output_18) #parallel process - 2018 
+# stopCluster(myCluster) #deactivate clusters
+# 
+# registerDoParallel(myCluster) #activate clusters
+# foreach(i = sites) %dopar% current_tool(v_folder_19, u_folder_19, targets[i,], output_19) #parallel process - 2019
+# stopCluster(myCluster) #deactivate clusters
+```
+
+```{r}
+#combine 2018 and 2019 csv files
+
 #function to combine files
 combine <- function(folder_1, folder_2, folder_3){
 
@@ -145,17 +159,6 @@ combine <- function(folder_1, folder_2, folder_3){
   
   #merge dataframes and export file
   write.table(rbind(csv_1, csv_2), file = paste0(folder_3, paste0(list_1[i])), row.names=FALSE, col.names = FALSE, sep=",")}
-```
-
-```{r}
-#combine 2018 and 2019 csv files
-
-#input folders
-folder_1 <- '/Users/Zack/0_thesis_ocean_current/medsea_current_2018_csv/'
-folder_2 <- '/Users/Zack/0_thesis_ocean_current/medsea_current_2019_csv/'
-
-#output folder
-folder_3 <- '/Users/Zack/0_thesis_ocean_current/medsea_current_csv/'
 
 #list files in folders
 list_1 <- list.files(folder_1, pattern = '.csv')

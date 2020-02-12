@@ -10,18 +10,22 @@ library(RAC)
 library(dplyr)
 library(zoo) #index function
 #command + shift + c
-#trace(Bass_pop_main,edit=T) #delete selector = "y"
+trace(Bass_pop_main,edit=T) #delete selector = "y"
 
+#generate prep files for all sites
 farmsites <- read.csv('/Users/Zack/0_seawarden/r_rac/master_inventory - Farm_Sites.csv', header=TRUE, sep=",")
 sites <- as.vector(farmsites$farm_site)
 
-sites <- list(23, 71, 92, 165, 172, 219) #study sites
-# sites <- list(23, 71, 92) #study sites
+#select sites to model
+sites_2 <- list(23, 71, 92, 165, 172, 219) #study sites
+sites_2 <- list(23, 71, 92)
+# sites_2 <- list(0, 1, 2)
+# sites_2 <- list(23)
 
+#specify number of simulations 1) feeding 2), full simulation
 pre_sim <- 50
 main_sim <- 5000
 
-sites <- list(0, 1, 2)
 pre_sim <- 6
 main_sim <- 7
 ```
@@ -48,14 +52,14 @@ food <- read.csv(paste0(master_files, 'Food_Characterization.csv'), header=FALSE
 ```{r include=FALSE}
 #create folder for each site, #add SST data
 for (i in sites){
-  
+
   #create a folder for each site
   site_folder <- paste0(rac_folder, 'site_', i, '/')
-  dir.create(site_folder) 
-  
+  dir.create(site_folder)
+
   #create RAC folders for each site
-  Bass_pop_skeleton(site_folder) 
-  
+  Bass_pop_skeleton(site_folder)
+
   #add SST data
   orglocation <- paste0(sst_folder, i, '_sst.csv')
   newlocation <- paste0(site_folder, 'Bass_population/Inputs/Forcings/')
@@ -75,9 +79,7 @@ for (i in index(sites)){
   site <- (population %>% select(column))[1,]
   output <- paste0(rac_folder, 'site_', site, '/Bass_population/Inputs/Parameters/Population.csv')
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
-```
 
-```{r}
 #generate Parameters.csv for each site 
 for (i in sites){
   export <- parameters %>% select(1, 2, 5, 3, 4) #5 prep parameters
@@ -105,7 +107,7 @@ for (i in sites){
 
 ```{r include=FALSE}
 #first model run to generate feeding tables
-for (i in sites){
+for (i in sites_2){
   userpath <- paste0(rac_folder, "site_", i)
   setwd(userpath) #working directory
   forcings <- Bass_pop_dataloader(userpath) #load environmental variables
@@ -120,13 +122,14 @@ feeding <- function(rac_folder, i){
   ingestion <- read.csv(paste0(rac_folder, site_folder, 'actual_ingestion.csv'), header=TRUE, sep=",")
 
   ingestion <- ingestion %>% select(V1)
+  
+  date <- feeding_prep %>% select(date)
+  date <- date$date[1:nrow(ingestion)]
+
   compiled <- cbind(date, ingestion)
 
   name <- paste0(rac_folder, 'feeding_files/site_', i, '_feeding.csv')
   write.table(compiled, file = name, row.names=FALSE, col.names = TRUE, sep=",")}
-
-date <- feeding_prep %>% select(date)
-date <- date$date[1:609]
 
 for (i in sites){
   feeding(rac_folder, i)}
@@ -158,7 +161,7 @@ for (i in sites){
 ```
 
 ```{r include=FALSE}
-for (i in sites){
+for (i in sites_2){
   userpath <- paste0(rac_folder, "site_", i)
   setwd(userpath) #working directory
   forcings <- Bass_pop_dataloader(userpath) #load environmental variables
