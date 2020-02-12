@@ -18,16 +18,16 @@ sites <- as.vector(farmsites$farm_site)
 
 #select sites to model
 sites_2 <- list(23, 71, 92, 165, 172, 219) #study sites
-sites_2 <- list(23, 71, 92)
+#sites_2 <- list(23, 71, 92)
 # sites_2 <- list(0, 1, 2)
-# sites_2 <- list(23)
+#sites_2 <- list(23)
 
 #specify number of simulations 1) feeding 2), full simulation
 pre_sim <- 50
 main_sim <- 5000
 
-pre_sim <- 6
-main_sim <- 7
+#pre_sim <- 6
+#main_sim <- 7
 ```
 
 ```{r include=FALSE}
@@ -51,21 +51,21 @@ food <- read.csv(paste0(master_files, 'Food_Characterization.csv'), header=FALSE
 
 ```{r include=FALSE}
 #create folder for each site, #add SST data
-for (i in sites){
-
-  #create a folder for each site
-  site_folder <- paste0(rac_folder, 'site_', i, '/')
-  dir.create(site_folder)
-
-  #create RAC folders for each site
-  Bream_pop_skeleton(site_folder)
-
-  #add SST data
-  orglocation <- paste0(sst_folder, i, '_sst.csv')
-  newlocation <- paste0(site_folder, 'Bream_population/Inputs/Forcings/')
-  file.copy(from=orglocation, to=newlocation, overwrite = TRUE, recursive = FALSE, copy.mode = TRUE)
-  file.remove(paste0(newlocation, 'Water_temperature.csv'))
-  file.rename(paste0(newlocation, i, '_sst.csv'), paste0(newlocation, 'Water_temperature.csv'))}
+# for (i in sites){
+# 
+#   #create a folder for each site
+#   site_folder <- paste0(rac_folder, 'site_', i, '/')
+#   dir.create(site_folder)
+# 
+#   #create RAC folders for each site
+#   Bream_pop_skeleton(site_folder)
+# 
+#   #add SST data
+#   orglocation <- paste0(sst_folder, i, '_sst.csv')
+#   newlocation <- paste0(site_folder, 'Bream_population/Inputs/Forcings/')
+#   file.copy(from=orglocation, to=newlocation, overwrite = TRUE, recursive = FALSE, copy.mode = TRUE)
+#   file.remove(paste0(newlocation, 'Water_temperature.csv'))
+#   file.rename(paste0(newlocation, i, '_sst.csv'), paste0(newlocation, 'Water_temperature.csv'))}
 ```
 
 ```{r include=FALSE}
@@ -131,15 +131,14 @@ feeding <- function(rac_folder, i){
   name <- paste0(rac_folder, 'feeding_files/site_', i, '_feeding.csv')
   write.table(compiled, file = name, row.names=FALSE, col.names = TRUE, sep=",")}
 
-for (i in sites){
-  feeding(rac_folder, i)}
+for (i in sites_2){feeding(rac_folder, i)}
 ```
 
 ```{r}
 # #load data for final model run
 
 #generate Population.csv for each site
-for (i in index(sites)){
+for (i in index(sites_2)){
   column <- i + 4
   export <- population %>% select(1, 2, column, 3, 4)
     export[9, 3] = main_sim
@@ -148,13 +147,13 @@ for (i in index(sites)){
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
 
 #generate Parameters.csv for each site
-for (i in sites){
+for (i in sites_2){
   export <- parameters %>% select(1, 2, 6, 3, 4) #6 final parameters
   output <- paste0(rac_folder, 'site_', i, '/Bream_population/Inputs/Parameters/Parameters.csv')
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
 
 #generate Feeding.csv for each site
-for (i in sites){
+for (i in sites_2){
   feed <- read.csv(paste0(rac_folder, 'feeding_files/site_', i, '_feeding.csv'))
   output <- paste0(rac_folder, 'site_', i, '/Bream_population/Inputs/Forcings/Feeding.csv')
   write.table(feed, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
