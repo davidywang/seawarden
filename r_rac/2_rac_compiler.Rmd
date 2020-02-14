@@ -35,7 +35,7 @@ compiler <- function(rac_folder, site_folder, i){
   feed_p <- feed_p %>% select(V1, V2)
   
   nh4 <- nh4 %>% select(V1, V2)
-  weight <- weight %>% select(V1, V2) %>% slice(1:543)
+  weight <- weight %>% select(V1, V2) %>% slice(1:nrow(faeces_c))
 
   #compile columns to new dataframe
   compiled <- cbind(faeces_c, faeces_l, faeces_p, feed_c, feed_l, feed_p, nh4, weight)
@@ -48,11 +48,11 @@ compiler <- function(rac_folder, site_folder, i){
   #write csv
   name <- paste0(rac_folder, 'output_files/site_', i, '_compiled.csv')
   write.table(compiled, file = name, row.names=FALSE, col.names = TRUE, sep=",")}
-
-sites <- list(23, 71, 92, 165, 172, 219)
 ```
 
 ```{r}
+sites <- list(23, 71, 92, 165, 172, 219)
+
 rac_folder <- '/Users/Zack/0_seawarden/r_rac/rac_seabass/'
 site_folder <- '/Bass_population/Outputs/Out_csv/'
 

@@ -6,4 +6,4 @@
 "deltaImax","Ingestion rate standard deviation",0.005,"g/ gfish d",""
 "Nseed","Number of seeded individuals",701380,"-",""
 "mortmyt","natural mortality rate",1.4e-06,"1/d",""
-"nruns","number of simulations",6,"",""
+"nruns","number of simulations",50,"",""
