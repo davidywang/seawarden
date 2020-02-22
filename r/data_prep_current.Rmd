@@ -25,7 +25,7 @@ u_folder_19 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_uo_2019_tif/' #or 20
 
 #output folder
 output_18 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_2018_csv/' #for 2018
-output_19 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_2019_csv/' #for 2019
+output_19 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_2018_csv/' #for 2019
 
 #input folders - for combine
 folder_1 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_2018_csv/'
@@ -39,8 +39,8 @@ folder_3 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_csv/'
 #load shapefile of farm sites
 targets <- '/Users/Zack/0_greece/blue_bridge/farm_pts_500m_sq_current.shp'
 targets <- st_read(targets)
+
 sites <- 1:nrow(as.data.frame(targets))
-length(sites)
 ```
 
 ```{r}
@@ -75,8 +75,8 @@ current_tool <- function(v_folder, u_folder, target, output){
   daily_v = list()
   date = list()
 
-  for (i in 1:10){
-  #for (i in 1:length(v_list)){
+  #for (i in 1:1){
+  for (i in 1:length(v_list)){
 
       v_file <- paste0(v_folder, v_list[i])
       u_file <- paste0(u_folder, u_list[i])
@@ -124,8 +124,15 @@ current_tool <- function(v_folder, u_folder, target, output){
 #single use
 #current_tool(v_folder_18, u_folder_18, targets[1,], output_18)
 
+sites <-sites[13:50]
+
 #loop to create u, v, direction and speed csv for all farm sites
 for (i in sites){current_tool(v_folder_18, u_folder_18, targets[i,], output_18)}
+
+targets <- '/Users/Zack/0_greece/blue_bridge/farm_pts_500m_sq_current.shp'
+targets <- st_read(targets)
+sites <- 1:nrow(as.data.frame(targets))
+
 for (i in sites){current_tool(v_folder_19, u_folder_19, targets[i,], output_19)}
 ```
 

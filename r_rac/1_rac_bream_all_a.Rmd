@@ -24,7 +24,7 @@ sites_2 <- list(23, 71, 92, 165, 172, 219) #study sites
 
 #specify number of simulations 1) feeding 2), full simulation
 pre_sim <- 50
-main_sim <- 5000
+main_sim <- 6
 
 #pre_sim <- 6
 #main_sim <- 7
@@ -114,55 +114,55 @@ for (i in sites_2){
   output <- Bream_pop_main(userpath, forcings)} #run growth model
 ```
 
-```{r}
-#generate final feeding tables
-feeding <- function(rac_folder, i){
-
-  site_folder <- paste0('site_', i, '/Bream_population/Outputs/Out_csv/')
-  ingestion <- read.csv(paste0(rac_folder, site_folder, 'actual_ingestion.csv'), header=TRUE, sep=",")
-
-  ingestion <- ingestion %>% select(V1)
-  
-  date <- feeding_prep %>% select(date)
-  date <- date$date[1:nrow(ingestion)]
-
-  compiled <- cbind(date, ingestion)
-
-  name <- paste0(rac_folder, 'feeding_files/site_', i, '_feeding.csv')
-  write.table(compiled, file = name, row.names=FALSE, col.names = TRUE, sep=",")}
-
-for (i in sites_2){feeding(rac_folder, i)}
-```
-
-```{r}
-# #load data for final model run
-
-#generate Population.csv for each site
-for (i in index(sites_2)){
-  column <- i + 4
-  export <- population %>% select(1, 2, column, 3, 4)
-    export[9, 3] = main_sim
-  site <- (population_prep %>% select(column))[1,]
-  output <- paste0(rac_folder, 'site_', site, '/Bream_population/Inputs/Parameters/Population.csv')
-  write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
-
-#generate Parameters.csv for each site
-for (i in sites_2){
-  export <- parameters %>% select(1, 2, 6, 3, 4) #6 final parameters
-  output <- paste0(rac_folder, 'site_', i, '/Bream_population/Inputs/Parameters/Parameters.csv')
-  write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
-
-#generate Feeding.csv for each site
-for (i in sites_2){
-  feed <- read.csv(paste0(rac_folder, 'feeding_files/site_', i, '_feeding.csv'))
-  output <- paste0(rac_folder, 'site_', i, '/Bream_population/Inputs/Forcings/Feeding.csv')
-  write.table(feed, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
-```
-
-```{r include=FALSE}
-for (i in sites_2){
-  userpath <- paste0(rac_folder, "site_", i)
-  setwd(userpath) #working directory
-  forcings <- Bream_pop_dataloader(userpath) #load environmental variables
-  output <- Bream_pop_main(userpath, forcings)} #run growth model
-```
+# ```{r}
+# #generate final feeding tables
+# feeding <- function(rac_folder, i){
+# 
+#   site_folder <- paste0('site_', i, '/Bream_population/Outputs/Out_csv/')
+#   ingestion <- read.csv(paste0(rac_folder, site_folder, 'actual_ingestion.csv'), header=TRUE, sep=",")
+# 
+#   ingestion <- ingestion %>% select(V1)
+#   
+#   date <- feeding_prep %>% select(date)
+#   date <- date$date[1:nrow(ingestion)]
+# 
+#   compiled <- cbind(date, ingestion)
+# 
+#   name <- paste0(rac_folder, 'feeding_files/site_', i, '_feeding.csv')
+#   write.table(compiled, file = name, row.names=FALSE, col.names = TRUE, sep=",")}
+# 
+# for (i in sites_2){feeding(rac_folder, i)}
+# ```
+# 
+# ```{r}
+# # #load data for final model run
+# 
+# #generate Population.csv for each site
+# for (i in index(sites_2)){
+#   column <- i + 4
+#   export <- population %>% select(1, 2, column, 3, 4)
+#     export[9, 3] = main_sim
+#   site <- (population_prep %>% select(column))[1,]
+#   output <- paste0(rac_folder, 'site_', site, '/Bream_population/Inputs/Parameters/Population.csv')
+#   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+# 
+# #generate Parameters.csv for each site
+# for (i in sites_2){
+#   export <- parameters %>% select(1, 2, 6, 3, 4) #6 final parameters
+#   output <- paste0(rac_folder, 'site_', i, '/Bream_population/Inputs/Parameters/Parameters.csv')
+#   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+# 
+# #generate Feeding.csv for each site
+# for (i in sites_2){
+#   feed <- read.csv(paste0(rac_folder, 'feeding_files/site_', i, '_feeding.csv'))
+#   output <- paste0(rac_folder, 'site_', i, '/Bream_population/Inputs/Forcings/Feeding.csv')
+#   write.table(feed, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
+# ```
+# 
+# ```{r include=FALSE}
+# for (i in sites_2){
+#   userpath <- paste0(rac_folder, "site_", i)
+#   setwd(userpath) #working directory
+#   forcings <- Bream_pop_dataloader(userpath) #load environmental variables
+#   output <- Bream_pop_main(userpath, forcings)} #run growth model
+# ```

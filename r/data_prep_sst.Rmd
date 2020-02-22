@@ -145,19 +145,19 @@ for (i in 1:(length(list_1))){
 
 ```{r}
 #plot sst
-# csv <- read.delim('/Users/Zack/0_thesis_sst/ghrsst_csv/172_sst.csv', sep = ',', stringsAsFactors = F, header = FALSE)
-# 
-# #change date format
-# csv$date <- as.Date(as.Date(csv$V1, format = "%d/%m/%Y"), "%Y-%m-%d")
-# 
-# ggplot(csv, aes(x=date, y = V2, group = 1))+
-#   geom_line(color = "#00AFBB", size = .5)+  
-#   scale_x_date(labels = date_format("%Y-%m-%d"))+
-#   labs(x = "Date", y = "Celcius", title = "Sea Surface Temperature")+
-#   theme_minimal()+
-#   theme(plot.title = element_text(lineheight=.8, face="bold", size = 12)) +
-#   theme(text = element_text(size=10))
-#   ggsave(file="test.png", plot=last_plot(), width=10, height=8)
+csv <- read.delim('/Users/Zack/0_thesis_sst/ghrsst_csv/23_sst.csv', sep = ',', stringsAsFactors = F, header = FALSE)
+
+#change date format
+csv$date <- as.Date(as.Date(csv$V1, format = "%d/%m/%Y"), "%Y-%m-%d")
+
+ggplot(csv, aes(x=date, y = V2, group = 1))+
+  geom_line(color = "#00AFBB", size = .5)+
+  scale_x_date(labels = date_format("%Y-%m-%d"))+
+  labs(x = "Date", y = "Celcius", title = "Sea Surface Temperature")+
+  theme_minimal()+
+  theme(plot.title = element_text(lineheight=.8, face="bold", size = 12)) +
+  theme(text = element_text(size=10))
+  ggsave(file="23.png", plot=last_plot(), width=10, height=8)
 ```
 
 ```{r}
@@ -190,6 +190,7 @@ plot_tool <- function(plot_csv_folder, plot_csv_list, plot_folder){
     scale_y_continuous(breaks=seq(0,0,2))
   ggsave(file=output, plot=p, width=10, height=8)
   p}
+
 ```
 
 ```{r}
