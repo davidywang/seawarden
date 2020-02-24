@@ -53,15 +53,32 @@ compiler <- function(rac_folder, site_folder, i){
 ```{r}
 sites <- list(23, 71, 92, 165, 172, 219)
 
+
 rac_folder <- '/Users/Zack/0_seawarden/r_rac/rac_seabass/'
 site_folder <- '/Bass_population/Outputs/Out_csv/'
 
 for (i in sites){
   compiler(rac_folder, site_folder, i)}
 
+for (i in sites){
+  filepath <- paste0(rac_folder, 'site_', i, site_folder)
+  harvest <- read.csv(paste0(filepath, 'Days_to_commercial_size.csv'), header=TRUE, sep=",")
+  day <- harvest[1,3]
+  print(day)}
+
+```
+
+```{r}
+sites <- list(23, 71, 92, 165, 172, 219)
 rac_folder <- '/Users/Zack/0_seawarden/r_rac/rac_bream/'
 site_folder <- '/Bream_population/Outputs/Out_csv/'
 
 for (i in sites){
   compiler(rac_folder, site_folder, i)}
+
+for (i in sites){
+  filepath <- paste0(rac_folder, 'site_', i, site_folder)
+  harvest <- read.csv(paste0(filepath, 'Days_to_commercial_size.csv'), header=TRUE, sep=",")
+  day <- harvest[1,3]
+  print(day)}
 ```

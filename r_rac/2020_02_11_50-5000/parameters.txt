@@ -1,0 +1,2 @@
+bream: 5g
+seabass: 2.5g
