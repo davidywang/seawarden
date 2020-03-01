@@ -1,0 +1,220 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Top Producers of Marine Finfish Aquaculture},
+            pdfauthor={Zack Dinh and Erik J Ortega},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Top Producers of Marine Finfish Aquaculture}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Zack Dinh and Erik J Ortega}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{Fall 2018}
+
+
+\begin{document}
+\maketitle
+
+\subsubsection{Marine Aquculture, A Global
+Industry}\label{marine-aquculture-a-global-industry}
+
+Marine aquaculture is the practice of farming marine organisms. As of
+2018, more than half the world's seafood supply (finfish, crustaceans,
+and molluscs) were produced through aquaculture. The industry has grown
+rapidly, with global production doubling in the last 12 years from 41.91
+million tonnes in 2004 to 80.03 million tonnes in 2016.
+
+Marine aquaculture is viewed by many as a potential solution towards
+feeding a growing world population. Marine aquaculture reduces the
+demand for land needed for farming and livestock, and uses no
+freshwater. Importantly, the
+\href{http://documents.worldbank.org/curated/en/556181468331788600/pdf/788230BRI0AES00without0the0abstract.pdf}{feed
+conversion ratio (FCR)} of farmed fish is more efficient then that of
+terrestrial livestock.
+
+Net-pen aquaculture is a specific type of marine aquaculture where fish
+are raised in net pens typically placed near shore. This open-system has
+been criticized for environmental degradation due to high concentration
+of fish waste, use of antibiotics, and other chemicals. The spread of
+pathogens and competition from escaped fish caused by net pen failures
+have been seen as serious threats to wild fish populations. This initial
+study is the first step towards identification of net-pens throughout
+the world.
+
+\subsubsection{Our Goals}\label{our-goals}
+
+\begin{itemize}
+\tightlist
+\item
+  Identify which countries are the greatest producers of marine finfish
+  aquaculture, measured in tonnes
+\item
+  Estimate the total amount of area each country could use for marine
+  aquaculture, defined as waters within 22.2 kilometers of a countryâs
+  coastline.
+\item
+  Generate area of interest (AOI) shapefiles of each countryâs coastal
+  waters for future use in downloading high-resolution satellite
+  imagery.
+\item
+  Generate a relatively high-resolution land mask of each country, to
+  exclude land from future satellite imagery processing efforts focused
+  on the waters within the AOIs.
+\end{itemize}
+
+\subsubsection{Data Source: United Nations Food \& Agriculture
+Organization}\label{data-source-united-nations-food-agriculture-organization}
+
+We began by reviewing data from the United Nations Food \& Agriculture
+Organization (UNFAO). Each year, the UNAFO releases
+\href{http://www.fao.org/state-of-fisheries-aquaculture/en/}{The State
+of the World Fisheries and Aquaculture} which includes the
+\href{http://www.fao.org/fishery/statistics/global-aquaculture-production/en}{original
+data} available as CSVs. By combining and filtering through these data
+sets we were able to identify the total production of marine finfish for
+each country in 2016 (The 2018 report cites data from 2016). Below is a
+sample of the UNFAO data after our tidying efforts.
+
+\subsubsection{Top 15 Marine Finfish Aquaculture Production
+Countries}\label{top-15-marine-finfish-aquaculture-production-countries}
+
+We identified these 15 countires as the top producers of marine finfish
+in 2016. China, Norway, and Chilie are the world leaders.
+
+These 15 countries accounted for 97\% of global marine finfish
+production in 2016.
+
+\subsubsection{Final Map}\label{final-map}
+
+This map shows the top 15 countries we identified. Their shading
+represents their percentage of the world's total marine finfish
+aquaculture produciton. The world shapefile was sourced from:
+\href{https://hub.arcgis.com/datasets/252471276c9941729543be8789e06e12_0?geometry=-163.125\%2C-46.149\%2C196.875\%2C57.646}{ESRI.}
+Along the coastlines of the top 15 countries are polygons approximating
+the territorial waters of each country (waters within 22.2km of
+coastline). Although most marine aquculture occurs very close to shore,
+within bays and inlets, this represents the total area in which marine
+aquaculture could be found for any given country. In the future these
+AOIs will be used to download high-resoluiton satelite imagery to locate
+marine aquculture facilities.
+
+\subsubsection{AOI Total Surface Area}\label{aoi-total-surface-area}
+
+The total surface area for each countryâs AOI was estimated using
+st\_area.
+
+\subsubsection{AOI Generation Process}\label{aoi-generation-process}
+
+AOIs were generated from the world shapefile. Using the SF package, we
+generated buffers for each country using st\_buffer and then excluded
+land with st\_difference. The process is demonstrated here with Greece.
+
+\paragraph{Greece}\label{greece}
+
+\paragraph{AOI Buffer - Greece}\label{aoi-buffer---greece}
+
+\paragraph{AOI Buffer, Land Areas Removed -
+Greece}\label{aoi-buffer-land-areas-removed---greece}
+
+\subsubsection{Generation of High-Resolution Coastlines from Elevation
+Data}\label{generation-of-high-resolution-coastlines-from-elevation-data}
+
+Closer inspection of the AOIs, reveal that the ESRI shapefile is of
+low-resolution, not ideal for use as a land mask. This can be clearly
+noted with the Faroe Islands. Therefore we developed a process to
+generate higher-resolution coastlines from digital elevation data. We
+sourced 30 meter elevation rasters from
+\href{https://earthexplorer.usgs.gov/}{USGS Earth Explorer}. Rasters
+were merged using the Raster package merge function. Using reclassify,
+land was classified as pixels with an elevation greater than zero, and
+water with an elevation of less than 0. The reclassified raster was
+converted to a vector using GDAL and rgdal.
+
+\paragraph{Merged Raster - Faroe
+Islands}\label{merged-raster---faroe-islands}
+
+\paragraph{Reclassified Raster - Faroe
+Islands}\label{reclassified-raster---faroe-islands}
+
+\subsubsection{Next Steps}\label{next-steps}
+
+In the future, the AOIs developed will be used to download elevation
+data for more countries of interest via API. A functionalized version of
+the coastline generation process will then be used to produce land
+masks.
+
+
+\end{document}

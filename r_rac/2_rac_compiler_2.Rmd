@@ -1,0 +1,181 @@
+---
+title: "RAC compiler"
+author: "Zack Dinh"
+date: "December 24, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+
+sites <- list(23, 71, 92, 165, 172, 219)
+
+compiler <- function(rac_folder, site_folder, rac_folder2, site_folder2){
+  
+list <- c(
+  'faeces_production_Carbohydrates.csv',
+  'faeces_production_Lipids.csv',
+  'faeces_production_Proteins.csv',
+  'wasted_feed_Carbohydrates.csv',
+  'wasted_feed_Lipids.csv',
+  'wasted_feed_Proteins.csv')
+
+variable_list <- list()
+variable_list2 <- list()
+
+for (i in sites){
+  filepath <- paste0(rac_folder, 'site_', i, site_folder)
+  filepath2 <- paste0(rac_folder2, 'site_', i, site_folder2)
+  
+  variable <- read.csv(paste0(filepath, list[1]), header=TRUE, sep=",")
+  variable2 <- read.csv(paste0(filepath2, list[1]), header=TRUE, sep=",")
+  
+  variable_list <- append(variable_list, list(variable))
+  variable_list2 <- append(variable_list2, list(variable2))}
+
+  combined <- bind_cols(variable_list) %>% 
+    select(1, 2, 5, 8, 11, 14, 17)
+  
+  combined2 <- bind_cols(variable_list2) %>%
+    select(2, 5, 8, 11, 14, 17)
+  
+  combined3 <- bind_cols(combined, combined2)
+    colnames(combined3) <- c("day", sites, sites)
+    
+  name <- paste0(strsplit(list[1], ".csv"), '.csv')
+  write.table(combined3, file = name, row.names=FALSE, col.names = TRUE, sep=",")
+  
+variable_list <- list()
+variable_list2 <- list()
+
+for (i in sites){
+  filepath <- paste0(rac_folder, 'site_', i, site_folder)
+  filepath2 <- paste0(rac_folder2, 'site_', i, site_folder2)
+  
+  variable <- read.csv(paste0(filepath, list[2]), header=TRUE, sep=",")
+  variable2 <- read.csv(paste0(filepath2, list[2]), header=TRUE, sep=",")
+  
+  variable_list <- append(variable_list, list(variable))
+  variable_list2 <- append(variable_list2, list(variable2))}
+
+  combined <- bind_cols(variable_list) %>% 
+    select(1, 2, 5, 8, 11, 14, 17)
+  
+  combined2 <- bind_cols(variable_list2) %>%
+    select(2, 5, 8, 11, 14, 17)
+  
+  combined3 <- bind_cols(combined, combined2)
+    colnames(combined3) <- c("day", sites, sites)
+    
+  name <- paste0(strsplit(list[2], ".csv"), '.csv')
+  write.table(combined3, file = name, row.names=FALSE, col.names = TRUE, sep=",")
+
+variable_list <- list()
+variable_list2 <- list()
+
+for (i in sites){
+  filepath <- paste0(rac_folder, 'site_', i, site_folder)
+  filepath2 <- paste0(rac_folder2, 'site_', i, site_folder2)
+  
+  variable <- read.csv(paste0(filepath, list[3]), header=TRUE, sep=",")
+  variable2 <- read.csv(paste0(filepath2, list[3]), header=TRUE, sep=",")
+  
+  variable_list <- append(variable_list, list(variable))
+  variable_list2 <- append(variable_list2, list(variable2))}
+
+  combined <- bind_cols(variable_list) %>% 
+    select(1, 2, 5, 8, 11, 14, 17)
+  
+  combined2 <- bind_cols(variable_list2) %>%
+    select(2, 5, 8, 11, 14, 17)
+  
+  combined3 <- bind_cols(combined, combined2)
+    colnames(combined3) <- c("day", sites, sites)
+    
+  name <- paste0(strsplit(list[3], ".csv"), '.csv')
+  write.table(combined3, file = name, row.names=FALSE, col.names = TRUE, sep=",")
+  
+variable_list <- list()
+variable_list2 <- list()
+
+for (i in sites){
+  filepath <- paste0(rac_folder, 'site_', i, site_folder)
+  filepath2 <- paste0(rac_folder2, 'site_', i, site_folder2)
+  
+  variable <- read.csv(paste0(filepath, list[4]), header=TRUE, sep=",")
+  variable2 <- read.csv(paste0(filepath2, list[4]), header=TRUE, sep=",")
+  
+  variable_list <- append(variable_list, list(variable))
+  variable_list2 <- append(variable_list2, list(variable2))}
+
+  combined <- bind_cols(variable_list) %>% 
+    select(1, 2, 5, 8, 11, 14, 17)
+  
+  combined2 <- bind_cols(variable_list2) %>%
+    select(2, 5, 8, 11, 14, 17)
+  
+  combined3 <- bind_cols(combined, combined2)
+    colnames(combined3) <- c("day", sites, sites)
+    
+  name <- paste0(strsplit(list[4], ".csv"), '.csv')
+  write.table(combined3, file = name, row.names=FALSE, col.names = TRUE, sep=",")
+  
+variable_list <- list()
+variable_list2 <- list()
+
+for (i in sites){
+  filepath <- paste0(rac_folder, 'site_', i, site_folder)
+  filepath2 <- paste0(rac_folder2, 'site_', i, site_folder2)
+  
+  variable <- read.csv(paste0(filepath, list[5]), header=TRUE, sep=",")
+  variable2 <- read.csv(paste0(filepath2, list[5]), header=TRUE, sep=",")
+  
+  variable_list <- append(variable_list, list(variable))
+  variable_list2 <- append(variable_list2, list(variable2))}
+
+  combined <- bind_cols(variable_list) %>% 
+    select(1, 2, 5, 8, 11, 14, 17)
+  
+  combined2 <- bind_cols(variable_list2) %>%
+    select(2, 5, 8, 11, 14, 17)
+  
+  combined3 <- bind_cols(combined, combined2)
+    colnames(combined3) <- c("day", sites, sites)
+    
+  name <- paste0(strsplit(list[5], ".csv"), '.csv')
+  write.table(combined3, file = name, row.names=FALSE, col.names = TRUE, sep=",")
+variable_list <- list()
+variable_list2 <- list()
+
+for (i in sites){
+  filepath <- paste0(rac_folder, 'site_', i, site_folder)
+  filepath2 <- paste0(rac_folder2, 'site_', i, site_folder2)
+  
+  variable <- read.csv(paste0(filepath, list[6]), header=TRUE, sep=",")
+  variable2 <- read.csv(paste0(filepath2, list[6]), header=TRUE, sep=",")
+  
+  variable_list <- append(variable_list, list(variable))
+  variable_list2 <- append(variable_list2, list(variable2))}
+
+  combined <- bind_cols(variable_list) %>% 
+    select(1, 2, 5, 8, 11, 14, 17)
+  
+  combined2 <- bind_cols(variable_list2) %>%
+    select(2, 5, 8, 11, 14, 17)
+  
+  combined3 <- bind_cols(combined, combined2)
+    colnames(combined3) <- c("day", sites, sites)
+    
+  name <- paste0(strsplit(list[6], ".csv"), '.csv')
+  write.table(combined3, file = name, row.names=FALSE, col.names = TRUE, sep=",")
+}
+
+
+rac_folder <- './rac_seabass/'
+site_folder <- '/Bass_population/Outputs/Out_csv/'
+
+rac_folder2 <- './rac_bream/'
+site_folder2 <- '/Bream_population/Outputs/Out_csv/'
+
+compiler(rac_folder, site_folder, rac_folder2, site_folder2)
+```

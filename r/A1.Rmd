@@ -1,0 +1,175 @@
+---
+title: "Top Producers of Marine Finfish Aquaculture"
+author: "Zack Dinh and Erik J Ortega"
+date: "Fall 2018"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE, tidy=TRUE, echo=FALSE, warining=FALSE, error=FALSE, message=FALSE}
+### Web link: https://espm-157.github.io/final-project-aqua-team-erik-and-zack/
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo = FALSE, message = FALSE, include = FALSE}
+library(rmarkdown)
+library(tinytex)
+library(latexpdf)
+```
+
+
+
+###Marine Aquculture, A Global Industry
+Marine aquaculture is the practice of farming marine organisms. As of 2018, more than half the world's seafood supply (finfish, crustaceans, and molluscs) were produced through aquaculture. The industry has grown rapidly, with global production doubling in the last 12 years from 41.91 million tonnes in 2004 to 80.03 million tonnes in 2016. 
+
+Marine aquaculture is viewed by many as a potential solution towards feeding a growing world population. Marine aquaculture reduces the demand for land needed for farming and livestock, and uses no freshwater. Importantly, the [feed conversion ratio (FCR)](http://documents.worldbank.org/curated/en/556181468331788600/pdf/788230BRI0AES00without0the0abstract.pdf) of farmed fish is more efficient then that of terrestrial livestock. 
+
+Net-pen aquaculture is a specific type of marine aquaculture where fish are raised in net pens typically placed near shore. This open-system has been criticized for environmental degradation due to high concentration of fish waste, use of antibiotics, and other chemicals. The spread of pathogens and competition from escaped fish caused by net pen failures have been seen as serious threats to wild fish populations. This initial study is the first step towards identification of net-pens throughout the world.
+
+###Our Goals
+
+- Identify which countries are the greatest producers of marine finfish aquaculture, measured in tonnes
+- Estimate the total amount of area each country could use for marine aquaculture, defined as waters within 22.2 kilometers of a country’s coastline.
+- Generate area of interest (AOI) shapefiles of each country’s coastal waters for future use in downloading high-resolution satellite imagery.
+- Generate a relatively high-resolution land mask of each country, to exclude land from future satellite imagery processing efforts focused on the waters within the AOIs.
+
+
+###Data Source: United Nations Food & Agriculture Organization 
+We began by reviewing data from the United Nations Food & Agriculture Organization (UNFAO). Each year, the UNAFO releases [The State of the World Fisheries and Aquaculture](http://www.fao.org/state-of-fisheries-aquaculture/en/) which includes the [original data](http://www.fao.org/fishery/statistics/global-aquaculture-production/en) available as CSVs. By combining and filtering through these data sets we were able to identify the total production of marine finfish for each country in 2016 (The 2018 report cites data from 2016). Below is a sample of the UNFAO data after our tidying efforts.
+
+```{r echo = FALSE, include = FALSE, message = FALSE}
+
+```
+
+```{r echo = FALSE, message = FALSE, include = FALSE}
+
+```
+
+```{r}
+
+```
+
+```{r echo = FALSE, include = FALSE, message = FALSE}
+
+```
+
+###Top 15 Marine Finfish Aquaculture Production Countries
+
+We identified these 15 countires as the top producers of marine finfish in 2016. China, Norway, and Chilie are the world leaders.
+
+```{r echo = FALSE, message = FALSE, warning=FALSE, fig.width = 10}
+
+```
+
+These 15 countries accounted for 97% of global marine finfish production in 2016.
+
+```{r echo = FALSE, message = FALSE, warning=FALSE, fig.width = 10}
+
+```
+
+```{r echo = FALSE, message = FALSE, warning=FALSE, results = "hide"}
+
+```
+
+```{r echo = FALSE, message = FALSE, warning=FALSE, results = "hide"}
+
+```
+
+```{r echo = FALSE, message = FALSE, warning=FALSE, results = "hide"}
+
+```
+
+```{r echo = FALSE, message = FALSE, warning=FALSE, results = "hide"}
+
+```
+
+```{r echo = FALSE, message = FALSE, warning=FALSE, results = "hide"}
+
+```
+
+```{r echo = FALSE, message = FALSE, warning=FALSE, results = "hide"}
+
+```
+
+### Final Map
+This map shows the top 15 countries we identified. Their shading represents their percentage of the world's total marine finfish aquaculture produciton. The world shapefile was sourced from: [ESRI.](https://hub.arcgis.com/datasets/252471276c9941729543be8789e06e12_0?geometry=-163.125%2C-46.149%2C196.875%2C57.646) Along the coastlines of the top 15 countries are polygons approximating the territorial waters of each country (waters within 22.2km of coastline). Although most marine aquculture occurs very close to shore, within bays and inlets, this represents the total area in which marine aquaculture could be found for any given country. In the future these AOIs will be used to download high-resoluiton satelite imagery to locate marine aquculture facilities.
+
+```{r echo = FALSE, message = FALSE, warning=FALSE}
+
+```
+
+```{r echo = FALSE, fig.width = 10}
+
+```
+
+###AOI Total Surface Area
+The total surface area for each country’s AOI was estimated using st_area.
+
+```{r echo = FALSE, message = FALSE, warning=FALSE, fig.width = 10}
+
+```
+
+###AOI Generation Process
+AOIs were generated from the world shapefile. Using the SF package, we generated buffers for each country using st_buffer and then excluded land with st_difference. The process is demonstrated here with Greece.
+
+####Greece
+```{r echo = FALSE, message = FALSE, warning=FALSE}
+
+```
+
+####AOI Buffer - Greece
+```{r echo = FALSE, message = FALSE, warning=FALSE}
+
+```
+
+####AOI Buffer, Land Areas Removed - Greece
+```{r echo = FALSE, message = FALSE, warning=FALSE}
+
+```
+
+###Generation of High-Resolution Coastlines from Elevation Data
+Closer inspection of the AOIs, reveal that the ESRI shapefile is of low-resolution, not ideal for use as a land mask. This can be clearly noted with the Faroe Islands. Therefore we developed a process to generate higher-resolution coastlines from digital elevation data. We sourced 30 meter elevation rasters from [USGS Earth Explorer](https://earthexplorer.usgs.gov/). Rasters were merged using the Raster package merge function. Using reclassify, land was classified as pixels with an elevation greater than zero, and water with an elevation of less than 0. The reclassified raster was converted to a vector using GDAL and rgdal. 
+
+####Merged Raster - Faroe Islands
+```{r echo = FALSE, message = FALSE, warning=FALSE, results = "hide", fig.width = 10}
+
+```
+
+
+####Reclassified Raster - Faroe Islands
+```{r echo = FALSE, message = FALSE, warning=FALSE, results = "hide", fig.width = 10}
+
+```
+
+```{r echo = FALSE, message = FALSE, warning=FALSE, results = "hide"}
+
+```
+
+```{r echo = FALSE, message = FALSE, warning=FALSE, results = "hide"}
+
+```
+
+###Next Steps
+In the future, the AOIs developed will be used to download elevation data for more countries of interest via API. A functionalized version of the coastline generation process will then be used to produce land masks. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
