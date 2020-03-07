@@ -19,15 +19,13 @@ sites <- as.vector(farmsites$farm_site)
 #select sites to model
 sites_2 <- list(23, 71, 92, 165, 172, 219) #study sites
 #sites_2 <- list(23, 71, 92)
-#sites_2 <- list(0, 1, 2)
-#sites_2 <- list(23)
 
 #specify number of simulations 1) feeding 2), full simulation
-# pre_sim <- 6
-# main_sim <- 7
-
 pre_sim <- 50
 main_sim <- 5000
+
+pre_sim <- 5
+main_sim <- 6
 
 #start <- "3/1/2018" #jan 3, 2018
 # end_prep <- "4/9/2019"
@@ -39,12 +37,16 @@ end <- "15/12/2019"
 ```
 
 ```{r include=FALSE}
-#load sst files
-sst_folder <- '../ghrsst_csv/'
+#load master files
+sst_folder <- '/Users/Zack/0_thesis_sst/ghrsst_csv/'
+rac_folder <- "/Users/Zack/0_seawarden/r_rac/rac_bream/"
+
+#AWS
+#sst_folder <- '../ghrsst_csv/'
+#rac_folder <- "/Users/Administrator/Documents/GitHub/seawarden/r_rac/rac_bream/"
+
 sst_list <- list.files(sst_folder, pattern = '.csv')
 
-#load master files
-rac_folder <- "/Users/Administrator/Documents/GitHub/seawarden/r_rac/rac_bream/"
 master_files <- paste0(rac_folder, 'master_files/master_RAC-bream - ')
 
 #prep files to generate feeding tables

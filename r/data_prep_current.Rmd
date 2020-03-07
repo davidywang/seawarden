@@ -18,29 +18,20 @@ library(foreach)
 library(doParallel)
 
 #load ocean current data
-v_folder_18 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_vo_2018_tif/' #or 2018
-u_folder_18 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_uo_2018_tif/' #or 2018
-v_folder_19 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_vo_2019_tif/' #or 2019
-u_folder_19 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_uo_2019_tif/' #or 2019
+#v_18 <- '/Users/Zack/0_thesis_ocean_current_2/vo_2018_tif/' #or 2018
+#u_18 <- '/Users/Zack/0_thesis_ocean_current_2/uo_2018_tif/' #or 2018
+v_19 <- '/Users/Zack/0_thesis_ocean_current_2/vo_2019_tif/' #or 2019
+u_19 <- '/Users/Zack/0_thesis_ocean_current_2/uo_2019_tif/' #or 2019
 
-#output folder
-output_18 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_2018_csv/' #for 2018
-output_19 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_2018_csv/' #for 2019
-
-#input folders - for combine
-folder_1 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_2018_csv/'
-folder_2 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_2019_csv/'
+#output folder for csv files
+#output_18 <- '/Users/Zack/0_thesis_ocean_current_2/current_2018_csv/' #for 2018
+output_19 <- '/Users/Zack/0_thesis_ocean_current_2/current_2019_csv/' #for 2019
 
 #output folder - for combine
-folder_3 <- '/Users/Zack/0_thesis_ocean_current_2/medsea_current_csv/'
-```
+output_csv <- '/Users/Zack/0_thesis_ocean_current_2/current_csv/'
 
-```{r}
-#load shapefile of farm sites
-targets <- '/Users/Zack/0_greece/blue_bridge/farm_pts_500m_sq_current.shp'
-targets <- st_read(targets)
-
-sites <- 1:nrow(as.data.frame(targets))
+#output folder - for txt files
+output_txt <- '/Users/Zack/0_thesis_ocean_current_2/current_txt/'
 ```
 
 ```{r}
@@ -124,17 +115,21 @@ current_tool <- function(v_folder, u_folder, target, output){
 #single use
 #current_tool(v_folder_18, u_folder_18, targets[1,], output_18)
 
-sites <-sites[13:50]
-
-#loop to create u, v, direction and speed csv for all farm sites
-for (i in sites){current_tool(v_folder_18, u_folder_18, targets[i,], output_18)}
-
-targets <- '/Users/Zack/0_greece/blue_bridge/farm_pts_500m_sq_current.shp'
+#load shapefile of farm sites
+targets <- '/Users/Zack/0_seawarden/greece/blue_bridge/farm_pts_500m_sq_current.shp'
 targets <- st_read(targets)
 sites <- 1:nrow(as.data.frame(targets))
+#sites <-sites[1:5]
 
-for (i in sites){current_tool(v_folder_19, u_folder_19, targets[i,], output_19)}
+#loop to create u, v, direction and speed csv for all farm sites
+#for (i in sites){current_tool(v_18, u_18, targets[i,], output_18)}
+for (i in sites){current_tool(v_19, u_19, targets[i,], output_19)}
 ```
+
+
+
+
+
 
 ```{r}
 #does not work atm
@@ -152,25 +147,23 @@ for (i in sites){current_tool(v_folder_19, u_folder_19, targets[i,], output_19)}
 ```
 
 ```{r}
-#combine 2018 and 2019 csv files
-
-#function to combine files
-combine <- function(folder_1, folder_2, folder_3){
-
-  #read csv files
-  csv_1 <- read.delim(paste0(folder_1, list_1[i]), sep = ',', stringsAsFactors = F, header = FALSE)
-  csv_2 <- read.delim(paste0(folder_2, list_1[i]), sep = ',', stringsAsFactors = F, header = FALSE)
-
-  #create output filename
-  output <- paste0(folder_3, paste0(list_1[i]))
-  
-  #merge dataframes and export file
-  write.table(rbind(csv_1, csv_2), file = paste0(folder_3, paste0(list_1[i])), row.names=FALSE, col.names = FALSE, sep=",")}
-
-#list files in folders
-list_1 <- list.files(folder_1, pattern = '.csv')
-list_2 <- list.files(folder_2, pattern = '.csv')
-
-#combine SST csv files
-for (i in 1:(length(list_1))){combine(folder_1, folder_2, folder_3)}
+# #combine 2018 and 2019 csv files
+# combine <- function(output_18, output_19, output_csv){
+# 
+#   #read csv files
+#   csv_1 <- read.delim(paste0(output_18, list_1[i]), sep = ',', stringsAsFactors = F, header = FALSE)
+#   csv_2 <- read.delim(paste0(output_19, list_1[i]), sep = ',', stringsAsFactors = F, header = FALSE)
+# 
+#   #create output filename
+#   output <- paste0(output_csv, paste0(list_1[i]))
+#   
+#   #merge dataframes and export file
+#   write.table(rbind(csv_1, csv_2), file = paste0(output_csv, paste0(list_1[i])), row.names=FALSE, col.names = FALSE, sep=",")}
+# 
+# #list files in folders
+# list_1 <- list.files(output_18, pattern = '.csv')
+# list_2 <- list.files(output_19, pattern = '.csv')
+# 
+# #combine SST csv files
+# for (i in 1:(length(list_1))){combine(output_18, output_19, output_csv)}
 ```

@@ -1,0 +1,24 @@
+---
+title: "FiCIM_prep"
+author: "Zack Dinh"
+date: "March 6, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+folder <- "/Users/Zack/0_seawarden/r_FiCIM/"
+param <- read.csv(paste0(folder, 'FiCIM - Param.csv'), header=FALSE, sep=",", stringsAsFactors = FALSE)
+write.table(param, file='FiCIM - Param.txt', sep = "\t", row.names=FALSE, col.names=FALSE)
+```
+
+```{r}
+i = 15
+bath <- "/Users/Zack/0_thesis_bath/bath_txt/"
+file <- paste0(i, "_bath.txt")
+file.copy(paste0(bath, file), folder, overwrite = TRUE)
+
+current <- "/Users/Zack/0_thesis_ocean_current_2/current_txt/"
+file <- paste0(i, "_current.txt")
+file.copy(paste0(current, file), folder, overwrite = TRUE)
+```
+```
