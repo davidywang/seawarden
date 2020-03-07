@@ -6,44 +6,65 @@ output: html_document
 ---
 
 ```{r include=FALSE}
-library(dplyr)
-library(data.table)
+#library(dplyr)
+#library(data.table)
 library(raster)
-library(sp)
+library(oceanmap)
+#library(sp)
 library(sf)
+
+#input data
+tif_input <- '/Users/Zack/0_thesis_bath/bath_emodnet/bath_2018.tif'
+tif_output <- '/Users/Zack/0_thesis_bath/bath_tif/'
+txt_output <- '/Users/Zack/0_thesis_bath/bath_txt/'
+  
+#load shapefile of farm sites
+targets <- '/Users/Zack/0_seawarden/greece/blue_bridge/fishcages_Greece_farm_pts_500m_sq_2.shp'
+targets <- st_read(targets)
 ```
 
 ```{r}
-#input data
-tif_input <- '/Users/Zack/0_thesis_bath/bath_emodnet/bath_2018.tif'
-
-#output folder
-#tif_output <- '/Users/Zack/0_thesis_bath/x/'
-tif_output <- '/Users/Zack/0_thesis_bath/bath_2018_tif_v2/'
-  
-#load shapefile of farm sites
-targets <- '/Users/Zack/0_greece/blue_bridge/fishcages_Greece_farm_pts_500m_sq.shp'
-targets <- st_read(targets)
-
 #function to crop raster to area of interest
 crop_tool <- function(image_file, target){
   raster <- raster(image_file)
   raster_crop <- crop(raster, target)}
 
-crop_tool(tif_input, targets[1,])
+#crop_tool(tif_input, targets[1,])
 
 #extract tif_input for each site
 for (i in 1:nrow(as.data.frame(targets))){
   crop <- crop_tool(tif_input, targets[i,])
-  output <- paste0(tif_output, i-1, '_bath.tiff') 
+  output <- paste0(tif_output, i-1, '_bath.tif') 
   writeRaster(crop, file = output, "GTiff", overwrite=TRUE)}
 ```
 
 ```{r}
 l=length(list.files(tif_output, pattern = '.tif'))
 
-#for (i in 1:10){
-for (i in 1:l){
-  file <- paste0('/Users/Zack/0_thesis_bath/bath_2018_tif/', i-1, '_bath.tif')
+for (i in 1:10){
+#for (i in 1:l){
+  file <- paste0(tif_output, i-1, '_bath.tif')
   plot(raster(file))}
+```
+
+```{r}
+#resample raster from 115m to 5m (FiCIM)
+#https://datacarpentry.org/r-raster-vector-geospatial/03-raster-reproject-in-r/
+bath_txt <- function(tif_input, i, txt_output){
+  bath <- raster(paste0(tif_output, i-1, "_bath.tif"))
+  bath_2<-projectRaster(bath, crs = crs(bath), res = res(bath)/23)
+  #writeRaster(s, file = "test.tif", "GTiff", overwrite=TRUE)
+  
+  #raster to txt file
+  matrix<-raster2matrix(bath_2)
+  matrix <- round(matrix, 2)
+  matrix[is.na(matrix)] <- 0
+  
+  output <- paste0(txt_output, i-1, '_bath.txt')
+  write.table(matrix, file=output, sep = "\t", row.names=FALSE, col.names=FALSE)}
+```
+
+```{r}
+for (i in 1:nrow(as.data.frame(targets))){
+  bath_txt(tif_input, i, txt_output)}
 ```
