@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xml:lang="en"><Esri><CreaDate>20200309</CreaDate><CreaTime>12395900</CreaTime><ArcGISFormat>1.0</ArcGISFormat><SyncOnce>TRUE</SyncOnce><DataProperties><lineage><Process ToolSource="c:\program files (x86)\arcgis\desktop10.7\ArcToolbox\Toolboxes\Spatial Analyst Tools.tbx\RasterCalculator" Date="20200309" Time="123959">RasterCalculator Con(IsNull("bath_sq_neg.tif"), 0, "bath_sq_neg.tif") C:\Users\Zack\0_seawarden\greece\R1\bath_sq_for-3D.tif</Process></lineage></DataProperties></Esri></metadata>

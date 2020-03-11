@@ -28,10 +28,7 @@ u_19 <- '/Users/Zack/0_thesis_ocean_current_2/uo_2019_tif/' #or 2019
 output_19 <- '/Users/Zack/0_thesis_ocean_current_2/current_2019_csv/' #for 2019
 
 #output folder - for combine
-output_csv <- '/Users/Zack/0_thesis_ocean_current_2/current_csv/'
-
-#output folder - for txt files
-output_txt <- '/Users/Zack/0_thesis_ocean_current_2/current_txt/'
+#output_csv <- '/Users/Zack/0_thesis_ocean_current_2/current_csv/'
 ```
 
 ```{r}
@@ -104,7 +101,7 @@ current_tool <- function(v_folder, u_folder, target, output){
   
   #create output filename and export as csv
   df <-as.data.frame(target)
-  filename <- paste0(output, paste0(df['farm_id']), '_medsea_current.csv')
+  filename <- paste0(output, paste0(df['farm_id']), '_current.csv')
   
   #create output file
   #write.csv(daily, file=filename, row.names = FALSE)}
@@ -125,11 +122,6 @@ sites <- 1:nrow(as.data.frame(targets))
 #for (i in sites){current_tool(v_18, u_18, targets[i,], output_18)}
 for (i in sites){current_tool(v_19, u_19, targets[i,], output_19)}
 ```
-
-
-
-
-
 
 ```{r}
 #does not work atm
