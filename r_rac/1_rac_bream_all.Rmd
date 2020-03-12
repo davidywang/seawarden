@@ -1,32 +1,51 @@
----
-title: "rac_bream_all"
-author: "Zack Dinh"
-date: "September 4, 2019"
-output: html_document
----
-
 ```{r include=FALSE}
 library(RAC)
 library(dplyr)
 library(zoo) #index function
-#command + shift + c
 trace(Bream_pop_main,edit=T) #delete selector = "y"
 
-#generate prep files for all sites
 farmsites <- read.csv('./master_inventory - Farm_Sites.csv', header=TRUE, sep=",")
 sites <- as.vector(farmsites$farm_site)
+```
+
+```{r}
+#load master files - LOCAL
+rac_folder <- "/Users/Zack/0_seawarden/r_rac/rac_bream/"
+
+#load master files - AWS
+#rac_folder <- "/Users/Administrator/Documents/GitHub/seawarden/r_rac/rac_bream/"
 
 #select sites to model
-sites_2 <- list(23, 71, 92, 165, 172, 219) #study sites
-#sites_2 <- list(23, 71, 92)
+#sites_2 <- list(23, 71, 92, 165, 172, 219) #study sites
+# sites_2 <- sites
+
+# sites_2 <- sites[1:14] 
+# sites_2 <- sites[15:28] 
+# sites_2 <- sites[29:42]
+# sites_2 <- sites[43:56]
+# sites_2 <- sites[57:70]
+# sites_2 <- sites[71:84]
+# sites_2 <- sites[85:98]
+# sites_2 <- sites[99:112]
+# sites_2 <- sites[113:126]
+# sites_2 <- sites[127:140]
+# sites_2 <- sites[141:154]
+# sites_2 <- sites[155:168]
+# sites_2 <- sites[169:182]
+# sites_2 <- sites[183:196]
+# sites_2 <- sites[197:210]
+# sites_2 <- sites[211:224]
+# sites_2 <- sites[225:238]
+# sites_2 <- sites[239:250]
 
 #specify number of simulations 1) feeding 2), full simulation
-pre_sim <- 50
-main_sim <- 5000
+# pre_sim <- 2
+# main_sim <- 3
 
-pre_sim <- 5
-main_sim <- 6
+# pre_sim <- 50
+# main_sim <- 5000
 
+#specify simulation start
 #start <- "3/1/2018" #jan 3, 2018
 # end_prep <- "4/9/2019"
 # end <- "31/8/2019"
@@ -37,14 +56,8 @@ end <- "15/12/2019"
 ```
 
 ```{r include=FALSE}
-#load master files
-sst_folder <- '/Users/Zack/0_thesis_sst/ghrsst_csv/'
-rac_folder <- "/Users/Zack/0_seawarden/r_rac/rac_bream/"
-
-#AWS
-#sst_folder <- '../ghrsst_csv/'
-#rac_folder <- "/Users/Administrator/Documents/GitHub/seawarden/r_rac/rac_bream/"
-
+#generate prep files for all sites
+sst_folder <- '../ghrsst_csv/'
 sst_list <- list.files(sst_folder, pattern = '.csv')
 
 master_files <- paste0(rac_folder, 'master_files/master_RAC-bream - ')
@@ -137,7 +150,6 @@ feeding <- function(rac_folder, i){
   ingestion <- ingestion %>% select(V1)
   ingestion$V1 <- ingestion$V1 * 1.5 #adjust
 
-  
   date <- feeding_prep %>% select(date)
   
   #date <- date$date[1:nrow(ingestion)]
