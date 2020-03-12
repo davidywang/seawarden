@@ -6,14 +6,24 @@ trace(Bream_pop_main,edit=T) #delete selector = "y"
 
 farmsites <- read.csv('./master_inventory - Farm_Sites.csv', header=TRUE, sep=",")
 sites <- as.vector(farmsites$farm_site)
+
+# sites_2 <- sites[1:28] 
+# sites_2 <- sites[29:56]
+# sites_2 <- sites[57:84]
+# sites_2 <- sites[85:112]
+
+# sites_2 <- sites[113:140]
+# sites_2 <- sites[141:168]
+# sites_2 <- sites[169:196]
+# sites_2 <- sites[197:224]
 ```
 
 ```{r}
 #load master files - LOCAL
-rac_folder <- "/Users/Zack/0_seawarden/r_rac/rac_bream/"
+# rac_folder <- "/Users/Zack/0_seawarden/r_rac/rac_bream/"
 
 #load master files - AWS
-#rac_folder <- "/Users/Administrator/Documents/GitHub/seawarden/r_rac/rac_bream/"
+rac_folder <- "/Users/Administrator/Documents/GitHub/seawarden/r_rac/rac_bream/"
 
 #select sites to model
 #sites_2 <- list(23, 71, 92, 165, 172, 219) #study sites
