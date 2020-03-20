@@ -18,7 +18,7 @@ tif_output <- '/Users/Zack/0_thesis_bath/bath_tif/'
 txt_output <- '/Users/Zack/0_thesis_bath/bath_txt/'
   
 #load shapefile of farm sites
-targets <- '/Users/Zack/0_seawarden/greece/blue_bridge/fishcages_Greece_farm_pts_500m_sq_2.shp'
+targets <- '/Users/Zack/0_seawarden/greece/blue_bridge/farm_500m_update.shp'
 targets <- st_read(targets)
 ```
 
@@ -28,20 +28,18 @@ crop_tool <- function(image_file, target){
   raster <- raster(image_file)
   raster_crop <- crop(raster, target)}
 
-#crop_tool(tif_input, targets[1,])
-
 #extract tif_input for each site
 for (i in 1:nrow(as.data.frame(targets))){
   crop <- crop_tool(tif_input, targets[i,])
-  output <- paste0(tif_output, i-1, '_bath.tif') 
+  output <- paste0(tif_output, targets$farm_id, '_bath.tif') 
   writeRaster(crop, file = output, "GTiff", overwrite=TRUE)}
 ```
 
 ```{r}
 # l=length(list.files(tif_output, pattern = '.tif'))
 # 
-# for (i in 1:10){
-# #for (i in 1:l){
+# #for (i in 1:10){
+# for (i in 1:l){
 #   file <- paste0(tif_output, i-1, '_bath.tif')
 #   plot(raster(file))}
 ```
@@ -49,8 +47,9 @@ for (i in 1:nrow(as.data.frame(targets))){
 ```{r}
 #resample raster from 115m to 5m (FiCIM)
 #https://datacarpentry.org/r-raster-vector-geospatial/03-raster-reproject-in-r/
+
 bath_txt <- function(tif_input, i, txt_output){
-  bath <- raster(paste0(tif_output, i-1, "_bath.tif"))
+  bath <- raster(paste0(tif_output, targets$farm_id, "_bath.tif"))
   bath_2<-projectRaster(bath, crs = crs(bath), res = res(bath)/23)
   #writeRaster(s, file = "test.tif", "GTiff", overwrite=TRUE)
   
@@ -59,20 +58,41 @@ bath_txt <- function(tif_input, i, txt_output){
   matrix <- round(matrix, 2)
   matrix[is.na(matrix)] <- 0
   
-  output <- paste0(txt_output, i-1, '_bath.txt')
+  output <- paste0(txt_output, targets$farm_id, '_bath.txt')
   write.table(matrix, file=output, sep = "\t", row.names=FALSE, col.names=FALSE)}
-```
 
-```{r}
 for (i in 1:nrow(as.data.frame(targets))){
   bath_txt(tif_input, i, txt_output)}
 ```
 
 ```{r}
 #contour lines
-r <- raster(paste0(tif_output, "10_bath.tif"))
-x <- rasterToContour(r)
-class(x)
-plot(r)
-plot(x, add=TRUE)
+# r <- raster(paste0(tif_output, "10_bath.tif"))
+# x <- rasterToContour(r)
+# class(x)
+# plot(r)
+# plot(x, add=TRUE)
+```
+
+```{r include=FALSE}
+#export average depth of all farm sites to csv
+bath_list <- list.files(tif_output, pattern = '.tif')
+  
+bath_avg = list()
+farm_id = list()
+
+for (i in bath_list){
+  bath <- paste0(tif_folder, i)
+  pts <- rasterToPoints(raster(bath))
+  pts_df <- as.data.frame(pts) 
+  bath_avg[[i]] <- mean(pts_df[,3])
+  farm_id[[i]] <- unlist(strsplit(i, "_"))[1]}
+  
+avg_df<-data.frame(do.call(rbind, bath_avg))
+id_df<-data.frame(do.call(rbind, farm_id))
+bath_df<-cbind(id_df, avg_df)
+bath_df <- bath_df %>% rename(farm_site=1, avg_depth=2)
+
+output <- '/Users/Zack/0_thesis_bath/bath_avg.csv'
+write.table(bath_df, file = output, row.names=FALSE, col.names = FALSE, sep=",")
 ```

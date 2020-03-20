@@ -1,0 +1,77 @@
+
+```{r include=FALSE}
+library(dplyr)
+library(raster)
+library(sf)
+
+#load shapefile of farm sites
+targets <- '/Users/Zack/0_seawarden/greece/blue_bridge/farm_500m_update_current.shp' 
+targets <- st_read(targets)
+
+#load ocean current data
+vo <- '/Users/Zack/0_thesis_ocean_current_2/vo_tif/' 
+uo <- '/Users/Zack/0_thesis_ocean_current_2/uo_tif/'
+
+#output folder - for txt files
+output_txt <- '/Users/Zack/0_thesis_ocean_current_2/current_txt/'
+```
+
+```{r}
+#function to crop raster to area of interest, converts raster to point
+crop_tool <- function(image_file, target){
+  
+  #opens raster file, clips raster to target (target is opened in a prior step)
+  raster_crop <- crop(raster(image_file), target) 
+  
+  #raster clip is convereted to a point
+  pts <- rasterToPoints(raster_crop) 
+  
+  #points converted to a df
+  pts_df <- as.data.frame(pts) 
+  
+  #mean calculated to result in just one measurement
+  mean(pts_df[,3])} 
+```
+
+```{r}
+current_tool <- function(v_folder, u_folder, target){ 
+
+  #list of tif files in folder
+  v_list <- list.files(v_folder, pattern = '.tif')
+  u_list <- list.files(u_folder, pattern = '.tif')
+  
+  daily_u = list()
+  daily_v = list()
+  date = list()
+
+  #for (i in 1:5){
+  for (i in 1:length(v_list)){
+
+      v_file <- paste0(v_folder, v_list[i])
+      u_file <- paste0(u_folder, u_list[i])
+
+      v <- crop_tool(v_file, target)
+      u <- crop_tool(u_file, target)
+      
+      daily_u[[i]] <- unlist(rep(u, 24))
+      daily_v[[i]] <- unlist(rep(v, 24))
+        
+        day <- substr(u_list[i], 19, 20)
+        month <- substr(u_list[i], 16, 17)
+        year <- substr(u_list[i], 11, 14)
+
+      date[[i]] <- paste0(day, "/", month, "/", year)}
+
+  daily_u <- unlist(daily_u)
+  daily_v <- unlist(daily_v)
+  daily <- data.frame(cbind(daily_u, daily_v))}
+```
+
+```{r include=False}
+for (i in 1:nrow(targets)){
+#for (i in 1:5){
+  target <- targets[i,]
+  df <- current_tool(vo, uo, target)
+  filename <- paste0(output_txt, target$farm_id, '_current.txt')
+  write.table(df, file=filename, sep = "\t", row.names=FALSE, col.names=FALSE)}
+```
