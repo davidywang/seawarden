@@ -1,24 +1,107 @@
----
-title: "FiCIM_prep"
-author: "Zack Dinh"
-date: "March 6, 2020"
-output: html_document
----
-
 ```{r setup, include=FALSE}
-folder <- "/Users/Zack/0_seawarden/r_FiCIM/"
-param <- read.csv(paste0(folder, 'FiCIM - Param.csv'), header=FALSE, sep=",", stringsAsFactors = FALSE)
-write.table(param, file='FiCIM - Param.txt', sep = "\t", row.names=FALSE, col.names=FALSE)
+library(dplyr)
+
+#create one csv per farm site
+farmsites <- read.csv('/Users/Zack/0_seawarden/r_rac/master_inventory - Farm_Sites.csv', header=TRUE, sep=",")
+sites <- farmsites$farm_site
+
+rac_folder <- '/Users/Zack/0_rac/rac_seabass/'
+site_folder <- '/Bass_population/Outputs/Out_csv/'
+
+rac_folder_2 <- '/Users/Zack/0_rac/rac_bream/'
+site_folder_2 <- '/Bream_population/Outputs/Out_csv/'
+```
+
+
+
+```{r}
+#function to convert RAC predictions to C, N, P
+compiler <- function(rac_folder, site_folder, i){
+
+  compiled <- read.csv(paste0(rac_folder, 'output_compiled/site_', i, '_compiled.csv'), header=TRUE, sep=",")
+
+  Pexc <- compiled$faeces_p1*.4 + compiled$faeces_l1*2.3 + compiled$faeces_c1*0
+  Nexc <- compiled$faeces_p1*15.9 + compiled$faeces_l1*2.6 + compiled$faeces_c1*0
+  Cexc <- compiled$faeces_p1*54.5 + compiled$faeces_l1*77 + compiled$faeces_c1*40
+    
+  Pwst <- compiled$faeces_p1*.4 + compiled$faeces_l1*2.3 + compiled$faeces_c1*0
+  Nwst <- compiled$faeces_p1*15.9 + compiled$faeces_l1*2.6 + compiled$faeces_c1*0
+  Cwst <- compiled$faeces_p1*54.5 + compiled$faeces_l1*77 + compiled$faeces_c1*40
+  
+  compiled <- data.frame(cbind(compiled$day, Pexc, Nexc, Cexc, Pwst, Nwst, Cwst))
+  
+  colnames(compiled) <- c("day", "Pexc", "Nexc", "Cexc", "Pwst", "Nwst", "Cwst")
+
+  harvest <-  read.csv(paste0(rac_folder, 'site_', i, site_folder, 'Days_to_commercial_size.csv'))
+  harvest <- harvest %>% select(3)
+  harvest <- harvest[[1]]
+  
+  compiled <- compiled[1:harvest,] 
+
+  name <- paste0(rac_folder, 'output_waste/', i, '_total_waste.csv')
+  write.table(compiled, file = name, row.names=FALSE, col.names = TRUE, sep=",")}
+
+#prepare total waste conversions for all sites
+# for (i in sites){
+#   compiler(rac_folder, site_folder, i)
+#   compiler(rac_folder_2, site_folder_2, i)}
 ```
 
 ```{r}
-i = 15
-bath <- "/Users/Zack/0_thesis_bath/bath_txt/"
-file <- paste0(i, "_bath.txt")
-file.copy(paste0(bath, file), folder, overwrite = TRUE)
+#generate txt files specific to net pens of a farm site
+folder <- "/Users/Zack/0_seawarden/r_FiCIM/"
 
-current <- "/Users/Zack/0_thesis_ocean_current_2/current_txt/"
-file <- paste0(i, "_current.txt")
-file.copy(paste0(current, file), folder, overwrite = TRUE)
+site_id = 117
+site <- read.csv(paste0(folder, 'FiCIM - ', site_id, '.csv'), header=TRUE, sep=",", stringsAsFactors = FALSE)
+index <- nrow(site) - 1 #remove last row
+
+#load param template
+param <- read.csv(paste0(folder, 'FiCIM - Param.csv'), header=FALSE, sep=",", stringsAsFactors = FALSE)
+
+#load dates
+date <- read.csv(paste0(folder, 'FiCIM - Julian_Day.csv'), header=FALSE, sep=",", stringsAsFactors = FALSE)
+hr <- read.csv(paste0(folder, 'FiCIM - Julian_Hr.csv'), header=FALSE, sep=",", stringsAsFactors = FALSE)
+
+#load bath and current data
+bath <- "/Users/Zack/0_thesis_bath/bath_txt/"
+current <- "/Users/Zack/0_thesis_ocean_current/current_txt/"
+
+#copy bath and current data
+file.copy(paste0(bath, site_id, "_bath.txt"), folder, overwrite = TRUE) #xport bath
+#file.copy(paste0(current, site_id, "_current.txt"), folder, overwrite = TRUE) #export current
+
+#add date to current data
+c <- read.delim(paste0(current, site_id, "_current.txt"), header = FALSE, sep = "\t")
+h <- rep(hr, nrow(c)/24)
+d <- date$V4 + unlist(h)
+c <- cbind(d, c)
+name <- paste0(folder, site_id, '_current.txt')
+write.table(c, name, sep = "\t", row.names=FALSE, col.names=FALSE)
 ```
+
+```{r}
+#generate txt files
+for (i in 1:index){
+  param$V3[1] <- site$ORIG_FID[i] #cage number
+  param$V4[1] <- site$Cgx[i] #cage position
+  param$V5[1] <- site$Cgy[i] #cage position
+  #param$V1[3] <- 0
+  #param$V2[3] <- -20
+
+  name <- paste0("/Users/Zack/0_rac/rac_", site$Species[i], '/output_waste/', site$farm_id[i], '_total_waste.csv')
+  waste <- read.csv(name, header=TRUE, sep=",", stringsAsFactors = FALSE)
+  
+  param$V1[1] <- nrow(waste) #days
+  param$V2[1] <- site$Species.Index[i]
+  
+  waste <- waste[2:7] * site$Percentage[i] #reduce waste total to net pen size
+  waste <- cbind(date$V4[1:nrow(waste)], waste) #add julian date, combine with waste
+
+  #export param.txt
+  name <- paste0(folder, site$farm_id[i], '_', site$ORIG_FID[i], '_param_', site$Species[i], '.txt')
+  write.table(param, name, sep = "\t", row.names=FALSE, col.names=FALSE)
+  
+  #export total_waste.txt
+  name <- paste0(folder, site$farm_id[i], '_', site$ORIG_FID[i], '_total_waste_', site$Species[i], '.txt')
+  write.table(waste, name, sep = "\t", row.names=FALSE, col.names=FALSE)}
 ```
