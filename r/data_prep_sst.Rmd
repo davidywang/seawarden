@@ -163,54 +163,54 @@ for (i in 1:(length(list_1))){
 
 ```{r}
 #plot function
-# plot_tool <- function(plot_csv_folder, plot_csv_list, plot_folder){ 
-#   
-#   #create file path to csv
-#   filepath <- paste0(plot_csv_folder, plot_csv_list)  
-#     
-#   #open csv
-#   csv <- read.delim(file=filepath, sep = ',', stringsAsFactors = F, header = FALSE)  
-#   
-#   name <- unlist(strsplit(plot_csv_list, "_"))[1]
-#   output <- paste0(plot_folder, name,'.png')
-#     
-#   #change date format
-#   csv$date <- as.Date(as.Date(csv$V1, format = "%d/%m/%Y"), "%Y-%m-%d")
-#   
-#   #plot title
-#   title <- paste("Sea Surface Temperature: Farm Site", name)
-#   
-#   p <- ggplot(csv, aes(x=date, y = V2, group = 1))+
-#     geom_line(color = "#00AFBB", size = .5)+  
-#     scale_x_date(labels = date_format("%Y-%m-%d"))+
-#     labs(x = "Date", y = "Celcius", title = title)+
-#     theme_minimal()+
-#     theme(plot.title = element_text(lineheight=.8, face="bold", size = 12)) +
-#     theme(text = element_text(size=10))
-#       #expand_limits(y = 0)
-#     scale_y_continuous(breaks=seq(0,0,2))
-#   ggsave(file=output, plot=p, width=10, height=8)
-#   p}
+plot_tool <- function(plot_csv_folder, plot_csv_list, plot_folder){
+
+  #create file path to csv
+  filepath <- paste0(plot_csv_folder, plot_csv_list)
+
+  #open csv
+  csv <- read.delim(file=filepath, sep = ',', stringsAsFactors = F, header = FALSE)
+
+  name <- unlist(strsplit(plot_csv_list, "_"))[1]
+  output <- paste0(plot_folder, name,'.png')
+
+  #change date format
+  csv$date <- as.Date(as.Date(csv$V1, format = "%d/%m/%Y"), "%Y-%m-%d")
+
+  #plot title
+  title <- paste("Sea Surface Temperature: Farm Site", name)
+
+  p <- ggplot(csv, aes(x=date, y = V2, group = 1))+
+    geom_line(color = "#00AFBB", size = .5)+
+    scale_x_date(labels = date_format("%Y-%m-%d"))+
+    labs(x = "Date", y = "Celcius", title = title)+
+    theme_minimal()+
+    theme(plot.title = element_text(lineheight=.8, face="bold", size = 12)) +
+    theme(text = element_text(size=10))
+      #expand_limits(y = 0)
+    scale_y_continuous(breaks=seq(0,0,2))
+  ggsave(file=output, plot=p, width=10, height=8)
+  p}
 ```
 
 ```{r}
 #generate plot for all sites
-# 
-# #input csv files
-# plot_csv_folder <- folder_3
-# 
-# #output folder 
-# plot_folder <- '/Users/Zack/0_thesis_sst/ghrsst_plots/' 
-# 
-# #create list of csv files
-# plot_csv_list <- list.files(plot_csv_folder) 
-# 
-# #generate one plot
-# #plot_tool(plot_csv_folder, plot_csv_list[3], plot_folder)
-# 
-# #loop to plot SST for all farm sites
-# for (i in 1:(length(plot_csv_list))){
-#   plot_tool(plot_csv_folder, plot_csv_list[i], plot_folder)}
+
+#input csv files
+plot_csv_folder <- folder_3
+
+#output folder
+plot_folder <- '/Users/Zack/0_thesis_sst/ghrsst_plots/'
+
+#create list of csv files
+plot_csv_list <- list.files(plot_csv_folder)
+
+#generate one plot
+#plot_tool(plot_csv_folder, plot_csv_list[3], plot_folder)
+
+#loop to plot SST for all farm sites
+for (i in 1:(length(plot_csv_list))){
+  plot_tool(plot_csv_folder, plot_csv_list[i], plot_folder)}
 ```
 
 

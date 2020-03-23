@@ -1,0 +1,21 @@
+SST Data Source
+
+Group for High Resolution Sea Surface Temperature 
+https://podaac-tools.jpl.nasa.gov/drive/files/OceanTemperature/ghrsst/docs/GDS20r5.pdf
+
+
+PO.DAAC Drive download
+https://podaac.jpl.nasa.gov/forum/viewtopic.php?f=5&t=452
+
+- 365 netCDF files for 2018 downloaded via wget in command line interface (CLI)
+- Command line script (works but will continue to download more than 2018 files)
+
+weget.exe
+- C:\Users\Zack\0_seawarden\python\sst
+
+weget instructions
+- https://builtvisible.com/download-your-website-with-wget/
+- https://eternallybored.org/misc/wget/
+
+COMMAND
+C:\Users\Zack\0_thesis_sst\wget.exe --user="zackdinh" --password="wbPRyKlf9gHmYqKF7wn" -r "*.nc" "https://podaac-tools.jpl.nasa.gov/drive/files/allData/ghrsst/data/GDS2/L4/MEDITERRANEAN/GOS/OISST_UHR/v2.0/2019/"

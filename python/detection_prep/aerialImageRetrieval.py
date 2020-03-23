@@ -15,9 +15,10 @@ TILESIZE = 256 # in Bing tile system, one tile image is in size 256 * 256 pixels
 
 class AerialImageRetrieval(object):
     #def
-    def __init__(self, cen_x, cen_y, lat1, lon1, lat2, lon2):
-        self.cen_x = cen_x
-        self.cen_y = cen_y
+    def __init__(self, lat1, lon1, lat2, lon2):
+#     def __init__(self, cen_x, cen_y, lat1, lon1, lat2, lon2):
+#         self.cen_x = cen_x
+#         self.cen_y = cen_y
         self.lat1 = lat1
         self.lon1 = lon1
         self.lat2 = lat2
@@ -93,7 +94,8 @@ class AerialImageRetrieval(object):
             retrieve_image = result.crop((pixelX1 - leftup_cornerX, pixelY1 - leftup_cornerY, \
                                         pixelX2 - leftup_cornerX, pixelY2 - leftup_cornerY))
 #             print("*Finish the aerial image retrieval, store the image image_{}.jpeg in folder {1}".format(levl, self.tgtfolder))
-            name = levl,self.cen_y,self.cen_x,self.lat1,self.lon1,self.lat2,self.lon2
+            #name = levl,self.cen_y,self.cen_x,self.lat1,self.lon1,self.lat2,self.lon2
+            name = levl,self.lat1,self.lon1,self.lat2,self.lon2
             filename = os.path.join(self.tgtfolder, 'image_{}.jpeg'.format(name))
             retrieve_image.save(filename)
             return True

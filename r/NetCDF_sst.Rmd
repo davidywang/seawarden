@@ -1,6 +1,6 @@
-# How to open and work with NetCDF data in R
 
 ```{r load_packages, warning=FALSE, message=FALSE}
+#https://daac.ornl.gov/resources/tutorials/NetCDF_webinar_08302017.html
 library(ncdf4) 
 library(raster) 
 library(sf)
@@ -57,13 +57,13 @@ netcdf_converter <- function(file){
 
 ```{r}
 #nc input folder
-nc_folder <- '/Users/Zack/0_thesis_sst/ghrsst_2019/'
+nc_folder <- '/Users/Zack/0_thesis_sst/ghrsst_2019/' #355 days
 
 #tif output fodler
 tif_folder <- '/Users/Zack/0_thesis_sst/ghrsst_2019_tif/'
 
 #area of interest for clipping tif
-area <- st_read('/Users/Zack/0_GIS_Greece/aoi/greece_envelope_main.shp')
+area <- st_read('/Users/Zack/0_seawarden/search_areas/3_aoi/GRC_aoi.shp')
 
 #list all files in folder
 folder_list <- list.files(nc_folder)

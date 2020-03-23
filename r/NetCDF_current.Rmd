@@ -1,5 +1,3 @@
-# How to open and work with NetCDF data in R
-
 ```{r load_packages, warning=FALSE, message=FALSE}
 library(ncdf4) # package for netcdf manipulation
 library(raster) # package for raster manipulation
@@ -25,8 +23,8 @@ file <- '/Users/Zack/0_thesis_ocean_current_2/med-cmcc-cur-an-fc-d_1581440302082
 date_range <- seq(as.Date("2019/07/02"), as.Date("2020/01/01"), "days")
 
 ###OUTPUT
-filepath_vo <- paste("/Users/Zack/0_thesis_ocean_current_2/medsea_vo_2019_tif/")
-filepath_uo <- paste("/Users/Zack/0_thesis_ocean_current_2/medsea_uo_2019_tif/")
+filepath_vo <- paste("/Users/Zack/0_thesis_ocean_current/vo_2019/")
+filepath_uo <- paste("/Users/Zack/0_thesis_ocean_current/uo_2019/")
 
 #open nc file
 nc_data <- nc_open(file)
