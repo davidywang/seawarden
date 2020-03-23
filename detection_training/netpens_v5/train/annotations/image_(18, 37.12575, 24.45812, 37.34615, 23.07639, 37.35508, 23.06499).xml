@@ -1,0 +1,26 @@
+<annotation>
+	<folder>images</folder>
+	<filename>image_(18, 37.12575, 24.45812, 37.34615, 23.07639, 37.35508, 23.06499).jpeg</filename>
+	<path>C:\Users\Zack\0_seawarden\python\detection\training\netpens_v5\train\images\image_(18, 37.12575, 24.45812, 37.34615, 23.07639, 37.35508, 23.06499).jpeg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>2125</width>
+		<height>2094</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>farm</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1060</xmin>
+			<ymin>953</ymin>
+			<xmax>1246</xmax>
+			<ymax>1228</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -1,0 +1,50 @@
+<annotation>
+	<folder>images</folder>
+	<filename>101_(18, 37.2723, 23.2729, 37.2633, 23.2842).jpeg</filename>
+	<path>C:\Users\Zack\0_seawarden\python\detection\training\netpens_v4\train\images\101_(18, 37.2723, 23.2729, 37.2633, 23.2842).jpeg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>2106</width>
+		<height>2108</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>farm</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>919</xmin>
+			<ymin>750</ymin>
+			<xmax>1381</xmax>
+			<ymax>947</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>farm</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1128</xmin>
+			<ymin>1042</ymin>
+			<xmax>1236</xmax>
+			<ymax>1153</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>farm</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>711</xmin>
+			<ymin>1243</ymin>
+			<xmax>1113</xmax>
+			<ymax>1351</ymax>
+		</bndbox>
+	</object>
+</annotation>
