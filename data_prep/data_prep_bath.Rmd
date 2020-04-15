@@ -1,10 +1,3 @@
----
-title: "ghrsst data prep"
-author: "Zack Dinh"
-date: "August 30, 2019"
-output: html_document
----
-
 ```{r include=FALSE}
 #library(dplyr)
 #library(data.table)
@@ -13,12 +6,16 @@ library(sf)
 library(oceanmap)
 
 #input data
-tif_input <- '/Users/Zack/0_thesis_bath/bath_emodnet/bath_2018.tif'
-tif_output <- '/Users/Zack/0_thesis_bath/bath_tif/'
-txt_output <- '/Users/Zack/0_thesis_bath/bath_txt/'
-  
+tif_input <- '/Users/Zack/0_bath/bath_emodnet/bath_2018.tif'
+tif_output <- '/Users/Zack/0_bath/bath_tif/' #_ext_tif/'
+txt_output <- '/Users/Zack/0_bath/bath_txt/'
+
+#tif_output <- '/Users/Zack/0_bath/wind_bath_tif/'
+
 #load shapefile of farm sites
 targets <- '/Users/Zack/0_seawarden/greece/blue_bridge/farm_500m_update.shp'
+#targets <- '/Users/Zack/0_seawarden/greece/colocation/greece_wind_500m_sq.shp'
+#targets <- '/Users/Zack/0_seawarden/greece/blue_bridge/farm_50m_update.shp'
 targets <- st_read(targets)
 ```
 
@@ -27,11 +24,14 @@ targets <- st_read(targets)
 crop_tool <- function(image_file, target){
   raster <- raster(image_file)
   raster_crop <- crop(raster, target)}
+```
 
+```{r}
 #extract tif_input for each site
 for (i in 1:nrow(as.data.frame(targets))){
   crop <- crop_tool(tif_input, targets[i,])
-  output <- paste0(tif_output, targets$farm_id, '_bath.tif') 
+  output <- paste0(tif_output, targets$farm_id[i], '_bath.tif') 
+  #output <- paste0(tif_output, targets$Id[i], '_bath.tif') 
   writeRaster(crop, file = output, "GTiff", overwrite=TRUE)}
 ```
 
@@ -48,21 +48,22 @@ for (i in 1:nrow(as.data.frame(targets))){
 #resample raster from 115m to 5m (FiCIM)
 #https://datacarpentry.org/r-raster-vector-geospatial/03-raster-reproject-in-r/
 
-bath_txt <- function(tif_input, i, txt_output){
-  bath <- raster(paste0(tif_output, targets$farm_id, "_bath.tif"))
+bath_txt <- function(tif_output, i, txt_output){
+  bath <- raster(paste0(tif_output, targets$farm_id[i], "_bath.tif"))
   bath_2<-projectRaster(bath, crs = crs(bath), res = res(bath)/23)
   #writeRaster(s, file = "test.tif", "GTiff", overwrite=TRUE)
   
   #raster to txt file
   matrix<-raster2matrix(bath_2)
   matrix <- round(matrix, 2)
+  matrix[matrix > 0] <- 0
   matrix[is.na(matrix)] <- 0
   
-  output <- paste0(txt_output, targets$farm_id, '_bath.txt')
+  output <- paste0(txt_output, targets$farm_id[i], '_bath.txt')
   write.table(matrix, file=output, sep = "\t", row.names=FALSE, col.names=FALSE)}
 
 for (i in 1:nrow(as.data.frame(targets))){
-  bath_txt(tif_input, i, txt_output)}
+  bath_txt(tif_output, i, txt_output)}
 ```
 
 ```{r}
@@ -77,7 +78,9 @@ for (i in 1:nrow(as.data.frame(targets))){
 ```{r include=FALSE}
 #export average depth of all farm sites to csv
 bath_list <- list.files(tif_output, pattern = '.tif')
-  
+
+tif_folder <- tif_output
+
 bath_avg = list()
 farm_id = list()
 
@@ -86,6 +89,7 @@ for (i in bath_list){
   pts <- rasterToPoints(raster(bath))
   pts_df <- as.data.frame(pts) 
   bath_avg[[i]] <- mean(pts_df[,3])
+  #bath_avg[[i]] <- pts_df
   farm_id[[i]] <- unlist(strsplit(i, "_"))[1]}
   
 avg_df<-data.frame(do.call(rbind, bath_avg))
@@ -93,6 +97,6 @@ id_df<-data.frame(do.call(rbind, farm_id))
 bath_df<-cbind(id_df, avg_df)
 bath_df <- bath_df %>% rename(farm_site=1, avg_depth=2)
 
-output <- '/Users/Zack/0_thesis_bath/bath_avg.csv'
+output <- '/Users/Zack/0_bath/bath_avg.csv'
 write.table(bath_df, file = output, row.names=FALSE, col.names = FALSE, sep=",")
 ```

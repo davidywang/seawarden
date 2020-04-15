@@ -1,0 +1,93 @@
+```{r}
+library(dplyr)
+sst_folder <- './sst/'
+files <- list.files(sst_folder, pattern = '.csv')
+#files <- files[1:5]
+
+combined = list()
+for (i in files){
+  csv <- read.csv(paste0(sst_folder, i), header=TRUE, sep=",")
+  combined[[i]]  <- csv %>% select(2)}
+  
+combined_sst <-data.frame(do.call(cbind, combined))
+
+write.table(combined_sst, file = paste0('./combined_sst.csv'), row.names=FALSE, col.names = FALSE, sep=",")
+```
+
+```{r}
+sites <- c(71, 219, 23, 92, 165, 172)
+
+rac_folder <- "/Users/Zack/0_seawarden/r_rac/rac_seabass/"
+site_folder <- '/Bass_population/Outputs/Out_csv/'
+name <- './combined_weight_seabass.csv'
+
+rac_folder_2 <- "/Users/Zack/0_seawarden/r_rac/rac_bream/"
+site_folder_2 <- '/Bream_population/Outputs/Out_csv/'
+name_2 <- './combined_weight_bream.csv'
+
+weight_comp <- function(rac_folder, site_folder, name){
+  combined = list()
+  for (i in sites){
+    filepath <- paste0(rac_folder, 'site_', i, site_folder, 'weight.csv')
+    csv <- read.csv(paste0(filepath), header=TRUE, sep=",")
+    combined[[i]] <- csv$V1
+  combined_df <-data.frame(do.call(cbind, combined))}
+  write.table(combined_df, file = name, row.names=FALSE, col.names = FALSE, sep=",")}
+
+weight_comp(rac_folder, site_folder, name)
+weight_comp(rac_folder_2, site_folder_2, name_2)
+```
+
+```{r}
+waste_comp <- function(rac_folder, site_folder, name){
+  for (i in sites){ 
+    harvest <-  read.csv(paste0(rac_folder, 'site_', i, site_folder, 'Days_to_commercial_size.csv'))
+    compiled <- read.csv(paste0(rac_folder, 'output_compiled/site_', i, '_compiled.csv'), header=TRUE, sep=",") 
+    
+    harvest <- harvest %>% select(2)
+    harvest <- harvest[[1]]
+    
+    w_faeces <- compiled$faeces_c1 + compiled$faeces_l1 + compiled$faeces_p1
+    w_feed <- compiled$feed_c1 + compiled$feed_l1 + compiled$feed_p1
+
+    w_faeces <- w_faeces[1:harvest]
+    w_feed <- w_feed[1:harvest]
+    
+    combined_df <- data.frame(w_faeces, w_feed)
+    write.table(combined_df, file = paste0('./', name, i, '.csv'), row.names=FALSE, col.names = TRUE, sep=",")}}
+
+name <- 'combined_waste_seabass_'
+name_2 <- 'combined_waste_bream_'
+
+waste_comp(rac_folder, site_folder, name)
+waste_comp(rac_folder_2, site_folder_2, name_2)
+```
+
+```{r}
+#combine all
+names <- c("site_ID", "faeces_c", "faeces_l", "faeces_p", "feed_c", "feed_l", "feed_p", "harvest day") #colnames
+
+#bream
+sites <- list.files(paste0(rac_folder, 'output_compiled/'), pattern = '.csv')
+
+combined = list()
+for (i in sites){combined[[i]] <- compiler_all(rac_folder, site_folder, i)}
+
+combined_df<-data.frame(do.call(rbind, combined))
+  colnames(combined_df) <- names
+
+#export dataframe as csv
+write.table(combined_df, file = paste0('./combined_bream.csv'), row.names=FALSE, col.names = TRUE, sep=",")
+
+#bass
+sites <- list.files(paste0(rac_folder_2, 'output_compiled/'), pattern = '.csv')
+
+combined = list()
+for (i in sites){combined[[i]] <- compiler_all(rac_folder_2, site_folder_2, i)}
+
+combined_df<-data.frame(do.call(rbind, combined))
+  colnames(combined_df) <- names
+
+#export dataframe as csv
+write.table(combined_df, file = paste0('./combined_seabass.csv'), row.names=FALSE, col.names = TRUE, sep=",")
+```

@@ -6,8 +6,9 @@ trace(Bream_pop_main,edit=T) #delete selector = "y"
 
 farmsites <- read.csv('./master_inventory - Farm_Sites.csv', header=TRUE, sep=",")
 sites <- as.vector(farmsites$farm_site)
+#sites <- sites[1:5]
 
-sites <- sites[1:28] 
+# sites <- sites[1:28] 
 # sites <- sites[29:56]
 # sites <- sites[57:84]
 # sites <- sites[85:112]
@@ -17,13 +18,12 @@ sites <- sites[1:28]
 # sites <- sites[169:196]
 # sites <- sites[197:209]
 
-sites <- sites
 #load master files - LOCAL or AWS
 rac_folder <- "/Users/Zack/0_seawarden/r_rac/rac_bream/"
 # rac_folder <- "/Users/Administrator/Documents/GitHub/seawarden/r_rac/rac_bream/"
 
-pre_sim <- 50
-main_sim <- 5000
+pre_sim <- 10
+main_sim <- 100
 
 start <- "1/4/2018" #apr 1, 2018
 end_prep <- "19/12/2019"
@@ -34,7 +34,7 @@ end <- "15/12/2019"
 #generate prep files for all sites
 master_files <- paste0(rac_folder, 'master_files/master_RAC-bream - ')
 
-sst_folder <- '../ghrsst_csv/'
+sst_folder <- './sst/'
 sst_list <- list.files(sst_folder, pattern = '.csv')
 
 #prep files to generate feeding tables
@@ -48,7 +48,7 @@ food <- read.csv(paste0(master_files, 'Food_Characterization.csv'), header=FALSE
 ```
 
 ```{r include=FALSE}
-#create folder for each site, #add SST data
+# #create folder for each site, #add SST data
 for (i in sites){
 
   #create a folder for each site
@@ -99,8 +99,7 @@ for (i in sites){
 
 #generate Food_Characterization.csv for each site 
 for (i in sites){
-  export <- food %>% select(2, 1) #3 for alternative feed
-    export[4, 1] = .2
+  export <- food %>% select(2, 1)
   export <- export[-1,] #drop header
   output <- paste0(rac_folder, 'site_', i, '/Bream_population/Inputs/Forcings/Food_Characterization.csv')
   write.table(export, file = output, row.names=FALSE, col.names = FALSE, sep=",")}
@@ -123,10 +122,9 @@ feeding <- function(rac_folder, i){
   ingestion <- read.csv(paste0(rac_folder, site_folder, 'actual_ingestion.csv'), header=TRUE, sep=",")
 
   ingestion <- ingestion %>% select(V1)
-  ingestion$V1 <- ingestion$V1 * 1.5 #adjust
+  #ingestion$V1 <- ingestion$V1 * 1.3 #adjust
 
   date <- feeding_prep %>% select(date)
-  
   #date <- date$date[1:nrow(ingestion)]
   date <- date$date[92:718]
 
@@ -174,36 +172,39 @@ for (i in sites){
   output <- Bream_pop_main(userpath, forcings)} #run growth model
 ```
 
-#select sites to model
-#sites <- list(23, 71, 92, 165, 172, 219) #study sites
+```{r}
+# library(foreach)
+# library(doParallel)
+# library(parallel)
+#  
+# numCores <- detectCores()
+# cl <- makeCluster(numCores)
+# registerDoParallel(cl)
+#  
+# inputs <- 1:10
+# processInput <- function(i) {i * i}
+# results <- foreach(i=inputs) %dopar% {processInput(i)}
+```
 
-# sites <- sites[1:14] 
-# sites <- sites[15:28] 
-# sites <- sites[29:42]
-# sites <- sites[43:56]
-# sites <- sites[57:70]
-# sites <- sites[71:84]
-# sites <- sites[85:98]
-# sites <- sites[99:112]
-# sites <- sites[113:126]
-# sites <- sites[127:140]
-# sites <- sites[141:154]
-# sites <- sites[155:168]
-# sites <- sites[169:182]
-# sites <- sites[183:196]
-# sites <- sites[197:210]
-# sites <- sites[211:224]
-# sites <- sites[225:238]
-# sites <- sites[239:250]
-
-#specify number of simulations 1) feeding 2), full simulation
-# pre_sim <- 2
-# main_sim <- 3
-
-# pre_sim <- 50
-# main_sim <- 5000
-
-#specify simulation start
-#start <- "3/1/2018" #jan 3, 2018
-# end_prep <- "4/9/2019"
-# end <- "31/8/2019"
+```{r}
+# library(foreach)
+# library(doParallel)
+# 
+# rac_tool <- function(rac_folder, i){
+#   userpath <- paste0(rac_folder, "site_", i)
+#   setwd(userpath)
+#   forcings <- Bream_pop_dataloader(userpath)
+#   output <- Bream_pop_main(userpath, forcings)}
+# 
+# #select numbrer of cores
+# myCluster <- makeCluster(3, type = "PSOCK")
+# 
+# #activate clusters
+# registerDoParallel(myCluster)
+# 
+# #parallel process
+# foreach(i = sites, .packages = 'RAC') %dopar% rac_tool(rac_folder, i)
+# 
+# #deactivate clusters
+# stopCluster(myCluster)
+```

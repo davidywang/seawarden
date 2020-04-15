@@ -4,9 +4,9 @@
 "Wlb","Dry weight lower bound","0.0001","g",NA
 "meanImax","Clearence rate average","0.05","g/ gfish d",NA
 "deltaImax","Clearance rate standard deviation","0.005","g/ gfish d",NA
-"Nseed","Number of seeded individuals","2463533","-",NA
-"mortmyt","natural mortality rate","0.0000004","1/d",NA
-"nruns","number of simulations","3","",NA
+"Nseed","Number of seeded individuals","9781480","-",NA
+"mortmyt","natural mortality rate","0.0000002","1/d",NA
+"nruns","number of simulations","10","",NA
 "","","","",NA
 "Quantity","Description","Value","Unit",NA
 "meanW","Dry weight average","40","g",NA
@@ -17,3 +17,5 @@
 "Nseed","Number of seeded individuals","2.00E+04","-",NA
 "mortmyt","natural mortality rate","0.000410959","1/d",NA
 "nruns","number of simulations","5000","",NA
+"","","","",NA
+"Nseed","Number of seeded individuals","4522584","-",NA

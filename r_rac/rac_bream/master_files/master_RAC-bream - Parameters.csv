@@ -3,13 +3,13 @@ ingmax,Maximum ingestion rate,,Stirling 1977 Ballestrazzi et al 1998 Peres et al
 alpha,Feeding catabolism coefficient,-,Stirling 1977,0.3,0.3,,
 betaprot,Assimilation coefficient for protein,-,Spyridakis et al 1989 in Dosdat 2001 Moreira et al 2008,0.85,0.85,,
 betalip,Assimilation coefficient for lipid,-,Spyridakis et al 1989 in Dosdat 2001 Moreira et al 2008,0.95,0.95,,
-betacarb,Assimilation coefficient for carbohydrate,-,Spyridakis et al 1989 in Dosdat 2001 Moreira et al 2008,0.5,0.5,,
+betacarb,Assimilation coefficient for carbohydrate,-,Spyridakis et al 1989 in Dosdat 2001 Moreira et al 2008,0.8,0.8,0.835,0.5
 epsprot,Energy content of protein,J/gprot,Brett & Groves 1979 in Requena et al 1999,23600,23600,,
 epslip,Energy content of lipid,J/glip,Brett & Groves 1979 in Requena et al 1999,36200,36200,,
 epscarb,Energy content of carbohydrate,J/gcarb,Brett & Groves 1979 in Requena et al 1999,17200,17200,,
 epsO2,Energy consumed by the respiration of 1g of oxygen,J/gO2,Elliott & Davison 1975,13600,13600,,
 pk,Temperature coefficient for the fasting catabolism,1/d,Estimated from Dalla Via et al 1998 and Claireaux & Lagardère 1999,6.00E-02,6.00E-02,,
-k0,Fasting catabolism at 0°C,1/°C,Estimated from Dalla Via et al 1998 and Claireaux & Lagardère 1999,7.20E-04,7.20E-04,,
+k0,Fasting catabolism at 0°C,1/°C,Estimated from Dalla Via et al 1998 and Claireaux & Lagardère 1999,7.20E-04,7.20E-04,1.20E-03,7.20E-04
 m,Weight exponent for the anabolism,-,Lupatsch et al 1997,0.598,0.598,,
 n,Weight exponent for the catabolism,-,Ursin 1967,1,1,,
 betac,Shape coefficient for the H(Tw) function,-,Brigolin et al 2008,0.2,0.2,,
@@ -19,8 +19,8 @@ Taa,Lowest feeding temperature for Sparus aurata,°C,Tesseyre 1979 e Pastoureaud
 omega,Oxygen consumption – weight loss ratio,gO2/g,Calibrated,0.6,0.6,,
 a,Energy content of fish parameter,J/gfish,Lupatsch et al 2003,4660,4660,,
 k,Weight exponent for energy content,-,Lupatsch et al 2003,0.139,0.139,,
-eff,Food ingestion efficiency,-,Empirical value provided by the farmers,0.7,0.7,,
+eff,Food ingestion efficiency,-,Empirical value provided by the farmers,0.95,0.95,0.7,0.95
 ti,Integration start,-,,3/1/2018,3/1/2018,,
-tf,Integration end,-,,4/9/2019,31/8/2019,4/7/2019,30/6/2019
+tf,Integration end,-,,4/9/2019,31/8/2019,,
 IC,Initial condition on weight,,,See file 'Population.csv',See file 'Population.csv',,
 CS,Commercial size,g,http://www.fao.org/fishery/culturedspecies/Sparus_aurata/en,350,350,,

@@ -10,14 +10,15 @@ library(rWind)
 
 #load shapefile of farm sites
 targets <- '/Users/Zack/0_seawarden/greece/blue_bridge/farm_500m_update_current.shp' 
+#targets <- '/Users/Zack/0_seawarden/greece/colocation/greece_wind_500m_sq.shp'
 targets <- st_read(targets)
 
 #load ocean current data
-vo <- '/Users/Zack/0_thesis_ocean_current_2/vo_tif/' 
-uo <- '/Users/Zack/0_thesis_ocean_current_2/uo_tif/'
+vo <- '/Users/Zack/0_current/vo_tif/' 
+uo <- '/Users/Zack/0_current/uo_tif/'
 
 #output folder - for combine
-output_csv <- '/Users/Zack/0_thesis_ocean_current_2/current_csv/'
+output_csv <- '/Users/Zack/0_current/current_csv/'
 ```
 
 ```{r}
@@ -90,12 +91,35 @@ current_tool <- function(v_folder, u_folder, target){
 ```
 
 ```{r include=FALSE}
-for (i in 1:nrow(targets)){
+for (i in 26:nrow(targets)){
 #for (i in 1:5){
   target <- targets[i, ]
   df <- current_tool(vo, uo, target)
-  filename <- paste0(output_csv, target$farm_id, '_current.csv')
+  #filename <- paste0(output_csv, target$farm_id, '_current.csv')
+  filename <- paste0(output_csv, targets$Id[i], '_current.csv')
   write.table(df, file = filename, row.names=FALSE, col.names = TRUE, sep=",")}
+```
+
+```{r}
+list <- list.files(output_csv, pattern = '.csv')
+
+avg = list()
+farm_id = list()
+
+for (i in list){
+  csv <- read.delim(paste0(output_csv, i), sep = ',', stringsAsFactors = F, header = TRUE)
+  avg[[i]] <- mean(csv$speed)
+  farm_id[[i]] <- unlist(strsplit(i, "_"))[1]}
+    
+
+avg_df <-data.frame(do.call(rbind, avg))
+id_df <-data.frame(do.call(rbind, farm_id))
+bath_df <-cbind(id_df, avg_df)
+bath_df <- bath_df %>% rename(farm_site=1, avg_speed=2)
+
+output <- '/Users/Zack/0_current/current_avg.csv'
+write.table(bath_df, file = output, row.names=FALSE, col.names = FALSE, sep=",")
+
 ```
 
 ```{r}
