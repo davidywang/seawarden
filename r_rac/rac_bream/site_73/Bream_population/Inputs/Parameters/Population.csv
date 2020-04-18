@@ -8,7 +8,6 @@
 "mortmyt","natural mortality rate",9e-07,"1/d",NA
 "nruns","number of simulations",100,"",NA
 "","",NA,"",NA
-"","",NA,"",NA
 "Quantity","Description",NA,"Unit",NA
 "meanW","Dry weight average",NA,"g",NA
 "deltaW","Dry weight standard deviation",NA,"g",NA

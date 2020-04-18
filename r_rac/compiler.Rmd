@@ -4,7 +4,7 @@ library(dplyr)
 #create one csv per farm site
 farmsites <- read.csv('/Users/Zack/0_seawarden/r_rac/master_inventory - Farm_Sites.csv', header=TRUE, sep=",")
 sites <- as.vector(farmsites$farm_site)
-sites <- sites[1:5]
+#sites <- sites[1:5]
 
 #rac_folder <- '/Users/Zack/0_rac/rac_bream/'
 rac_folder <- "/Users/Zack/0_seawarden/r_rac/rac_bream/"

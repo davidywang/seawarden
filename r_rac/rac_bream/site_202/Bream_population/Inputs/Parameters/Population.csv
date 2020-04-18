@@ -4,10 +4,9 @@
 "Wlb","Dry weight lower bound",1e-04,"g",NA
 "meanImax","Ingestion rate average",0.05,"g/ gfish d",NA
 "deltaImax","Ingestion rate standard deviation",0.005,"g/ gfish d",NA
-"Nseed","Number of seeded individuals",5309851,"-",NA
-"mortmyt","natural mortality rate",2e-07,"1/d",NA
+"Nseed","Number of seeded individuals",3934003,"-",NA
+"mortmyt","natural mortality rate",3e-07,"1/d",NA
 "nruns","number of simulations",100,"",NA
-"","",NA,"",NA
 "","",NA,"",NA
 "Quantity","Description",NA,"Unit",NA
 "meanW","Dry weight average",NA,"g",NA
