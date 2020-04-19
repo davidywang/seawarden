@@ -6,10 +6,10 @@ farmsites <- read.csv('/Users/Zack/0_seawarden/r_rac/master_inventory - Farm_Sit
 sites <- farmsites$farm_site
 sites <-117
 
-rac_folder <- '/Users/Zack/0_rac/rac_seabass/'
+rac_folder <- '/Users/Zack/0_seawarden/r_rac_rac_seabass/'
 site_folder <- '/Bass_population/Outputs/Out_csv/'
 
-rac_folder_2 <- '/Users/Zack/0_rac/rac_bream/'
+rac_folder_2 <- '/Users/Zack/0_seawarden/r_rac/rac_bream/'
 site_folder_2 <- '/Bream_population/Outputs/Out_csv/'
 ```
 
@@ -99,8 +99,7 @@ for (i in 1:index){
   #param$V1[3] <- 0
   #param$V2[3] <- -20
 
-
-  name <- paste0("/Users/Zack/0_rac/rac_", site$Species[i], '/output_waste/', site$farm_id[i], '_total_waste.csv')
+  name <- paste0("/Users/Zack/0_seawarden/r_rac/rac_", site$Species[i], '/output_waste/', site$farm_id[i], '_total_waste.csv')
   waste <- read.csv(name, header=TRUE, sep=",", stringsAsFactors = FALSE)
   
   param$V1[2] <- nrow(waste) #days
@@ -116,6 +115,6 @@ for (i in 1:index){
   write.table(param, name, sep = "\t", row.names=FALSE, col.names=FALSE, quote = FALSE)
   
   #export total_waste.txt
-  name <- paste0(folder, site$farm_id[i], '_', site$ORIG_FID[i], '_total_waste_', site$Species[i], '.txt')
+  name <- paste0(folder, site$farm_id[i], '_', site$ORIG_FID[i], '_total_waste_', site$Species[i], '.txt', )
   write.table(waste, name, sep = "\t", row.names=FALSE, col.names=TRUE, quote = FALSE)}
 ```

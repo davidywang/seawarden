@@ -1,0 +1,21 @@
+11:30pm ohio time
+4:13pm
+bass
+1 6	19	19(10 more)
+2 33	64	64(last)
+3 66	97	97(last)
+4 108	133	done
+5 134	171	done
+6 172	204	done
+7 205	233
+8 238	done	done
+
+bream
+1 9	31	31(last)
+2 40	64	64(last)
+3 75	97	done
+4 107	133	done
+5 134	169	done
+6 172	202	done
+7 205	235	done
+8 248	done	done

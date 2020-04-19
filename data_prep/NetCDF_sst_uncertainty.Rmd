@@ -1,0 +1,104 @@
+
+```{r load_packages, warning=FALSE, message=FALSE}
+#https://daac.ornl.gov/resources/tutorials/NetCDF_webinar_08302017.html
+library(ncdf4) 
+library(raster) 
+library(sf)
+library(rgdal) 
+```
+
+```{r}
+#Function to crop raster to area of interest
+crop_tool <- function(raster, area){
+  the_crs <- crs(raster, asText = TRUE)
+  area_crs <- st_transform(area, crs = the_crs)
+  raster_crop <- crop(raster, area_crs)}
+```
+
+```{r}
+# function
+netcdf_converter <- function(file){
+  
+  nc_data <- nc_open(file)
+  
+  # get the lat, lon, and time coordinates
+  lon <- ncvar_get(nc_data, "lon")
+  lat <- ncvar_get(nc_data, "lat", verbose = F)
+  t <- ncvar_get(nc_data, "time")
+  
+  SST.array <- ncvar_get(nc_data, "analysis_error") # store the data in a 3-dimensional array
+  
+  fillvalue <- ncatt_get(nc_data, "analysis_error", "_FillValue") # get the fill value
+  
+  nc_close(nc_data) 
+  
+  SST.array[SST.array == fillvalue$value] <- NA
+  
+  SST.slice <- SST.array[, ] # get the first time slice
+  
+  # save this time slice as a raster
+  r <- raster(t(SST.slice), xmn=min(lon), xmx=max(lon), ymn=min(lat), ymx=max(lat), crs=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs+ towgs84=0,0,0"))
+  
+  r <- flip(r, direction='y')
+  
+  r <- crop_tool(r, area)
+  name <- substr(file, 31, 38) #38, 45) 
+  
+  filepath <- paste(tif_folder, "L4_GHRSST-", name , ".tif", sep="")
+  
+  writeRaster(r, filepath, "GTiff", overwrite=TRUE)}
+```
+
+```{r}
+#function test
+# file <- '/Users/Zack/0_sst/ghrsst_2018/20180101000000-GOS-L4_GHRSST-SSTfnd-OISST_UHR_NRT-MED-v02.0-fv01.0.nc'
+# netcdf_converter(file)
+```
+
+```{r}
+#nc input folder
+nc_folder <- '/Users/Zack/0_sst/ghrsst_2018/' #355 days
+
+#tif output fodler
+tif_folder <- '/Users/Zack/0_sst/ghrsst_2018_tif_u/'
+
+#area of interest for clipping tif
+area <- st_read('/Users/Zack/0_seawarden/0_search_areas/3_aoi/GRC_aoi.shp')
+
+#list all files in folder
+folder_list <- list.files(nc_folder)
+
+#for loop
+for (i in folder_list){
+  filename = paste0(nc_folder, i)
+  netcdf_converter(filename)}
+```
+
+```{r}
+# stand alone version
+# file <- '/Users/Zack/0_sst/ghrsst_2018/20180101000000-GOS-L4_GHRSST-SSTfnd-OISST_UHR_NRT-MED-v02.0-fv01.0.nc'
+# nc_data <- nc_open(file)
+# 
+# # get the lat, lon, and time coordinates
+# lon <- ncvar_get(nc_data, "lon")
+# lat <- ncvar_get(nc_data, "lat", verbose = F)
+# t <- ncvar_get(nc_data, "time")
+# 
+# SST.array <- ncvar_get(nc_data, "analysis_error") # store the data in a 3-dimensional array
+# 
+# fillvalue <- ncatt_get(nc_data, "analysis_error", "_FillValue") # get the fill value
+# 
+# nc_close(nc_data) 
+# 
+# SST.array[SST.array == fillvalue$value] <- NA
+# 
+# SST.slice <- SST.array[, ] # get the first time slice
+# 
+# # save this time slice as a raster
+# r <- raster(t(SST.slice), xmn=min(lon), xmx=max(lon), ymn=min(lat), ymx=max(lat), crs=CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs+ towgs84=0,0,0"))
+# 
+# r <- flip(r, direction='y')
+# 
+# #save as geotiff
+# writeRaster(r, "SST.tif", "GTiff", overwrite=TRUE)
+```
