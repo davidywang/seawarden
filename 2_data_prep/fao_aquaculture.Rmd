@@ -54,11 +54,17 @@ aquaculture_all <- aquaculture %>%
                 "GROUP" = "Major_Group") %>%
   dplyr::select(-ENVIRONMENT, -COUNTRY, -SPECIES, -QUANTITY_UNIT, -QUANTITY_SYMBOL, -VALUE_SYMBOL) %>%
   dplyr::select(COUNTRY_NAME, ENVIRONMENT_NAME, GROUP, SPECIES_NAME, TONNES, YEAR) %>%
+  filter(YEAR == 2017) %>%
   mutate(TONNES = round(TONNES, 1))
+
+aquaculture_all
+
+#export dataframe as csv
+write.table(aquaculture_all, file = '../fao_2017.csv', row.names=FALSE, col.names = TRUE, sep=",")
 ```
 
 ```{r}
-  filter(ENVIRONMENT_NAME == "Marine", GROUP == "PISCES", COUNTRY_NAME == "Greece") %>% #all years
+  #filter(ENVIRONMENT_NAME == "Marine", GROUP == "PISCES", COUNTRY_NAME == "Greece") %>% #all years
   #filter(ENVIRONMENT_NAME == "Marine", SPECIES_NAME =="European seabass", COUNTRY_NAME == "Greece") %>% #all years
   #filter(ENVIRONMENT_NAME == "Marine", GROUP == "PLANTAE AQUATICAE", YEAR == 2017) %>% #seaweed
   

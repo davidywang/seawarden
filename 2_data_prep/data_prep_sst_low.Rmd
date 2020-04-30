@@ -1,0 +1,14 @@
+```{r}
+#compiler - SST
+library(dplyr)
+sst_folder <- './sst/'
+files <- list.files(sst_folder, pattern = '.csv')
+#files <- files[1:5]
+
+combined = list()
+for (i in files){
+  csv <- read.csv(paste0(sst_folder, i), header=TRUE, sep=",")
+  temp <- csv[2]-1
+  new <- cbind(csv[1], temp)
+  write.table(new, file = paste0('./sst_low/', i), row.names=FALSE, col.names = FALSE, sep=",")}
+```

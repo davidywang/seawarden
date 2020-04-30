@@ -1,0 +1,19 @@
+"Quantity","Description",31,"Unit",NA
+"meanW","Dry weight average",5,"g",NA
+"deltaW","Dry weight standard deviation",1,"g",NA
+"Wlb","Dry weight lower bound",1e-04,"g",NA
+"meanImax","Ingestion rate average",0.05,"g/ gfish d",NA
+"deltaImax","Ingestion rate standard deviation",0.005,"g/ gfish d",NA
+"Nseed","Number of seeded individuals",2389854,"-",NA
+"mortmyt","natural mortality rate",4e-07,"1/d",NA
+"nruns","number of simulations",100,"",NA
+"","",NA,"",NA
+"Quantity","Description",NA,"Unit",NA
+"meanW","Dry weight average",NA,"g",NA
+"deltaW","Dry weight standard deviation",NA,"g",NA
+"Wlb","Dry weight lower bound",NA,"g",NA
+"meanImax","Ingestion rate average",NA,"g/ gfish d",NA
+"deltaImax","Ingestion rate standard deviation",NA,"g/ gfish d",NA
+"Nseed","Number of seeded individuals",NA,"-",NA
+"mortmyt","natural mortality rate",NA,"1/d",NA
+"nruns","number of simulations",NA,"",NA

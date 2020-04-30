@@ -22,10 +22,14 @@ waste_compiler <- function(rac_folder, site_folder, i){
   Pexc <- compiled$faeces_p1*.4 + compiled$faeces_l1*2.3 + compiled$faeces_c1*0
   Nexc <- compiled$faeces_p1*15.9 + compiled$faeces_l1*2.6 + compiled$faeces_c1*0
   Cexc <- compiled$faeces_p1*54.5 + compiled$faeces_l1*77 + compiled$faeces_c1*40
-    
-  Pwst <- compiled$faeces_p1*.4 + compiled$faeces_l1*2.3 + compiled$faeces_c1*0
-  Nwst <- compiled$faeces_p1*15.9 + compiled$faeces_l1*2.6 + compiled$faeces_c1*0
-  Cwst <- compiled$faeces_p1*54.5 + compiled$faeces_l1*77 + compiled$faeces_c1*40
+  
+  # Pwst <- compiled$faeces_p1*.4 + compiled$faeces_l1*2.3 + compiled$faeces_c1*0
+  # Nwst <- compiled$faeces_p1*15.9 + compiled$faeces_l1*2.6 + compiled$faeces_c1*0
+  # Cwst <- compiled$faeces_p1*54.5 + compiled$faeces_l1*77 + compiled$faeces_c1*40
+  
+  Pwst <- compiled$feed_p1*.4 + compiled$feed_l1*2.3 + compiled$feed_c1*0
+  Nwst <- compiled$feed_p1*15.9 + compiled$feed_l1*2.6 + compiled$feed_c1*0
+  Cwst <- compiled$feed_p1*54.5 + compiled$feed_l1*77 + compiled$feed_c1*40
   
   Pexc <- round(Pexc, 10)
   Nexc <- round(Nexc, 10)
