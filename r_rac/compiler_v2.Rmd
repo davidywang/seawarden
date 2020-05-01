@@ -4,12 +4,12 @@ library(dplyr)
 #create one csv per farm site
 farmsites <- read.csv('./master_inventory - Farm_Sites.csv', header=TRUE, sep=",")
 sites <- as.vector(farmsites$farm_site)
-sites <- sites[1]
+#sites <- sites[1]
 
-bream_folder <- "/Users/Zack/0_seawarden/r_rac/rac_bream/"
+bream_folder <- "./rac_bream/"
 site_folder_bream <- '/Bream_population/Outputs/Out_csv/'
 
-bass_folder <- "/Users/Zack/0_seawarden/r_rac/rac_seabass/"
+bass_folder <- "./rac_seabass/"
 site_folder_bass <- '/Bass_population/Outputs/Out_csv/'
 ```
 
@@ -20,24 +20,23 @@ compiler <- function(rac_folder, site_folder, i, ingest_rate){
   filepath <- paste0(rac_folder, 'site_', i, site_folder)
   
   #load csv files
+  pop <- read.csv(paste0(filepath, 'population.csv'), header=TRUE, sep=",")  
   faeces_c <- read.csv(paste0(filepath, 'faeces_production_Carbohydrates.csv'), header=TRUE, sep=",")
   faeces_l <- read.csv(paste0(filepath, 'faeces_production_Lipids.csv'), header=TRUE, sep=",")
   faeces_p <- read.csv(paste0(filepath, 'faeces_production_Proteins.csv'), header=TRUE, sep=",")
 
-  pop <- read.csv(paste0(filepath, 'population.csv'), header=TRUE, sep=",")  
   ingest <- read.csv(paste0(filepath, 'actual_ingestion.csv'), header=TRUE, sep=",")
   weight <- read.csv(paste0(filepath, 'weight.csv'), header=TRUE, sep=",")  
   
   #extract columns
+  pop <- pop %>% select(x) 
   faeces_c <- faeces_c %>% select(X, V1)
   faeces_l <- faeces_l %>% select(V1)
   faeces_p <- faeces_p %>% select(V1)
 
-  pop <- pop %>% select(x) 
   feed_c <- ingest %>% select(V1) * ingest_rate * .19 * pop[1,] / 1000
   feed_l <- ingest %>% select(V1) * ingest_rate * .21 * pop[1,] / 1000
   feed_p <- ingest %>% select(V1) * ingest_rate * .44 * pop[1,] / 1000
-  
   weight <- weight %>% select(V1) %>% slice(1:nrow(faeces_c))
   
   #compile columns to new dataframe
@@ -53,8 +52,8 @@ compiler <- function(rac_folder, site_folder, i, ingest_rate){
 
 ```{r}
 for (i in sites){
-  compiler(bream_folder, site_folder_bream, i, .7)
-  compiler(bass_folder, site_folder_bass, i, .95)} #sebass
+  compiler(bream_folder, site_folder_bream, i, 1.3) #.7
+  compiler(bass_folder, site_folder_bass, i, 1.05)} #.95
 ```
 
 ```{r}
