@@ -5,7 +5,7 @@ library(dplyr)
 farmsites <- read.csv('../r_rac/master_inventory - Farm_Sites.csv', header=TRUE, sep=",")
 sites <- farmsites$farm_site
 #sites <-117
-sites <-117
+sites <-54
 
 rac_folder <- '../r_rac/rac_seabass/'
 site_folder <- '/Bass_population/Outputs/Out_csv/'
@@ -23,16 +23,11 @@ waste_compiler <- function(rac_folder, site_folder, i){
   Pexc <- compiled$faeces_p*.4 + compiled$faeces_l*2.3 + compiled$faeces_c*0
   Nexc <- compiled$faeces_p*15.9 + compiled$faeces_l*2.6 + compiled$faeces_c*0
   Cexc <- compiled$faeces_p*54.5 + compiled$faeces_l*77 + compiled$faeces_c*40
-  
   Pwst <- compiled$feed_p*.4 + compiled$feed_l*2.3 + compiled$feed_c*0
   Nwst <- compiled$feed_p*15.9 + compiled$feed_l*2.6 + compiled$feed_c*0
   Cwst <- compiled$feed_p*54.5 + compiled$feed_l*77 + compiled$feed_c*40
   
-
-  
   compiled <- data.frame(cbind(compiled$day, Pexc, Nexc, Cexc, Pwst, Nwst, Cwst))
-  
-  #colnames(compiled) <- c("Day", "Pexc (g)", "Nexc (g)", "Cexc (g)", "Pwst (g)", "Nwst (g)", "Cwst (g)")
   #colnames(compiled) <- c("Day", "Pexc (g)", "Nexc (g)", "Cexc (g)", "Pwst (g)", "Nwst (g)", "Cwst (g)")
   
   harvest <-  read.csv(paste0(rac_folder, 'site_', i, site_folder, 'Days_to_commercial_size.csv'))
@@ -98,8 +93,8 @@ for (i in 1:index){
   param$V3[2] <- site$ORIG_FID[i] #cage number
   param$V4[2] <- site$Cgx[i] #cage position
   param$V5[2] <- site$Cgy[i] #cage position
-  param$V1[6] <- 0 #0 = no bath
-  param$V2[6] <- -20 #depth (meters)
+  param$V1[6] <- 1 #0 = no bath
+  #param$V2[6] <- -20 #depth (meters)
 
   #reduce total waste to net pen
   #date %>% rename("Day" = V1) ?
@@ -114,5 +109,5 @@ for (i in 1:index){
   
   #export total_waste.txt
   name <- paste0(folder, site$farm_id[i], '_', site$ORIG_FID[i], '_total_waste_', site$Species[i], '.txt')
-  write.table(waste, name, sep = "\t", row.names=FALSE, col.names=TRUE, quote = FALSE)}
+  write.table(waste, sep = "        ", name, row.names=FALSE, col.names=TRUE, quote = FALSE)}
 ```

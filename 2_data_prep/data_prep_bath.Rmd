@@ -1,19 +1,18 @@
 ```{r include=FALSE}
 library(dplyr)
-#library(data.table)
 library(raster)
 library(sf)
 library(oceanmap)
 
 #input data
 tif_input <- '/Users/Zack/0_bath/bath_emodnet/bath_2018.tif'
-#tif_output <- '/Users/Zack/0_bath/bath_tif/' 
-tif_output <- '/Users/Zack/0_bath/bath_tif_ctr/'
-#txt_output <- '/Users/Zack/0_bath/bath_txt/'
+tif_output <- '../data_bath/bath_tif/'
+#tif_output <- '../data_bath/bath_tif_ctr/'
+txt_output <- '../data_bath/bath_txt/'
 
 #load shapefile of farm sites
-#targets <- '/Users/Zack/0_seawarden/greece/1_sites/farm_500m_update.shp'
-targets <- '/Users/Zack/0_seawarden/greece/1_sites/farm_10m_update.shp'
+targets <- '../greece/1_sites/farm_1000m_update.shp'
+#targets <- '../greece/1_sites/farm_10m_update.shp'
 targets <- st_read(targets)
 ```
 
@@ -35,33 +34,43 @@ for (i in 1:nrow(as.data.frame(targets))){
 
 ```{r}
 # l=length(list.files(tif_output, pattern = '.tif'))
-# 
-# #for (i in 1:10){
+#
 # for (i in 1:l){
 #   file <- paste0(tif_output, i-1, '_bath.tif')
 #   plot(raster(file))}
+
+file <- paste0(tif_output, 54, '_bath.tif')
+  plot(raster(file))
 ```
 
 ```{r}
-#resample raster from 115m to 5m (FiCIM)
+#resample raster from 115m to 5m (FiCIM) and export as txt file
 #https://datacarpentry.org/r-raster-vector-geospatial/03-raster-reproject-in-r/
 
-# bath_txt <- function(tif_output, i, txt_output){
-#   bath <- raster(paste0(tif_output, targets$farm_id[i], "_bath.tif"))
-#   bath_2<-projectRaster(bath, crs = crs(bath), res = res(bath)/23)
-#   #writeRaster(s, file = "test.tif", "GTiff", overwrite=TRUE)
-#   
-#   #raster to txt file
-#   matrix<-raster2matrix(bath_2)
-#   matrix <- round(matrix, 2)
-#   matrix[matrix > 0] <- 0
-#   matrix[is.na(matrix)] <- 0
-#   
-#   output <- paste0(txt_output, targets$farm_id[i], '_bath.txt')
-#   write.table(matrix, file=output, sep = "\t", row.names=FALSE, col.names=FALSE)}
-# 
+bath_txt <- function(tif_output, i, txt_output){
+  bath <- raster(paste0(tif_output, targets$farm_id[i], "_bath.tif"))
+  bath_2<-projectRaster(bath, crs = crs(bath), res = res(bath)/23)
+  #writeRaster(s, file = "test.tif", "GTiff", overwrite=TRUE)
+
+  matrix <-raster2matrix(bath_2)
+  matrix <- round(matrix, 0)
+  dim <- dim(matrix) #automatic matrix triming needs to be added
+  matrix <- matrix[58:457,1:400] #select center of matrix 400x400
+ 
+  matrix[matrix > 0] <- 0 #remove postive values
+  matrix[is.na(matrix)] <- 0 #fill empty values
+
+  #matrix <-matrix(-20.5, nrow = 400, ncol = 400) #temporary
+
+  #output <- paste0(txt_output, targets$farm_id[i], '_bath.txt')
+  output <- paste0(txt_output, i, '_bath.txt')
+  write.table(matrix, file=output, sep = " ", row.names=FALSE, col.names=FALSE)}
+
 # for (i in 1:nrow(as.data.frame(targets))){
 #   bath_txt(tif_output, i, txt_output)}
+
+bath_txt(tif_output, 54, txt_output)
+print(dim)
 ```
 
 ```{r}
