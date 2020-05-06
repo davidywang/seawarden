@@ -1,0 +1,27 @@
+```{r setup, include=FALSE}
+library(dplyr)
+
+input <- './ficim_54_day5_bath20'
+files <- list.files(path = input, pattern = "*.zip")
+print(length(files))
+
+for (i in files){
+  unzip(paste0(input, '/', i), exdir = input)
+  txt_list <- list.files(paste0(input, '/Outputs'))}
+
+txt_list <- c('Flux_C_0005', 'Flux_N_0005', 'Flux_P_0005', 'Mean_Flux_C', 'Mean_Flux_N', 'Mean_Flux_P') 
+
+for (i in txt_list){
+  list_fc <- list.files(path = paste0(input, '/Outputs'), pattern = i)
+  print(list_fc)
+  
+  datalist = list()
+  for (j in list_fc){
+    name <- paste0(input, '/Outputs/', j)
+    txt <- read.table(name, header = FALSE)
+    datalist[[j]] <- txt}
+  
+  combined <- Reduce('+', datalist)
+  write.table(c(t(combined)), file = paste0(input, '/', i, '_list.csv'), row.names=FALSE, col.names=FALSE, sep=",")}
+```
+

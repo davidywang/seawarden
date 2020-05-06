@@ -1,0 +1,6 @@
+ Done day:            1
+ Done day:            2
+ Done day:            3
+ Done day:            4
+ Done day:            5
+ Total fallen particles   50000.0000    
