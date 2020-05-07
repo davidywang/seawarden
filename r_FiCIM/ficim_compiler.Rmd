@@ -1,7 +1,7 @@
 ```{r setup, include=FALSE}
 library(dplyr)
 
-input <- './ficim_54_day5_bath20'
+input <- './ficim_54_day5_bath65'
 files <- list.files(path = input, pattern = "*.zip")
 print(length(files))
 
