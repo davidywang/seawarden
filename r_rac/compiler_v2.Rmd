@@ -58,15 +58,16 @@ for (i in sites){
 
 ```{r}
 #function to combine farm site csv files to single csv
-compiler_all <- function(rac_folder, site_folder, i){
+compiler_all <- function(rac_folder, site_folder, i, h_size){
   #load csv files
   id <- unlist(strsplit(i, "_"))[2]
-  harvest <-  read.csv(paste0(rac_folder, 'site_', id, site_folder, 'Days_to_commercial_size.csv'))
+  #harvest <-  read.csv(paste0(rac_folder, 'site_', id, site_folder, 'Days_to_commercial_size.csv'))
   compiled <- read.csv(paste0(rac_folder, 'output_compiled/', i), header=TRUE, sep=",") 
   
   #extract columns
-  harvest <- harvest %>% select(2)
-  harvest <- harvest[[1]]
+  #harvest <- harvest %>% select(3)
+  #harvest <- harvest[[1]]
+  harvest <- min(which(compiled$weight > h_size))
   
   #sum rows by days of harvest
   compiled <- compiled[1:harvest,] %>% select(2, 3, 4, 5, 6, 7)
@@ -82,7 +83,7 @@ names <- c("site_ID", "faeces_c", "faeces_l", "faeces_p", "feed_c", "feed_l", "f
 sites <- list.files(paste0(bream_folder, 'output_compiled/'), pattern = '.csv')
 
   combined = list()
-  for (i in sites){combined[[i]] <- compiler_all(bream_folder, site_folder_bream, i)}
+  for (i in sites){combined[[i]] <- compiler_all(bream_folder, site_folder_bream, i, 350)}
   
   combined_df<-data.frame(do.call(rbind, combined))
     colnames(combined_df) <- names
@@ -94,7 +95,7 @@ sites <- list.files(paste0(bream_folder, 'output_compiled/'), pattern = '.csv')
 sites <- list.files(paste0(bass_folder, 'output_compiled/'), pattern = '.csv')
 
   combined = list()
-  for (i in sites){combined[[i]] <- compiler_all(bass_folder, site_folder_bass, i)}
+  for (i in sites){combined[[i]] <- compiler_all(bass_folder, site_folder_bass, i, 450)}
   
   combined_df<-data.frame(do.call(rbind, combined))
     colnames(combined_df) <- names

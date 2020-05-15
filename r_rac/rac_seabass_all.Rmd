@@ -10,8 +10,8 @@ rac_folder <- "/Users/Zack/0_seawarden/r_rac/rac_seabass/"
 
 farmsites <- read.csv('./master_inventory - Farm_Sites.csv', header=TRUE, sep=",")
 sites <- as.vector(farmsites$farm_site)
-sites <- sites[1]
-sites <- 54
+sites <- sites[1:49]
+
 #sites <- sites[1:28] 
 # sites <- sites[29:56]
 # sites <- sites[57:84]
@@ -34,7 +34,7 @@ sites <- 54
 stocking = 2.5
 harvest = 450
 
-sim <- 5000 #10
+sim <- 10
 sd = 1
 start <- "1/3/2018" #day, month, year
 end <- "20/12/2019"

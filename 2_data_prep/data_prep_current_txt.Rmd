@@ -5,15 +5,15 @@ library(raster)
 library(sf)
 
 #load shapefile of farm sites
-targets <- '/Users/Zack/0_seawarden/greece/blue_bridge/farm_500m_update_current.shp' 
+targets <- '../greece/1_sites/farm_500m_update_current.shp' 
 targets <- st_read(targets)
 
 #load ocean current data
-vo <- '/Users/Zack/0_thesis_ocean_current_2/vo_tif/' 
-uo <- '/Users/Zack/0_thesis_ocean_current_2/uo_tif/'
+vo <- '/Users/Zack/0_current/vo_tif/' 
+uo <- '/Users/Zack/0_current/uo_tif/'
 
 #output folder - for txt files
-output_txt <- '/Users/Zack/0_thesis_ocean_current_2/current_txt/'
+output_txt <- '/Users/Zack/0_seawarden/data_current/current_txt/'
 ```
 
 ```{r}
@@ -68,6 +68,7 @@ current_tool <- function(v_folder, u_folder, target){
 ```
 
 ```{r include=False}
+targets <- targets[4,] #54
 for (i in 1:nrow(targets)){
 #for (i in 1:5){
   target <- targets[i,]

@@ -1,6 +1,0 @@
-nt(d)	in	cage	Cgx (m)	Cgy (m)
-5	1	7	77.6	0.5
-edx	edy	edz		
-0.1	0.1	0.001		
-inbath	Hconst (m)			
-0	-65			
