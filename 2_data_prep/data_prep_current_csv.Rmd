@@ -9,8 +9,7 @@ library(sf)
 library(rWind)
 
 #load shapefile of farm sites
-targets <- '/Users/Zack/0_seawarden/greece/blue_bridge/farm_500m_update_current.shp' 
-#targets <- '/Users/Zack/0_seawarden/greece/colocation/greece_wind_500m_sq.shp'
+targets <- '../greece/blue_bridge/farm_500m_update_current.shp' 
 targets <- st_read(targets)
 
 #load ocean current data
@@ -18,7 +17,7 @@ vo <- '/Users/Zack/0_current/vo_tif/'
 uo <- '/Users/Zack/0_current/uo_tif/'
 
 #output folder - for combine
-output_csv <- '/Users/Zack/0_current/current_csv/'
+output_csv <- '../data_current/current_csv/'
 ```
 
 ```{r}

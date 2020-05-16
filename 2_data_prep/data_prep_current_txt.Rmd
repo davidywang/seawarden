@@ -13,7 +13,7 @@ vo <- '/Users/Zack/0_current/vo_tif/'
 uo <- '/Users/Zack/0_current/uo_tif/'
 
 #output folder - for txt files
-output_txt <- '/Users/Zack/0_seawarden/data_current/current_txt/'
+output_txt <- '../data_current/current_txt/'
 ```
 
 ```{r}

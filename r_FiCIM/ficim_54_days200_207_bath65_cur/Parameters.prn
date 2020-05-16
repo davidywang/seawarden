@@ -1,0 +1,18 @@
+  Parameter   Value          Description                                               Unit
+dx                  5        Horizontal resolution in the x direction                m
+dy                  5        Horizontal resolution in the y direction                m
+dt                 60        Time step                                               s
+Cd             0.0025                                                                -
+Z0              0.005        Roughness lenght                                        -
+Kc                0.4        Von Karman's constant                                   -
+Rc                7.5        Cage's ratio                                            m
+Pc                 -7        Vertical position of faeces                             m
+Wme_food        -0.08                                                                m/s
+Wst_food        0.008                                                                m/s
+Wmi_food       -0.008                                                                m/s
+Wme_bream      -0.005                                                                m/s
+Wst_bream      0.0005                                                                m/s
+Wmi_bream    -0.00005                                                                m/s
+Wme_bass       -0.007                                                                m/s
+Wst_bass       0.0007                                                                m/s
+Wmi_bass      -0.0001                                                                m/s

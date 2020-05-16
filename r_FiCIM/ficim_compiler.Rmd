@@ -2,17 +2,14 @@
 library(dplyr)
 
 #input <- './ficim_54_day5_bath65'
-input <- './ficim_54_day5_bath65_cur10'
+#input <- './ficim_54_days200_207_bath65_cur10'
+input <- './ficim_54_days200_207_bath65_cur'
+
 files <- list.files(path = input, pattern = "*.zip")
-print(length(files))
+txt_list <- c('Flux_C', 'Flux_N', 'Flux_P', 'Mean_Flux_C', 'Mean_Flux_N', 'Mean_Flux_P') 
 
 for (i in files){
-  unzip(paste0(input, '/', i), exdir = input)
-  txt_list <- list.files(paste0(input, '/Outputs'))}
-
-#txt_list <- c('Flux_C_0005', 'Flux_N_0005', 'Flux_P_0005', 'Mean_Flux_C', 'Mean_Flux_N', 'Mean_Flux_P') 
-#txt_list <- c('Flux_C_0005_07', 'Flux_N_0005_07', 'Flux_P_0005_07', 'Mean_Flux_C_07', 'Mean_Flux_N_07', 'Mean_Flux_P_07') 
-txt_list <- c('Flux_C_0005_06', 'Flux_N_0005_06', 'Flux_P_0005_06', 'Mean_Flux_C_06', 'Mean_Flux_N_06', 'Mean_Flux_P_06') 
+  unzip(paste0(input, '/', i), exdir = input)}
 
 for (i in txt_list){
   list_fc <- list.files(path = paste0(input, '/Outputs'), pattern = i)
