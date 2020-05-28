@@ -3,7 +3,8 @@ library(dplyr)
 
 #input <- './ficim_54_day5_bath65'
 #input <- './ficim_54_days200_207_bath65_cur10'
-input <- './ficim_54_days200_207_bath65_cur'
+#input <- './ficim_54_days200_207_bath65_cur'
+input <- './ficim_54_days200_207_bath15'
 
 files <- list.files(path = input, pattern = "*.zip")
 txt_list <- c('Flux_C', 'Flux_N', 'Flux_P', 'Mean_Flux_C', 'Mean_Flux_N', 'Mean_Flux_P') 
