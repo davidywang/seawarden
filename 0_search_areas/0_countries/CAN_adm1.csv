@@ -1,0 +1,16 @@
+"OBJECTID","ID_0","ISO","NAME_0","ID_1","NAME_1","TYPE_1","ENGTYPE_1","NL_NAME_1","VARNAME_1"
+1,42,"CAN","Canada",1,"Alberta","Province","Province",NA,NA
+2,42,"CAN","Canada",2,"British Columbia","Province","Province",NA,"Colombie britannique|New Caledonia"
+3,42,"CAN","Canada",3,"Manitoba","Province","Province",NA,NA
+4,42,"CAN","Canada",4,"New Brunswick","Province","Province",NA,"Nouveau-Brunswick|Acadia"
+5,42,"CAN","Canada",5,"Newfoundland and Labrador","Province","Province",NA,"Newfoundland|Terre-Neuve|Terre-Neuve-et-Labrador"
+6,42,"CAN","Canada",6,"Northwest Territories","Territoire","Territory",NA,"Territoires du Nord-Ouest"
+7,42,"CAN","Canada",7,"Nova Scotia","Province","Province",NA,"Acadia|Nouvelle-Écosse"
+8,42,"CAN","Canada",8,"Nunavut","Territoire","Territory",NA,NA
+9,42,"CAN","Canada",8,"Nunavut","Territoire","Territory",NA,NA
+10,42,"CAN","Canada",8,"Nunavut","Territoire","Territory",NA,NA
+11,42,"CAN","Canada",9,"Ontario","Province","Province",NA,"Upper Canada"
+12,42,"CAN","Canada",10,"Prince Edward Island","Province","Province",NA,"Île de Saint-Jean|Île du Prince-Édouard"
+13,42,"CAN","Canada",11,"Québec","Province","Province",NA,"Lower Canada"
+14,42,"CAN","Canada",12,"Saskatchewan","Province","Province",NA,NA
+15,42,"CAN","Canada",13,"Yukon","Territoire","Territory",NA,"Yukon Territory|Territoire du Yukon|Yukon|Yuk¢n"

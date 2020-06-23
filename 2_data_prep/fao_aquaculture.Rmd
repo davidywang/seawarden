@@ -8,8 +8,9 @@ library(ggplot2)
 
 ```{r}
 #download UNFAO data as zipfile and unzip 
-#url <- "http://www.fao.org/fishery/static/Data/Aquaculture_2018.1.2.zip"
-url <- "http://www.fao.org/fishery/static/Data/Aquaculture_2019.1.0.zip"
+#url <- "http://www.fao.org/fishery/static/Data/Aquaculture_2018.1.2.zip" #2018 dataset
+#url <- "http://www.fao.org/fishery/static/Data/Aquaculture_2019.1.0.zip" #2019 dataset
+url <- "http://www.fao.org/fishery/static/Data/Aquaculture_2020.1.0.zip" #2019 dataset
 
 temp <- tempfile()
 temp2 <- tempfile()
@@ -41,7 +42,7 @@ species <- species %>%
 ```
 
 ```{r}
-#join tables together to create dataframe that can be filtered by: year (2016), enviornment (Marine), and species group (PISCES)
+#join tables together to create dataframe that can be filtered by: year, enviornment, and species group (PISCES=FISH)
 aquaculture_all <- aquaculture %>%
   left_join(environment, by = c("ENVIRONMENT" = "Identifier")) %>%
   left_join(species, by = c("SPECIES"= "3Alpha_Code")) %>%
@@ -54,43 +55,33 @@ aquaculture_all <- aquaculture %>%
                 "GROUP" = "Major_Group") %>%
   dplyr::select(-ENVIRONMENT, -COUNTRY, -SPECIES, -QUANTITY_UNIT, -QUANTITY_SYMBOL, -VALUE_SYMBOL) %>%
   dplyr::select(COUNTRY_NAME, ENVIRONMENT_NAME, GROUP, SPECIES_NAME, TONNES, YEAR) %>%
-  filter(YEAR == 2017) %>%
+  #filter(YEAR == 2018) %>%
   mutate(TONNES = round(TONNES, 1))
 
 aquaculture_all
 
 #export dataframe as csv
-write.table(aquaculture_all, file = '../fao_2017.csv', row.names=FALSE, col.names = TRUE, sep=",")
+#write.table(aquaculture_all, file = '../fao_2020_2018only.csv', row.names=FALSE, col.names = TRUE, sep=",")
 ```
 
 ```{r}
-  #filter(ENVIRONMENT_NAME == "Marine", GROUP == "PISCES", COUNTRY_NAME == "Greece") %>% #all years
-  #filter(ENVIRONMENT_NAME == "Marine", SPECIES_NAME =="European seabass", COUNTRY_NAME == "Greece") %>% #all years
-  #filter(ENVIRONMENT_NAME == "Marine", GROUP == "PLANTAE AQUATICAE", YEAR == 2017) %>% #seaweed
-  
-  dplyr::select(-ENVIRONMENT, -COUNTRY, -SPECIES, -QUANTITY_UNIT, -QUANTITY_SYMBOL, -VALUE_SYMBOL) %>%
-  dplyr::select(COUNTRY_NAME, ENVIRONMENT_NAME, GROUP, SPECIES_NAME, TONNES, YEAR) %>%
-  mutate(TONNES = round(TONNES, 1))
-aquaculture_x
+# aquaculture_bass <- aquaculture_all %>%
+#   filter(ENVIRONMENT_NAME == "Marine", SPECIES_NAME == "European seabass", COUNTRY_NAME == "Greece") 
+#   
+# ggplot(aquaculture_bass, aes(x=YEAR)) + 
+#   geom_line(aes(y = TONNES))#, color = "darkred") 
 ```
 
 ```{r}
-aquaculture_bass <- aquaculture_all %>%
-  filter(ENVIRONMENT_NAME == "Marine", SPECIES_NAME == "European seabass", COUNTRY_NAME == "Greece") 
-  
-ggplot(aquaculture_bass, aes(x=YEAR)) + 
-  geom_line(aes(y = TONNES))#, color = "darkred") 
+# aquaculture_bream <- aquaculture_all %>%
+#   filter(ENVIRONMENT_NAME == "Marine", SPECIES_NAME == "Gilthead seabream", COUNTRY_NAME == "Greece") 
+#   
+# ggplot(aquaculture_bream, aes(x=YEAR)) + 
+#   geom_line(aes(y = TONNES))#, color = "darkred") 
 ```
 
 ```{r}
-aquaculture_bream <- aquaculture_all %>%
-  filter(ENVIRONMENT_NAME == "Marine", SPECIES_NAME == "Gilthead seabream", COUNTRY_NAME == "Greece") 
-  
-ggplot(aquaculture_bream, aes(x=YEAR)) + 
-  geom_line(aes(y = TONNES))#, color = "darkred") 
-```
-
-```{r}
+#seabass and bream produciton in Greece
 aquaculture_2 <- aquaculture_all %>%
   filter(ENVIRONMENT_NAME == "Marine", SPECIES_NAME == c("Gilthead seabream", "European seabass"), COUNTRY_NAME == "Greece") 
   
@@ -103,6 +94,7 @@ ggplot(aquaculture_2, aes(x = YEAR, y = TONNES)) +
 
 
 ```{r}
+#all fish production in Greece
 aquaculture_greece <- aquaculture_all %>%
   filter(ENVIRONMENT_NAME == "Marine", GROUP == "PISCES", COUNTRY_NAME == "Greece") 
   
@@ -112,19 +104,6 @@ aquaculture_greece <- aquaculture_all %>%
 ggplot(aquaculture_greece, aes(x = YEAR, y = TONNES)) + 
   geom_line(aes(color = SPECIES_NAME, linetype = SPECIES_NAME)) #+ 
   #scale_color_manual(values = c("darkred", "steelblue"))
-```
-
-```{r}
-ggplot(aquaculture_x, aes(x=TONNES, y=YEAR))+
-  geom_line(stat="identity", fill="deepskyblue4")+
-  #geom_text(aes(label=round(TONNES, 1)))+
-  coord_flip() 
-```
-
-
-```{r}
-#create output file
-#write.table(aquaculture_x, file = 'aquaculture.csv', row.names=FALSE, col.names = TRUE, sep=",")
 ```
 
 

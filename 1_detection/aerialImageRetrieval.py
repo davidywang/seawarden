@@ -23,7 +23,7 @@ class AerialImageRetrieval(object):
         self.lon1 = lon1
         self.lat2 = lat2
         self.lon2 = lon2
-        self.tgtfolder = '/Users/Zack/0_thesis_bing/incoming'
+        self.tgtfolder = '/Users/Zack/0_bing_in/incoming'
 
         try:
             os.makedirs(self.tgtfolder)
