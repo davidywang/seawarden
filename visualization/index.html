@@ -16,6 +16,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
     <script>
+        
+        //farm extent
         var tur_farm = $.ajax({
             url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/TUR/TUR_simrdwn_farmsites_ext.geojson",
             dataType: "json"
@@ -37,15 +39,37 @@
             dataType: "json"
         })
 
+        
+        //net pens
+        var tur_pens = $.ajax({
+            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/TUR/TUR_simrdwn_pens.geojson",
+            dataType: "json"
+        })
+        var hrv_pens = $.ajax({
+            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/HRV/HRV_simrdwn_pens.geojson",
+            dataType: "json"
+        })
+        var esp_pens = $.ajax({
+            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/ESP/ESP_simrdwn_pens.geojson",
+            dataType: "json"
+        })
+        var ita_pens = $.ajax({
+            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/ITA/ITA_simrdwn_pens.geojson",
+            dataType: "json"
+        })
+        var cyp_pens = $.ajax({
+            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/CYP/CYP_simrdwn_pens.geojson",
+            dataType: "json"
+        })
 
         
-        
+        //EEZ -> AOI
         var eez_tur = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/2_eez/TUR_EEZ.geojson",
+            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/TUR_aoi_line.geojson",
             dataType: "json"
         })
         var eez_hrv = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/2_eez/HRV_EEZ.geojson",
+            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/HRV_aoi_line.geojson",
             dataType: "json"
         })
         var eez_esp = $.ajax({
@@ -61,7 +85,7 @@
             dataType: "json"
         })
         var eez_grc = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/2_eez/GRC_EEZ.geojson",
+            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/GRC_aoi.geojson",
             dataType: "json",
             success: console.log("data successfully loaded."),
             error: function(xhr) {
@@ -106,6 +130,25 @@
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map); 
             var cyp_farm2 = L.geoJSON(cyp_farm.responseJSON,
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
+            
+            
+            // Style for pens
+            var weight = 1;
+            var opactiy = 1;
+            var color = 'red';
+            var fillOpacity = 0;
+            
+            var tur_pens2 = L.geoJSON(tur_pens.responseJSON, 
+                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
+            var hrv_pens2 = L.geoJSON(hrv_pens.responseJSON,
+                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
+            var esp_pens2 = L.geoJSON(esp_pens.responseJSON,
+                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
+            var ita_pens2 = L.geoJSON(ita_pens.responseJSON,
+                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map); 
+            var cyp_pens2 = L.geoJSON(cyp_pens.responseJSON,
+                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
+            
             
             // Style for EEZ
             var weight = .75;
