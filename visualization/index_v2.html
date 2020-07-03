@@ -10,101 +10,25 @@
         #map {position: absolute; top: 0; bottom: 0; width: 100%;}
     </style>
 </head>
+
 <body>
     <div id="map"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
     <script>
-
-//github data repository
-        var sw_aoi = "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/"
-        var sw = "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/"
-
-//AOI
-        var aoi_alb = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/ALB_aoi.geojson",
-            dataType: "json"
-        })
-        var aoi_cyp = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/CYP_aoi.geojson",
-            dataType: "json"
-        })
-        var aoi_esp = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/ESP_aoi.geojson",
-            dataType: "json"
-        })
-        var aoi_fra = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/FRA_aoi.geojson",
-            dataType: "json"
-        })
-        var aoi_grc = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/GRC_aoi.geojson",
-            dataType: "json"
-        })
-        var aoi_hrv = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/HRV_aoi.geojson",
-            dataType: "json"
-        })
-        var aoi_ita = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/ITA_aoi.geojson",
-            dataType: "json"
-        })
-        var aoi_mlt = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/MLT_aoi.geojson",
-            dataType: "json"
-        })
-        var aoi_tur = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/TUR_aoi.geojson",
-            dataType: "json"
-        })
-        
-//AOI
-//        var aoi_alb = $.ajax({url: sw_aoi + "ALB_aoi.geojson", dataType: "json"})
-//        var aoi_cyp = $.ajax({url: sw_aoi + "CYP_aoi.geojson", dataType: "json"})
-//        var aoi_esp = $.ajax({url: sw_aoi + "ESP_aoi.geojson", dataType: "json"})
-//        var aoi_fra = $.ajax({url: sw_aoi + "FRA_aoi.geojson", dataType: "json"})
-//        var aoi_grc = $.ajax({url: sw_aoi + "GRC_aoi.geojson", dataType: "json"})
-//        var aoi_hrv = $.ajax({url: sw_aoi + "HRV_aoi.geojson", dataType: "json"})
-//        var aoi_ita = $.ajax({url: sw_aoi + "ITA_aoi.geojson", dataType: "json"})
-//        var aoi_mlt = $.ajax({url: sw_aoi + "MLT_aoi.geojson", dataType: "json"})
-//        var aoi_tur = $.ajax({url: sw_aoi + "TUR_aoi.geojson", dataType: "json"})
             
-//pen points
-//        var alb_pt = $.ajax({url: sw + "ALB/ALB_simrdwn_pts.geojson", dataType: "json"})
-//        var cyp_pt = $.ajax({url: sw + "CYP/CYP_simrdwn_pts.geojson", dataType: "json"})
-//        var esp_pt = $.ajax({url: sw + "ESP/ESP_simrdwn_pts.geojson", dataType: "json"})
-//        var fra_pt = $.ajax({url: sw + "FRA/FRA_simrdwn_pts.geojson", dataType: "json"})
-//        var grc_pt = $.ajax({url: sw + "GRC/GRC_simrdwn_pts.geojson", dataType: "json"})
-//        var hrv_pt = $.ajax({url: sw + "HRV/HRV_simrdwn_pts.geojson", dataType: "json"})
-//        var ita_pt = $.ajax({url: sw + "ITA/ITA_simrdwn_pts.geojson", dataType: "json"})
-//        var mlt_pt = $.ajax({url: sw + "MLT/MLT_simrdwn_pts.geojson", dataType: "json"})
-//        var tur_pt = $.ajax({url: sw + "TUR/TUR_simrdwn_pts.geojson", dataType: "json"})
+        var aoi_grc = $.ajax({
+            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/GRC_aoi.geojson",dataType: "json"})      
+        var grc_farm = $.ajax({
+            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/GRC/GRC_simrdwn_farmsites_ext.geojson",dataType: "json"})       
+        var grc_pens = $.ajax({
+            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/GRC/GRC_simrdwn_pens.geojson",dataType: "json"})
         
-//farm extent
-//        var alb_farm = $.ajax({url: sw + "ALB/ALB_simrdwn_farmsites_ext.geojson", dataType: "json"})
-//        var cyp_farm = $.ajax({url: sw + "CYP/CYP_simrdwn_farmsites_ext.geojson", dataType: "json"})
-//        var esp_farm = $.ajax({url: sw + "ESP/ESP_simrdwn_farmsites_ext.geojson", dataType: "json"})
-//        var fra_farm = $.ajax({url: sw + "FRA/FRA_simrdwn_farmsites_ext.geojson", dataType: "json"})
-//        var grc_farm = $.ajax({url: sw + "GRC/GRC_simrdwn_farmsites_ext.geojson", dataType: "json"})
-//        var hrv_farm = $.ajax({url: sw + "HRV/HRV_simrdwn_farmsites_ext.geojson", dataType: "json"})
-//        var ita_farm = $.ajax({url: sw + "ITA/ITA_simrdwn_farmsites_ext.geojson", dataType: "json"})
-//        var mlt_farm = $.ajax({url: sw + "MLT/MLT_simrdwn_farmsites_ext.geojson", dataType: "json"})
-//        var tur_farm = $.ajax({url: sw + "TUR/TUR_simrdwn_farmsites_ext.geojson", dataType: "json"})
-        
-//net pens
-//        var alb_pens = $.ajax({url: sw + "ALB/ALB_simrdwn_pens.geojson", dataType: "json"})
-//        var cyp_pens = $.ajax({url: sw + "CYP/CYP_simrdwn_pens.geojson", dataType: "json"})
-//        var esp_pens = $.ajax({url: sw + "ESP/ESP_simrdwn_pens.geojson", dataType: "json"})
-//        var fra_pens = $.ajax({url: sw + "FRA/FRA_simrdwn_pens.geojson", dataType: "json"})
-//        var grc_pens = $.ajax({url: sw + "GRC/GRC_simrdwn_pens.geojson", dataType: "json"})
-//        var hrv_pens = $.ajax({url: sw + "HRV/HRV_simrdwn_pens.geojson", dataType: "json"})
-//        var ita_pens = $.ajax({url: sw + "ITA/ITA_simrdwn_pens.geojson", dataType: "json"})
-//        var mlt_pens = $.ajax({url: sw + "MLT/MLT_simrdwn_pens.geojson", dataType: "json"})
-//        var tur_pens = $.ajax({url: sw + "TUR/TUR_simrdwn_pens.geojson", dataType: "json"})
-       
-        $.when(tur_pens).done(function() {
+        $.when(grc_pens).done(function() {
             var map = L.map('map')
-                .setView([40, 14], 5);
+//                .setView([40, 14], 5);
+                .setView([39.656720366588175,20.095367431640625], 14);
+            
                        
 //            var basemap = L.tileLayer('https://api.mapbox.com/styles/v1/zackdinh/ckbsfnow34vlk1ioj8u86fcml/wmts?access_token=pk.eyJ1IjoiemFja2RpbmgiLCJhIjoiY2p0ZGoxMjc2MTd0azQzbW9zNWUzbm1meCJ9.wVLjaWeqoQ235YTL4n_CwQ', {
 //                maxZoom: 19
@@ -114,71 +38,30 @@
                 maxZoom: 20,
                 subdomains:['mt0','mt1','mt2','mt3']
                 }).addTo(map);
-                       
-// Style for for pen points   
-//            var pt_style = {radius: 8, fillColor: "#ff7800", color: "#000", weight: 1, opacity: 1, fillOpacity: 0.8};           
-//         
-//            var alb_pt2 = L.geoJSON(alb_pt.responseJSON, {style: pt_style}).addTo(map);
-//            var cyp_pt2 = L.geoJSON(cyp_pt.responseJSON, {style: pt_style}).addTo(map);
-//            var esp_pt2 = L.geoJSON(esp_pt.responseJSON, {style: pt_style}).addTo(map);
-//            var grc_pt2 = L.geoJSON(grc_pt.responseJSON, {style: pt_style}).addTo(map);
-//            var fra_pt2 = L.geoJSON(fra_pt.responseJSON, {style: pt_style}).addTo(map);
-//            var hrv_pt2 = L.geoJSON(hrv_pt.responseJSON, {style: pt_style}).addTo(map);
-//            var ita_pt2 = L.geoJSON(ita_pt.responseJSON, {style: pt_style}).addTo(map); 
-//            var mlt_pt2 = L.geoJSON(mlt_pt.responseJSON, {style: pt_style}).addTo(map);
-//            var tur_pt2 = L.geoJSON(tur_pt.responseJSON, {style: pt_style}).addTo(map);
             
-// Style for farm extents
-//            var farm_style = {"color": "#3bb2d0", "weight": 5, "opacity": 1, "fillOpacity" = 0};        
-//
-//            var alb_farm2 = L.geoJSON(alb_farm.responseJSON, {style: farm_style}).addTo(map);
-//            var cyp_farm2 = L.geoJSON(cyp_farm.responseJSON,{style: farm_style}).addTo(map);
-//            var esp_farm2 = L.geoJSON(esp_farm.responseJSON,{style: farm_style}).addTo(map);
-//            var grc_farm2 = L.geoJSON(grc_farm.responseJSON,{style: farm_style}).addTo(map);
-//            var fra_farm2 = L.geoJSON(fra_farm.responseJSON,{style: farm_style}).addTo(map);
-//            var hrv_farm2 = L.geoJSON(hrv_farm.responseJSON,{style: farm_style}).addTo(map);
-//            var ita_farm2 = L.geoJSON(ita_farm.responseJSON,{style: farm_style}).addTo(map); 
-//            var mlt_farm2 = L.geoJSON(mlt_farm.responseJSON,{style: farm_style}).addTo(map);
-//            var tur_farm2 = L.geoJSON(tur_farm.responseJSON,{style: farm_style}).addTo(map);            
+            var weight = 1;
+            var opactiy = 1;
+            var color = '#3bb2d0';
+            var fillOpacity = 0;
+
+            var grc_farm2 = L.geoJSON(grc_farm.responseJSON, 
+                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
+
+            var weight = 1;
+            var opactiy = 1;
+            var color = '#3bb2d0';
+            var fillOpacity = 0;
             
-// Style for pens
-//            var pen_style = farm_style
-//            
-//            var alb_pens2 = L.geoJSON(alb_pens.responseJSON, {style: pen_style}).addTo(map);
-//            var cyp_pens2 = L.geoJSON(cyp_pens.responseJSON, {style: pen_style}).addTo(map);
-//            var esp_pens2 = L.geoJSON(esp_pens.responseJSON, {style: pen_style}).addTo(map);
-//            var grc_pens2 = L.geoJSON(grc_pens.responseJSON, {style: pen_style}).addTo(map);
-//            var fra_pens2 = L.geoJSON(fra_pens.responseJSON, {style: pen_style}).addTo(map);
-//            var hrv_pens2 = L.geoJSON(hrv_pens.responseJSON, {style: pen_style}).addTo(map);
-//            var ita_pens2 = L.geoJSON(ita_pens.responseJSON, {style: pen_style}).addTo(map);
-//            var mlt_pens2 = L.geoJSON(mlt_pens.responseJSON, {style: pen_style}).addTo(map);
-//            var tur_pens2 = L.geoJSON(tur_pens.responseJSON, {style: pen_style}).addTo(map);
-            
-// Style for AOI
+            var grc_pens2 = L.geoJSON(grc_pens.responseJSON,
+                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map); 
+
             var weight = .75;
             var opactiy = 1;
             var color = 'white';
             var fillOpacity = 0;
             
-            var aoi_alb2 = L.geoJSON(aoi_alb.responseJSON, 
-                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
-            var aoi_cyp2 = L.geoJSON(aoi_cyp.responseJSON, 
-                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
-            var aoi_esp2 = L.geoJSON(aoi_esp.responseJSON, 
-                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
-            var aoi_fra2 = L.geoJSON(aoi_fra.responseJSON, 
-                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
             var aoi_grc2 = L.geoJSON(aoi_grc.responseJSON, 
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
-            var aoi_hrv2 = L.geoJSON(aoi_hrv.responseJSON, 
-                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
-            var aoi_ita2 = L.geoJSON(aoi_ita.responseJSON, 
-                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
-            var aoi_mlt2 = L.geoJSON(aoi_mlt.responseJSON, 
-                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
-            var aoi_tur2 = L.geoJSON(aoi_tur.responseJSON, 
-                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
-            
         });
     </script>
 </body>

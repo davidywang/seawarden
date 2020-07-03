@@ -66,8 +66,6 @@
             url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/ESP/ESP_simrdwn_pts.geojson",dataType: "json"})
         var fra_pt = $.ajax({
             url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/FRA/FRA_simrdwn_pts.geojson",dataType: "json"})
-        var grc_pt = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/GRC/GRC_simrdwn_pts.geojson",dataType: "json"})
         var hrv_pt = $.ajax({
             url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/HRV/HRV_simrdwn_pts.geojson",dataType: "json"})
         var ita_pt = $.ajax({
@@ -76,6 +74,8 @@
             url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/MLT/MLT_simrdwn_pts.geojson",dataType: "json"})
         var tur_pt = $.ajax({
             url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/TUR/TUR_simrdwn_pts.geojson",dataType: "json"})
+        var grc_pt = $.ajax({
+            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/GRC/GRC_simrdwn_pts.geojson",dataType: "json"})
         
 //net pens
         var alb_pens = $.ajax({
@@ -86,8 +86,6 @@
             url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/ESP/ESP_simrdwn_pens.geojson",dataType: "json"})
         var fra_pens = $.ajax({
             url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/FRA/FRA_simrdwn_pens.geojson",dataType: "json"})
-        var grc_pens = $.ajax({
-            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/GRC/GRC_simrdwn_pens.geojson",dataType: "json"})
         var hrv_pens = $.ajax({
             url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/HRV/HRV_simrdwn_pens.geojson",dataType: "json"})
         var ita_pens = $.ajax({
@@ -96,8 +94,10 @@
             url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/MLT/MLT_simrdwn_pens.geojson",dataType: "json"})
         var tur_pens = $.ajax({
             url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/TUR/TUR_simrdwn_pens.geojson",dataType: "json"})
+        var grc_pens = $.ajax({
+            url: "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/GRC/GRC_simrdwn_pens.geojson",dataType: "json"})
        
-        $.when(tur_pens).done(function() {
+        $.when(grc_pens).done(function() {
             var map = L.map('map')
                 .setView([40, 14], 5);
                        
@@ -122,8 +122,6 @@
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
             var esp_farm2 = L.geoJSON(esp_farm.responseJSON,
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
-            var grc_farm2 = L.geoJSON(grc_farm.responseJSON, 
-                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
             var fra_farm2 = L.geoJSON(fra_farm.responseJSON,
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
             var hrv_farm2 = L.geoJSON(hrv_farm.responseJSON,
@@ -133,6 +131,8 @@
             var mlt_farm2 = L.geoJSON(mlt_farm.responseJSON, 
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
             var tur_farm2 = L.geoJSON(tur_farm.responseJSON, 
+                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
+            var grc_farm2 = L.geoJSON(grc_farm.responseJSON, 
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
             
 // Style for for pen points
@@ -167,8 +167,6 @@
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
             var esp_pens2 = L.geoJSON(esp_pens.responseJSON,
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
-            var grc_pens2 = L.geoJSON(grc_pens.responseJSON,
-                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map); 
             var fra_pens2 = L.geoJSON(fra_pens.responseJSON,
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
             var hrv_pens2 = L.geoJSON(hrv_pens.responseJSON,
@@ -179,8 +177,9 @@
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map); 
             var tur_pens2 = L.geoJSON(tur_pens.responseJSON,
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
-            
-            
+            var grc_pens2 = L.geoJSON(grc_pens.responseJSON,
+                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map); 
+             
 // Style for AOI
             var weight = .75;
             var opactiy = 1;
@@ -195,8 +194,6 @@
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
             var aoi_fra2 = L.geoJSON(aoi_fra.responseJSON, 
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
-            var aoi_grc2 = L.geoJSON(aoi_grc.responseJSON, 
-                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
             var aoi_hrv2 = L.geoJSON(aoi_hrv.responseJSON, 
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
             var aoi_ita2 = L.geoJSON(aoi_ita.responseJSON, 
@@ -205,7 +202,8 @@
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
             var aoi_tur2 = L.geoJSON(aoi_tur.responseJSON, 
                 {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
-
+            var aoi_grc2 = L.geoJSON(aoi_grc.responseJSON, 
+                {fillColor: 'none', weight: weight, opacity: opactiy, color: color, fillOpacity: fillOpacity}).addTo(map);
         });
     </script>
 </body>
