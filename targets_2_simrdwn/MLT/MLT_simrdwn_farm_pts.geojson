@@ -2,8 +2,6 @@
 "type": "FeatureCollection",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3034" } },
 "features": [
-{ "type": "Feature", "properties": { "count": 10, "farm_id": 29 }, "geometry": { "type": "Point", "coordinates": [ 14.382219199554262, 35.944543967708022 ] } },
-{ "type": "Feature", "properties": { "count": 13, "farm_id": 44 }, "geometry": { "type": "Point", "coordinates": [ 14.239601099650663, 36.02129056720068 ] } },
-{ "type": "Feature", "properties": { "count": 19, "farm_id": 46 }, "geometry": { "type": "Point", "coordinates": [ 14.405545124927814, 35.963663045545488 ] } }
+{ "type": "Feature", "properties": { "farm ID": 46, "cage count": 19 }, "geometry": { "type": "Point", "coordinates": [ 14.405545124927814, 35.963663045545488 ] } }
 ]
 }
