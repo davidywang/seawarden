@@ -75,51 +75,50 @@ shinyServer(function(input, output){
     setView(14, 40, zoom = 4) %>%
     setMaxBounds(-10, 50, 40, 30) %>%
     
-    #data layers
-    addCircleMarkers(data=grc_pts, radius = 1, color = '#3bb2d0') %>%
-    addPolygons(data=grc_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=grc_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=grc_aoi, color = 'white', weight = 1, fillOpacity = 0) %>%
-    
-    addCircleMarkers(data=tur_pts, radius = 1, color = '#3bb2d0') %>%
-    addPolygons(data=tur_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=tur_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=tur_aoi, color = 'white', weight = 1, fillOpacity = 0) %>%
-
-    addCircleMarkers(data=hrv_pts, radius = 1, color = '#3bb2d0') %>%
-    addPolygons(data=hrv_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=hrv_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=hrv_aoi, color = 'white', weight = 1, fillOpacity = 0) %>%  
+      #data layers
+      addPolygons(data=grc_aoi, color = 'white', weight = 1, fillOpacity = 0, popup = popupTable(grc_aoi)) %>%
+      addPolygons(data=grc_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(grc_frm)) %>%
+      addPolygons(data=grc_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(grc_pen)) %>%
+      addCircleMarkers(data=grc_pts, radius = 1, color = '#3bb2d0', popup = popupTable(grc_pts)) %>%
       
-    addCircleMarkers(data=cyp_pts, radius = 1, color = '#3bb2d0') %>%
-    addPolygons(data=cyp_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=cyp_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=cyp_aoi, color = 'white', weight = 1, fillOpacity = 0) %>%
+      addPolygons(data=tur_aoi, color = 'white', weight = 1, fillOpacity = 0, popup = popupTable(tur_aoi)) %>%
+      addPolygons(data=tur_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(tur_frm)) %>%
+      addPolygons(data=tur_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(tur_pen)) %>%
+      addCircleMarkers(data=tur_pts, radius = 1, color = '#3bb2d0', popup = popupTable(tur_pts)) %>%
       
-    addCircleMarkers(data=alb_pts, radius = 1, color = '#3bb2d0') %>%
-    addPolygons(data=alb_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=alb_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=alb_aoi, color = 'white', weight = 1, fillOpacity = 0) %>% 
+      addPolygons(data=hrv_aoi, color = 'white', weight = 1, fillOpacity = 0, popup = popupTable(hrv_aoi)) %>%
+      addPolygons(data=hrv_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(hrv_frm)) %>%
+      addPolygons(data=hrv_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(hrv_pen)) %>%
+      addCircleMarkers(data=hrv_pts, radius = 1, color = '#3bb2d0', popup = popupTable(hrv_pts)) %>%
       
-    addCircleMarkers(data=ita_pts, radius = 1, color = '#3bb2d0') %>%
-    addPolygons(data=ita_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=ita_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=ita_aoi, color = 'white', weight = 1, fillOpacity = 0) %>%
+      addPolygons(data=cyp_aoi, color = 'white', weight = 1, fillOpacity = 0, popup = popupTable(cyp_aoi)) %>%
+      addPolygons(data=cyp_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(cyp_frm)) %>%
+      addPolygons(data=cyp_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(cyp_pen)) %>%
+      addCircleMarkers(data=cyp_pts, radius = 1, color = '#3bb2d0', popup = popupTable(cyp_pts)) %>%
       
-    addCircleMarkers(data=esp_pts, radius = 1, color = '#3bb2d0') %>%
-    addPolygons(data=esp_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=esp_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=esp_aoi, color = 'white', weight = 1, fillOpacity = 0) %>%  
+      addPolygons(data=alb_aoi, color = 'white', weight = 1, fillOpacity = 0, popup = popupTable(alb_aoi)) %>%
+      addPolygons(data=alb_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(alb_frm)) %>%
+      addPolygons(data=alb_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(alb_pen)) %>%
+      addCircleMarkers(data=alb_pts, radius = 1, color = '#3bb2d0', popup = popupTable(alb_pts)) %>%
       
-    addCircleMarkers(data=mlt_pts, radius = 1, color = '#3bb2d0') %>%
-    addPolygons(data=mlt_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=mlt_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=mlt_aoi, color = 'white', weight = 1, fillOpacity = 0) %>%
+      addPolygons(data=ita_aoi, color = 'white', weight = 1, fillOpacity = 0, popup = popupTable(ita_aoi)) %>%
+      addPolygons(data=ita_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(ita_frm)) %>%
+      addPolygons(data=ita_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(ita_pen)) %>%
+      addCircleMarkers(data=ita_pts, radius = 1, color = '#3bb2d0', popup = popupTable(ita_pts)) %>%
       
-    addCircleMarkers(data=fra_pts, radius = 1, color = '#3bb2d0') %>%
-    addPolygons(data=fra_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=fra_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0) %>%
-    addPolygons(data=fra_aoi, color = 'white', weight = 1, fillOpacity = 0)    
+      addPolygons(data=esp_aoi, color = 'white', weight = 1, fillOpacity = 0, popup = popupTable(esp_aoi)) %>%
+      addPolygons(data=esp_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(esp_frm)) %>%
+      addPolygons(data=esp_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(esp_pen)) %>%
+      addCircleMarkers(data=esp_pts, radius = 1, color = '#3bb2d0', popup = popupTable(esp_pts)) %>%
+      
+      addPolygons(data=mlt_aoi, color = 'white', weight = 1, fillOpacity = 0, popup = popupTable(mlt_aoi)) %>%
+      addPolygons(data=mlt_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(mlt_frm)) %>%
+      addPolygons(data=mlt_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(mlt_pen)) %>%
+      addCircleMarkers(data=mlt_pts, radius = 1, color = '#3bb2d0', popup = popupTable(mlt_pts)) %>%
+      
+      addPolygons(data=fra_aoi, color = 'white', weight = 1, fillOpacity = 0, popup = popupTable(fra_aoi)) %>%
+      addPolygons(data=fra_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(fra_frm)) %>%
+      addPolygons(data=fra_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(fra_pen)) %>%
+      addCircleMarkers(data=fra_pts, radius = 1, color = '#3bb2d0', popup = popupTable(fra_pts))
     })
-
 })
