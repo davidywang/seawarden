@@ -1,12 +1,12 @@
+## Sea Warden
+### Goal
+Our goal is to provide independent oversight of global marine aquaculture activty.
 
-## A
-1
+### Method
+We combine observations from several earth observation sattelites and object detection algorithms to locate finfish farming sites.
 
-## B
-2. [Sea Warden](seawarden.org). 
+### Next Steps
+We are currently in the "mapping" phase where we are locating farming sites, and our next step will be to increase our observation cycles to provide monitoring capability.
 
-## C
-3
-
-## D
-4
+### More Information
+[Sea Warden](seawarden.org) 
