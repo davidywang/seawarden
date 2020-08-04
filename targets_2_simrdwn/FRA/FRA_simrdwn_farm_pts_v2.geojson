@@ -2,7 +2,7 @@
 "type": "FeatureCollection",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::2154" } },
 "features": [
-{ "type": "Feature", "properties": { "farm ID": 40, "cage count": 15, "filename": "image_(18, 'FRA', 40, 41.40246, 9.22933, 41.41211, 9.21838).jpeg" }, "geometry": { "type": "Point", "coordinates": [ 9.223859075194795, 41.407286598855052 ] } },
-{ "type": "Feature", "properties": { "farm ID": 212, "cage count": 6, "filename": "image_(18, 'FRA', 212, 42.56102, 8.78625, 42.57064, 8.77501).jpeg" }, "geometry": { "type": "Point", "coordinates": [ 8.780634550873096, 42.565829903557848 ] } }
+{ "type": "Feature", "properties": { "farm ID": 40, "cage count": 15, "filename": "image_(18, _FRA_, 40, 41.40246, 9.22933, 41.41211, 9.21838).jpeg" }, "geometry": { "type": "Point", "coordinates": [ 9.223859075194795, 41.407286598855052 ] } },
+{ "type": "Feature", "properties": { "farm ID": 212, "cage count": 6, "filename": "image_(18, _FRA_, 212, 42.56102, 8.78625, 42.57064, 8.77501).jpeg" }, "geometry": { "type": "Point", "coordinates": [ 8.780634550873096, 42.565829903557848 ] } }
 ]
 }

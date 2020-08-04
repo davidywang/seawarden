@@ -5,9 +5,9 @@ account: seawarden
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2535952
-bundleId: 3358631
+bundleId: 3471809
 url: https://seawarden.shinyapps.io/sw_map/
-when: 1594052877.15879
+when: 1596512810.43087
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: .RData|blood-banks.csv|blood-banks_raw.csv|sw_map.Rmd
