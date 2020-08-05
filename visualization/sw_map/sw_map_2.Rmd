@@ -18,7 +18,7 @@ att = "Sea Warden | Google"
 
 src_aoi = "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/"
 src = "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/"
-grc_img = "GRC/test_ssd_imagery_controlset_2020_04_15_06-47-03/"
+src_img = "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/1_SIMRDWN_final/annotated/"
 
 aoi = "_aoi.geojson"
 frm = "_simrdwn_farmsites_ext.geojson"
@@ -30,28 +30,14 @@ grc_aoi <- geojson_read(paste0(src_aoi, f, aoi),  what = "sp")
 grc_frm <- geojson_read(paste0(src, f, "/", f, frm), what = "sp")
 grc_pen <- geojson_read(paste0(src, f, "/", f, pen), what = "sp")
 grc_pts <- geojson_read(paste0(src, f, "/", f, pts), what = "sp")
-```
 
-```{r}
-img = paste0(src, grc_img, "133_18_38_4666_26_1479_38_4576_26_1594_thresh%3D0.25..jpeg")
-url = paste0("Detections | ", "<a href=", img, ' target="_blank"', ">View Image</a>")
-url
-```
-```{r}
-
-
-
-```
-
-```{r}
 map <-leaflet() %>%
   addTiles(urlTemplate = base, attribution = att) %>%
   setView(14, 40, zoom = 4) %>%
   setMaxBounds(-10, 50, 40, 30) %>%
   addFullscreenControl() %>%
-  
-  #data layers
-  addCircleMarkers(data=grc_pts, radius = .25, color = '#3bb2d0', popup = paste0(url, popupImage(img, src = "remote", height=300, width=300)))
+
+  addCircleMarkers(data=grc_pts, radius = .25, color = '#3bb2d0', popup = paste0('<a href="', src_img, grc_pts$filename,'">View Image</a>'))
 
 map
 ```
