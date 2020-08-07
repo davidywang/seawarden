@@ -2,8 +2,8 @@
 "type": "FeatureCollection",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::2062" } },
 "features": [
-{ "type": "Feature", "properties": { "farm ID": 100, "cage count": 5 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 0.029512302712689, 38.611804205751319 ], [ 0.040993489438501, 38.611427697379149 ], [ 0.041474133089266, 38.620436372536922 ], [ 0.029991469926481, 38.620812930233271 ], [ 0.029512302712689, 38.611804205751319 ] ] ] } },
-{ "type": "Feature", "properties": { "farm ID": 119, "cage count": 18 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -0.039746137759761, 38.567109870825092 ], [ -0.028271913505412, 38.566740366748697 ], [ -0.027800494050703, 38.575749231996618 ], [ -0.039276193046998, 38.576118784495272 ], [ -0.039746137759761, 38.567109870825092 ] ] ] } },
-{ "type": "Feature", "properties": { "farm ID": 513, "cage count": 6 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 3.163322944018585, 42.251808340706638 ], [ 3.175409304578751, 42.251116156965807 ], [ 3.176341893504812, 42.26009584186464 ], [ 3.164253903626148, 42.260788114042221 ], [ 3.163322944018585, 42.251808340706638 ] ] ] } }
+{ "type": "Feature", "properties": { "farm ID": 100, "cage count": 5 }, "geometry": { "type": "Point", "coordinates": [ 0.035492848791735, 38.616120444320991 ] } },
+{ "type": "Feature", "properties": { "farm ID": 119, "cage count": 18 }, "geometry": { "type": "Point", "coordinates": [ -0.033773684590718, 38.5714297061322 ] } },
+{ "type": "Feature", "properties": { "farm ID": 513, "cage count": 6 }, "geometry": { "type": "Point", "coordinates": [ 3.169832011432075, 42.255952275368934 ] } }
 ]
 }

@@ -83,7 +83,6 @@
 { "type": "Feature", "properties": { "farm ID": 190, "cage ID": 111, "radius": 14.74, "diameter": 29.48 }, "geometry": { "type": "Point", "coordinates": [ 16.468557228616774, 43.301576278254075 ] } },
 { "type": "Feature", "properties": { "farm ID": 190, "cage ID": 112, "radius": 14.57, "diameter": 29.15 }, "geometry": { "type": "Point", "coordinates": [ 16.469136054844977, 43.301897324292696 ] } },
 { "type": "Feature", "properties": { "farm ID": 190, "cage ID": 113, "radius": 9.95, "diameter": 19.89 }, "geometry": { "type": "Point", "coordinates": [ 16.468607342247402, 43.301963349329867 ] } },
-{ "type": "Feature", "properties": { "farm ID": 210, "cage ID": 138, "radius": 12.24, "diameter": 24.48 }, "geometry": { "type": "Point", "coordinates": [ 16.272445762304919, 43.525882454326897 ] } },
 { "type": "Feature", "properties": { "farm ID": 274, "cage ID": 148, "radius": 19.71, "diameter": 39.42 }, "geometry": { "type": "Point", "coordinates": [ 15.388745695027362, 43.892979160335187 ] } },
 { "type": "Feature", "properties": { "farm ID": 274, "cage ID": 149, "radius": 16.97, "diameter": 33.95 }, "geometry": { "type": "Point", "coordinates": [ 15.389646587651745, 43.89308692245303 ] } },
 { "type": "Feature", "properties": { "farm ID": 274, "cage ID": 150, "radius": 19.57, "diameter": 39.15 }, "geometry": { "type": "Point", "coordinates": [ 15.388229533731165, 43.894141292846975 ] } },
