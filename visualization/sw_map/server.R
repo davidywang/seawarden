@@ -6,7 +6,7 @@ library(leafpop)
 
 shinyServer(function(input, output){
   
-  src = "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/"
+  src = "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/2_archive/"
   src_aoi = "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/"
   src_img = "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/1_SIMRDWN_final/annotated/"
   
