@@ -37,7 +37,10 @@ map <-leaflet() %>%
   setMaxBounds(-10, 50, 40, 30) %>%
   addFullscreenControl() %>%
 
-  addCircleMarkers(data=grc_pts, radius = .25, color = '#3bb2d0', popup = paste0('<a href="', src_img, grc_pts$filename,'">View Image</a>'))
+
+  addPolygons(data=grc_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(grc_pen, feature.id = FALSE, row.numbers = FALSE))
+
+    
 
 map
 ```
