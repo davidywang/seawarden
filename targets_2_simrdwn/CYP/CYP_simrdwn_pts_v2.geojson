@@ -1,0 +1,13 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::6312" } },
+"features": [
+{ "type": "Feature", "properties": { "farm ID": 24, "cage count": 14, "filename": "image_(18, 'CYP', 24, 34.69306, 33.27561, 34.7021, 33.26472).jpeg" }, "geometry": { "type": "Point", "coordinates": [ 33.270163076409297, 34.697579871602215 ] } },
+{ "type": "Feature", "properties": { "farm ID": 25, "cage count": 19, "filename": "image_(18, 'CYP', 25, 34.63794, 33.03024, 34.64696, 33.01934).jpeg" }, "geometry": { "type": "Point", "coordinates": [ 33.024789342106928, 34.642447398902249 ] } },
+{ "type": "Feature", "properties": { "farm ID": 91, "cage count": 8, "filename": "image_(18, 'CYP', 91, 34.97594, 33.94578, 34.98504, 33.93493).jpeg" }, "geometry": { "type": "Point", "coordinates": [ 33.940355076191508, 34.980490943246288 ] } },
+{ "type": "Feature", "properties": { "farm ID": 97, "cage count": 7, "filename": "image_(18, 'CYP', 97, 34.69751, 33.29112, 34.70655, 33.28024).jpeg" }, "geometry": { "type": "Point", "coordinates": [ 33.285678343612069, 34.702029710937296 ] } },
+{ "type": "Feature", "properties": { "farm ID": 98, "cage count": 6, "filename": "image_(18, 'CYP', 98, 34.697, 33.28796, 34.70604, 33.27708).jpeg" }, "geometry": { "type": "Point", "coordinates": [ 33.282521044198049, 34.701524431229501 ] } },
+{ "type": "Feature", "properties": { "farm ID": 159, "cage count": 7, "filename": "image_(18, 'CYP', 159, 35.4048, 34.17001, 35.41391, 34.15913).jpeg" }, "geometry": { "type": "Point", "coordinates": [ 34.164569693863079, 35.409354197772004 ] } },
+{ "type": "Feature", "properties": { "farm ID": 164, "cage count": 14, "filename": "image_(18, 'CYP', 164, 35.31167, 34.03675, 35.32077, 34.02587).jpeg" }, "geometry": { "type": "Point", "coordinates": [ 34.0313104091939, 35.316222012090677 ] } }
+]
+}

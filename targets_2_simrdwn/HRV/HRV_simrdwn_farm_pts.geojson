@@ -10,6 +10,8 @@
 { "type": "Feature", "properties": { "farm ID": 183, "cage count": 4 }, "geometry": { "type": "Point", "coordinates": [ 15.961435756854867, 43.508923051193491 ] } },
 { "type": "Feature", "properties": { "farm ID": 189, "cage count": 24 }, "geometry": { "type": "Point", "coordinates": [ 16.46408804819314, 43.303530370869197 ] } },
 { "type": "Feature", "properties": { "farm ID": 190, "cage count": 12 }, "geometry": { "type": "Point", "coordinates": [ 16.468590201207199, 43.301017261919938 ] } },
+{ "type": "Feature", "properties": { "farm ID": 196, "cage count": 16 }, "geometry": { "type": "Point", "coordinates": [ 16.263443249459904, 43.520248888859882 ] } },
+{ "type": "Feature", "properties": { "farm ID": 210, "cage count": 9 }, "geometry": { "type": "Point", "coordinates": [ 16.271544416488709, 43.523922739415852 ] } },
 { "type": "Feature", "properties": { "farm ID": 274, "cage count": 10 }, "geometry": { "type": "Point", "coordinates": [ 15.388491919064837, 43.894507180498124 ] } },
 { "type": "Feature", "properties": { "farm ID": 275, "cage count": 39 }, "geometry": { "type": "Point", "coordinates": [ 15.060121110164641, 44.005533575058593 ] } },
 { "type": "Feature", "properties": { "farm ID": 276, "cage count": 12 }, "geometry": { "type": "Point", "coordinates": [ 15.391177163013898, 43.889178866187905 ] } },
