@@ -6,7 +6,7 @@ library(leafpop)
 
 shinyServer(function(input, output){
   
-  src = "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/2_archive/"
+  src = "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/3_new/"
   src_aoi = "https://raw.githubusercontent.com/zdinh/seawarden/master/0_search_areas/3_aoi/"
   src_img = "https://raw.githubusercontent.com/zdinh/seawarden/master/targets_2_simrdwn/1_SIMRDWN_final/annotated/"
   
@@ -55,7 +55,7 @@ shinyServer(function(input, output){
   esp_aoi <- geojson_read(paste0(src_aoi, f, aoi),  what = "sp")
   esp_frm <- geojson_read(paste0(src, f, "/", f, frm), what = "sp")
   esp_pen <- geojson_read(paste0(src, f, "/", f, pen), what = "sp")
-  esp_pts <- geojson_read(paste0(src, f, "/", f, pts), what = "sp")
+  # esp_pts <- geojson_read(paste0(src, f, "/", f, pts), what = "sp")
 
   f = "MLT"
   mlt_aoi <- geojson_read(paste0(src_aoi, f, aoi),  what = "sp")
@@ -132,9 +132,10 @@ shinyServer(function(input, output){
       addPolygons(data=esp_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(esp_frm, feature.id = FALSE, row.numbers = FALSE)) %>%
       addPolygons(data=esp_pen, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(esp_pen, feature.id = FALSE, row.numbers = FALSE)) %>%
       # addCircleMarkers(data=esp_pts, radius = 1, color = '#3bb2d0', popup = popupTable(esp_pts)) %>%
-      addCircleMarkers(data=esp_pts, radius = 1, color = '#3bb2d0', popup = paste0(
-        paste0('Farm Site: ', esp_pts$farm.ID, ' <a href="', src_img, esp_pts$filename,'" target="_blank"','">View Image</a>'),
-        popupImage(paste0(src_img, esp_pts$filename), src = "remote", height=300, width=300))) %>%
+      
+      # addCircleMarkers(data=esp_pts, radius = 1, color = '#3bb2d0', popup = paste0(
+      #   paste0('Farm Site: ', esp_pts$farm.ID, ' <a href="', src_img, esp_pts$filename,'" target="_blank"','">View Image</a>'),
+      #   popupImage(paste0(src_img, esp_pts$filename), src = "remote", height=300, width=300))) %>%
 
       addPolygons(data=mlt_aoi, color = 'white', weight = 1, fillOpacity = 0, popup = popupTable(mlt_aoi, feature.id = FALSE, row.numbers = FALSE)) %>%
       addPolygons(data=mlt_frm, color = '#3bb2d0', weight = 2, fillOpacity = 0, popup = popupTable(mlt_frm, feature.id = FALSE, row.numbers = FALSE)) %>%

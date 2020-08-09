@@ -1,7 +1,0 @@
-{
-"type": "FeatureCollection",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3034" } },
-"features": [
-{ "type": "Feature", "properties": { "farm ID": 46, "cage count": 19, "filename": "image_(18, 'MLT', 46, 35.95888, 14.41077, 35.96845, 14.40032).jpeg" }, "geometry": { "type": "Point", "coordinates": [ 14.405545124927814, 35.963663045545488 ] } }
-]
-}
